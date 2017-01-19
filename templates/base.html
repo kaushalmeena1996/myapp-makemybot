@@ -1,0 +1,204 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- http://www.w3schools.com/ -->
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/w3.css') }}">
+		<!-- http://fontawesome.io/ -->
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/font-awesome.css') }}">
+		<!-- https://jquery.com/ -->
+		<script src="{{ url_for( 'static', filename='js/jquery-3.1.0.min.js' ) }}"></script>
+		<!-- CUSTOM FAVICON -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+		<!-- CUSTOM STYLESHEET -->
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/custom-styles.css') }}">
+		<!-- CUSTOM SCRIPT -->
+		<script src="{{ url_for( 'static', filename='js/custom-scripts.js' ) }}"></script>
+		<title>MakeMyBot: {{menuTitle}}</title>
+	</head>
+	<script>
+	$(document).ready(function() {
+	//$("#status").delay(3000).animate({ left: '0', top: '0' }, "slow").fadeOut();
+	//$("#preloader").delay(3500).fadeOut("slow");
+			//add unawered question
+	window.scrollTo(0, 0);
+	var menuId = {
+	ChatBots: "#menuChatBots",
+				Guide: "#menuGuide",
+				FAQs: "#menuFaq",
+	Contact: "#menuContact",
+				Chat: "#menuChat",
+				Teach: "#menuTeach",
+				Setting: "#menuSetting",
+				Embed: "#menuEmbed"
+	};
+	var menuColor = {
+				ChatBots: "#E74C3C",
+				Guide: "#3498DB",
+				FAQs: "#27AE60",
+				Contact: "#F39C12",
+				Login: "#8E44AD",
+				Register: "#8E44AD",
+				Chat: "#C0392B",
+				Teach: "#2980B9",
+				Setting: "#16A085",
+				Embed: "#E67E22",
+				Home: "#CCCCCC"
+	};
+	var buttonColor = {
+				ChatBots: "w3-button-col-red",
+				Guide: "w3-button-col-blue",
+	FAQs: "w3-button-col-green",
+	Contact: "w3-button-col-orange",
+				Login: "w3-button-col-purple",
+				Register: "w3-button-col-purple",
+				Chat: "w3-button-col-darkred",
+				Teach: "w3-button-col-darkblue",
+				Setting: "w3-button-col-darkgreen",
+				Embed: "w3-button-col-darkorange",
+				Home: "w3-button-col-grey"
+	};
+	var menuTitle = '{{menuTitle}}';
+			
+	$('{{menuId}}').css({
+	"margin-right": "5px",
+	"padding-bottom": "5px"
+	});
+			
+	$('{{menuId}}').on("mouseenter", function() {
+	$("#menuStrip").css("background-color", "#CCCCCC");
+	}).on("mouseleave", function() {
+	$("#menuStrip").css("background-color", '{{colorHex}}');
+	});
+	});
+	{% if session['user_id'] %}
+		var menuToggle = 0, plus_left = "+=590px" , minus_left = "-=590px";
+	{% else %}
+		var menuToggle = 0, plus_left = "+=290px" , minus_left = "-=290px";
+	{% endif %}
+		
+	function toggleMenu() {
+	if (menuToggle === 0) {
+	$('#menuDiv').animate({
+	left: plus_left
+	}, "slow");
+	$('#menuButton').animate({
+	left: plus_left
+	}, "slow");
+	menuToggle = 1;
+	} else {
+	$('#menuDiv').animate({
+	left: minus_left
+	}, "slow");
+	$('#menuButton').animate({
+	left: minus_left
+	}, "slow");
+	menuToggle = 0;
+	}
+	}
+	window.addEventListener("beforeunload", function() {
+	document.body.classList.add("animate-out");
+	});
+	window.onunload = function() {
+	cAction(2, event);
+	};
+	</script>
+	<style>
+	#preloader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #fefefe;
+	z-index: 99;
+	height: 100%;
+	}
+	#status {
+	height: 69px;
+	position: relative;
+	top: 40%;
+	left: 40%;
+	}
+	</style>
+<body>
+
+	<label hidden id="botId" value="{{session['user_id']}}" ></label>
+	<!--
+	<div id="preloader">
+		<img id="status" src="img\loader.gif" alt="Loader">
+	</div> -->
+	<div class="w3-top">
+		<ul id="navBar" class="w3-navbar w3-light-grey" style="z-index:2">
+			<li id="menuLogo" class="w3-hover-opacity">
+				<a href="{{ url_for( 'showHome' ) }}"><img src="{{ url_for( 'static', filename='img/loader.gif' ) }}" alt="Loader">
+				</a>
+			</li>
+			<div id="menuDiv" style="position:relative">
+				{% if session['user_id']: %}
+					<li id='menuContact' class='w3-card-2 w3-right'><a href="{{ url_for( 'showContact' ) }}"><i class='fa fa-envelope-o w3-xxlarge'></i></a></li>
+					<li id='menuFaq' class='w3-card-2 w3-right'><a href="{{ url_for( 'showFAQs' ) }}"><i class='fa fa-list w3-xxlarge'></i></a></li>
+					<li id='menuGuide' class='w3-card-2 w3-right'><a href="{{ url_for( 'showGuide' ) }}"><i class='fa fa-question-circle-o w3-xxlarge'></i></a></li>
+					<li id='menuChatBots' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChatbots00' ) }}"><i class='fa fa-users w3-xxlarge'></i></a></li>
+					
+					<li id='menuEmbed' class='w3-card-2 w3-right'><a href="{{ url_for( 'showEmbed' ) }}"><i class='fa fa-code w3-xxlarge'></i></a></li>
+					<li id='menuSetting' class='w3-card-2 w3-right'><a href="{{ url_for( 'showSetting00' ) }}"><i class='fa fa-cogs w3-xxlarge'></i></a></li>
+					<li id='menuTeach' class='w3-card-2 w3-right'><a href="{{ url_for( 'showTeach' ) }}"><i class='fa fa-pencil-square-o w3-xxlarge'></i></a></li>
+					<li id='menuChat' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChat' ) }}"><i class='fa fa-comments-o w3-xxlarge'></i></a></li>
+				{% else %}
+					<li id='menuContact' class='w3-card-2 w3-right'><a href="{{ url_for( 'showContact' ) }}"><i class='fa fa-envelope-o w3-xxlarge'></i></a></li>
+					<li id='menuFaq' class='w3-card-2 w3-right'><a href="{{ url_for( 'showFAQs' ) }}"><i class='fa fa-list w3-xxlarge'></i></a></li>
+					<li id='menuGuide' class='w3-card-2 w3-right'><a href="{{ url_for( 'showGuide' ) }}"><i class='fa fa-question-circle-o w3-xxlarge'></i></a></li>
+					<li id='menuChatBots' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChatbots00' ) }}"><i class='fa fa-users w3-xxlarge'></i></a></li>
+				{% endif %}
+			</div>
+			<li id="menuButton" onclick="toggleMenu()" class="w3-right"><i class="fa fa fa-bars w3-xxlarge"></i>
+			</li>
+		</ul>
+		<div id="menuStrip" style="background-color: {{colorHex}}" class="w3-container {{menuColor}} w3-card-2"></div>
+	</div>
+	<div>
+		<header id="pageHeader" style="background-color: {{colorHex}}" class="w3-container w3-card-2">
+			{% if menuTitle == 'Home' %}
+			<span class="w3-xxlarge w3-custom-font w3-left">{{menuTitle}}</span>
+			{% else %}
+			<span style="color: #FFFFFF" class="w3-xxlarge w3-custom-font w3-left">{{menuTitle}}</span>
+			{% endif %}
+			{% if session['user_id']: %}
+				<a href="{{ url_for( 'showLogout' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-sign-out' aria-hidden='true'></i></a></button>
+				<a href='#'><button onclick='showName()' class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right  w3-padding w3-xlarge w3-custom-font'><i class='fa fa-user' aria-hidden='true'></i> <span hidden id='userContent'>{{session['name']}}</span></button></a>
+			{% else %}
+				<a href="{{ url_for( 'showRegister' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-user-plus' aria-hidden='true'></i></button></a>
+				<a href="{{ url_for( 'showLogin' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-sign-in' aria-hidden='true'></i></button></a>
+			{% endif %}
+		</header>
+		<div style="margin-bottom:80px">
+			{% with messages = get_flashed_messages() %} 
+			{% if messages %}
+			<div class="w3-custom-container {{textColor}} w3-custom-font">
+			<ul>
+    			{% for message in messages %}
+    			<li><h3>{{ message }}</h3></li>
+    			{% endfor %}
+			</ul>
+			</div>
+			{% endif %} 
+			{% endwith %}
+
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+	<footer id="pageFooter" style="background-color: {{colorHex}}" class="w3-container w3-card-2">
+		{% if menuTitle == 'Home' %}
+			<div class="w3-center w3-custom-font w3-padding">
+		{% else %}
+			<div style="color: #FFFFFF" class="w3-center w3-custom-font w3-padding">
+		{% endif %}
+			<a href="{{ url_for( 'showChatbots00' ) }}">Chatbots</a> |
+			<a href="{{ url_for( 'showGuide' ) }}">Guide</a> |
+			<a href="{{ url_for( 'showFAQs' ) }}">FAQs</a> |
+			<a href="{{ url_for( 'showContact' ) }}">Contact</a>
+		</div>
+	</footer>
+	<div>
+	</body>
+</html>

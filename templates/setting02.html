@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="w3-container w3-custom-container w3-custom-font">
+
+
+    <form class="w3-container w3-custom-form" action="{{ url_for( 'showSetting02' ) }}" method="post">
+    
+	<div class="w3-text-col-darkgreen"><span>[ Delete Account ]</span><hr></div> 
+	
+	<span class="w3-text-col-darkgreen w3-custom-font w3-margin-top">Do you really want to delete your account ?</span>
+	<br>
+	<a href="{{ url_for( 'showSetting00' ) }}"><button type="button" class="w3-button w3-xxlarge w3-button-col-darkgreen w3-margin-top">No</button></a>
+	<input class="w3-button w3-xxlarge w3-button-col-darkgreen w3-margin-top" type="submit" value="Yes"></input>
+	</form>
+
+</div>
+{% endblock %}

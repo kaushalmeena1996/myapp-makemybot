@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="w3-row w3-custom-container w3-custom-font">
+		<img class="w3-col m4 l3" src="{{ url_for( 'static', filename='img/chatty.png' ) }}" alt="Chatty"></
+		<div class="w3-col m4 l8" >
+			<h1>Welcome to my website dear human!</h1>
+			<p>I’m Chatty, the shiniest chatbot on the web. I like chatting with humans to
+				learn new things and improve my language skills, and can even tell you about
+				my favorite movies and TV shows. 
+			</p>
+			<button class="w3-button w3-button-col-grey w3-xxlarge w3-left"><a href="chat.html"></a>Start Chat!</button>
+		</div>
+	</div>
+{% endblock %}

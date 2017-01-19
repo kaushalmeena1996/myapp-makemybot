@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="w3-container w3-custom-container">
+   
+	<div id="searchBox">
+	    <div class="w3-text-col-red w3-custom-font"><span>[ Search ]</span><hr></div> 
+        <table class="w3-custom-input">
+            <tr>
+                <td style="width:50px">
+                    <button onclick="botAction(1, 1, this)" id="botIcon" class="w3-button w3-button-col-red w3-padding w3-xxlarge"><i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </td>
+                <td>
+                    <input onkeyup="botAction(1, 1, this)" id="botInput" autocomplete="off" autofocus class="w3-input w3-border" name="searchInput" placeholder="search something..." type="search"></input>
+                </td>
+            </tr>
+        </table>
+		
+			<div hidden id="botContent" class="w3-margin-top w3-border w3-center">
+          
+			<script>botAction(0, 1, this);</script>
+           
+			</div>
+    </div>
+
+</div>
+{% endblock %}

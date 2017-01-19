@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="w3-container w3-custom-container">
+        <form class="w3-container w3-custom-form w3-custom-font" method="post" action="{{ url_for( 'showRegister' ) }}">
+            <div class="w3-section">
+                <label class="w3-text-col-purple">(*) marked fields are necessary.</label><br>
+                <label class="w3-text-col-purple">name :</label>
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="name">
+                <label class="w3-text-col-purple">*e-mail :</label>
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="e-mail" required>
+                <label class="w3-text-col-purple">*password :</label>
+                <input class="w3-input w3-border" type="password" name="password" required>
+                <label class="w3-text-col-purple">*confirm :</label>
+                <input class="w3-input w3-border" type="password" name="confirm" required>
+                <input id="actionButton" class="w3-button w3-button-col-purple w3-section w3-padding" type="submit" value="Register"></input><br>
+                <span class="w3-xlarge w3-left w3-text-col-purple">Already Registered? &nbsp;</span>
+                <span class="w3-xlarge w3-span-col-purple w3-left">
+                    <a style="text-decoration:none" href="{{ url_for( 'showLogin' ) }}">[ <i class="fa fa-user-plus"></i> Login ]</a>
+                </span>
+            </div>
+        </form>
+    </div>
+{% endblock %}

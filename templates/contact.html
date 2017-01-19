@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="w3-container w3-custom-container w3-custom-font">
+		<form id="contactForm" class="w3-container w3-custom-form" action="{{url_for('showContact')}}" method="post">
+			<div class="w3-text-col-darkorange w3-margin-bottom"><span>[ Contact Info ]</span><hr></div>
+			<input disabled class="w3-input w3-border w3-round w3-center" type="text" value="e-mail : kaushal.meena1996@gmail.com">
+			<div class="w3-text-col-darkorange w3-margin-top"><span>[ Send E-Mail ]</span><hr></div>
+			<label class="w3-text-col-orange">from :</label>
+			{% if session['user_id']: %}
+				<input name="email" class="w3-input w3-border" type="text" value="{{session['email']}}" required>
+			{% else: %}
+				<input name="email" class="w3-input w3-border" type="text" value="" required>
+			{% endif %}
+			<label class="w3-text-col-orange w3-margin-top">subject :</label>
+			<input name="subject" class="w3-input w3-border" type="text" required>
+			<label class="w3-text-col-orange w3-margin-top">message :</label>
+			<textarea name="message" class="w3-input w3-border w3-qMessage" type="text" required></textarea>
+			<input type="submit" class="w3-button w3-xxlarge w3-button-col-orange w3-margin-top"></input>
+		</form>
+	</div>
+{% endblock %}

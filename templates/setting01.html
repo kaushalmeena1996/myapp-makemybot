@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="w3-container w3-custom-container w3-custom-font">
+
+
+    <form class="w3-container w3-custom-form" action="{{ url_for( 'showSetting01' ) }}setting_01.php" method="post">
+    
+	<div class="w3-text-col-darkgreen"><span>[ Change Password ]</span><hr></div> 
+	
+	<label class="w3-text-col-darkgreen w3-margin-top">old password :</label>
+	<input name="password1" class="w3-input w3-border" type="text" required>
+	
+	<label class="w3-text-col-darkgreen">new password :</label>
+	<input name="password2" class="w3-input w3-border" type="text" required>
+	
+	<a href="{{ url_for( 'showSetting00' ) }}"><button type="button" class="w3-button w3-xxlarge w3-button-col-darkgreen w3-margin-top">Cancel</button></a>
+	<input class="w3-button w3-xxlarge w3-button-col-darkgreen w3-margin-top" type="submit" value="Change"></input>
+	
+	</form>
+
+</div>
+{% endblock %}
