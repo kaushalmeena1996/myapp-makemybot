@@ -1,7 +1,7 @@
 # database_setup.py
 """Python script for creating the database."""
 
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine, func
@@ -51,7 +51,7 @@ class Chatlog(Base):
     bot_id = Column(Integer, ForeignKey('account.id'))
     client_ip = Column(String(32), nullable=True)
     bot_log = Column(String(4096), nullable=True)
-    created_date = Column(DateTime, nullable=False, default=func.now())
+    created_date = Column(Date, nullable=False, default=func.now())
     user = relationship(User)
 
     @property
