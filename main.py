@@ -43,7 +43,7 @@ app = Flask(__name__)
 
 APPLICATION_NAME = "MakeMyBot"
 
-port = int(os.environ.get('PORT', 33507))
+port = int(os.environ.get('PORT', 5000))
 
 # Connect to Database and create database session
 engine = create_engine(get_database_uri())
@@ -1348,4 +1348,4 @@ def showLogout():
 if __name__ == '__main__':
     app.secret_key = get_secret()
     app.debug = True
-    app.run(port=port)
+    app.run(host='0.0.0.0', port=port)
