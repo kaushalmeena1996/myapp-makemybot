@@ -15,7 +15,8 @@
 	<table>
 	<tr>
 	<td class="w3-border" rowspan="3">
-	<input hidden id="botAction" name="bot_action" type="text"></input>
+	<label hidden id="botNew"></label>
+	<label hidden id="botOld" value="{{botInfo['bot_image']}}"></label>
 	<input hidden id="botContainer" name="bot_container" type="text"></input>
 	<input hidden onchange="previewImage(event)" type="file" accept="image/jpg,image/png,image/jpeg,image/gif"></input>
 	<img id="botImage" class="w3-border w3-center-content" onerror="defaulImage()" height="130px" width="130px" src="{{botInfo['bot_image']}}" alt="Bot-Image" required></img></td>
