@@ -27,6 +27,7 @@ from flask import make_response
 import requests
 import random
 import string
+import os
 
 from helper.helper import (make_password_hash,
                            validate_password,
@@ -41,6 +42,8 @@ from helper.helper import (make_password_hash,
 app = Flask(__name__)
 
 APPLICATION_NAME = "MakeMyBot"
+
+port = int(os.environ.get('PORT', 33507))
 
 # Connect to Database and create database session
 engine = create_engine(get_database_uri())
@@ -59,22 +62,19 @@ def log_conversation(bot_id, message_type, message, response):
     bot_name = botInfo.bot_name
 
     if message_type == 'Q':
-        line = "USER : %s\n%s : %s" % (message, bot_name, response)
+        line = "\nUSER\t: %s\n%s : %s" % (message, bot_name, response)
     if message_type == 'G':
-        line = "\n%s : %s" % (bot_name, response)
+        line = "\n%s\t: %s" % (bot_name, response)
     if message_type == 'E':
         line = "\n----------------------------------"
 
     browse_data = session.query(Chatlog).\
         filter_by(bot_id=bot_id).\
-        filter_by(created_date=func.now()).\
+        filter_by(created_date=func.current_date()).\
         filter_by(client_ip=client_ip).\
         first()
 
     if browse_data:
-        if not message_type == 'E':
-            line += '\n'
-
         browse_data.bot_log += line
         session.add(browse_data)
         session.commit()
@@ -83,7 +83,7 @@ def log_conversation(bot_id, message_type, message, response):
         newChatLog = Chatlog(bot_id=bot_id,
                              client_ip=client_ip,
                              bot_log=line,
-                             created_date=func.now())
+                             created_date=func.current_date())
 
         session.add(newChatLog)
         session.commit()
@@ -1348,4 +1348,4 @@ def showLogout():
 if __name__ == '__main__':
     app.secret_key = get_secret()
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+    app.run(port=port)
