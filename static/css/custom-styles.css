@@ -81,6 +81,18 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 {
     width: 100%;
 }
+.w3-image-box
+{
+    padding: 6px;
+}
+.w3-image-box td
+{
+    text-align: center;
+}
+.w3-vertical-align-top
+{
+    vertical-align: top;
+}
 
 #menuStrip {
     height: 5px;
