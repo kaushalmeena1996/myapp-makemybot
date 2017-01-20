@@ -56,7 +56,7 @@ def log_conversation(bot_id, message_type, message, response):
     botInfo = session.query(Bot).filter_by(id=bot_id).one_or_none()
 
     client_ip = gethostbyname(gethostname())
-    bot_name = botInfo.name
+    bot_name = botInfo.bot_name
 
     if message_type == 'Q':
         line = "USER : %s\n%s : %s" % (message, bot_name, response)
@@ -938,7 +938,7 @@ def showTeach():
                 filter(Knowledge.pattern.ilike("%" + request.form['qPattern'] + "%")).\
                 filter_by(bot_id=login_session['user_id']).\
                 count()
-           	
+            
             last = int(ceil(count_data / rLimit))     
             
             if count_data > 0:
@@ -1189,21 +1189,15 @@ def showTeach():
 
                 for browse_row in browse_data:
                     response += "<tr><td class='w3-border w3-round w3-full-width'>"
-
-                    if browse_row.template:
-                        response += '[A]'
-                    else:
-                        response += '[U]'
-
                     response += "[<span id='qType'>%s</span>]\<span id='qChanged'></span><span id='qPattern'>%s</span>" % (
-                        browse_row.date, browse_row.client_ip)
+                        browse_row.created_date, browse_row.client_ip)
                     response += "<label hidden value='%d' id='qId'></label>" % browse_row.id
                     response += "<button onclick='qAction (5, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-trash'></i> ]</button>"
                     response += "<button onclick='qAction (1, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-level-down'></i> ]</button>"
                     response += "<button onclick='qAction (4, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-download'></i> ]</button>"
-                    response += "<textarea hidden id='qTemplate' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='empty...'>%s</textarea>" % browse_row.log
+                    response += "<textarea hidden id='qTemplate' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='empty...'>%s</textarea>" % browse_row.bot_log
                     response += "</td></tr>"
-
+         
                     response += show_pagination01('lAction', page, last, pLimit)
 
                     response += "</table>"
@@ -1254,7 +1248,7 @@ def showChat():
                 messageString = (request.form['messageString']).lower().strip()
 
                 rows_TypeQ = session.query(Knowledge).\
-                	filter(Knowledge.pattern.isnot(None)).\
+                    filter(Knowledge.pattern.isnot(None)).\
                     filter_by(bot_id=login_session['user_id']).\
                     filter_by(type='Q').\
                     filter_by(pattern=messageString).\
@@ -1289,12 +1283,12 @@ def showChat():
                         responseList = ["Huh.", "What?", "...", "(0?0) What?"]
                         response = random.choice(responseList)
 
-                '''log_conversation($_BOT_ID, "messageType", $_MESSAGE, $_RESPONSE)'''
+                log_conversation(botInfo.bot_id, messageType, messageString, response)
                 return response
 
             elif messageType == 'G':
                 rows_TypeG = session.query(Knowledge).\
-                	filter(Knowledge.pattern.isnot(None)).\
+                    filter(Knowledge.pattern.isnot(None)).\
                     filter_by(bot_id=login_session['user_id']).\
                     filter_by(type='G').\
                     order_by(func.random()).\
@@ -1308,13 +1302,12 @@ def showChat():
                     responseList = ["Hi", "Hello.", "Hey", "(0U0)/ Hi"]
                     response = random.choice(responseList)
 
-                '''log_conversation($_BOT_ID, "G", '', $_RESPONSE);'''
+                log_conversation(botInfo.bot_id, "G", '', response)
+       
                 return response
 
             elif messageType == 'E':
-                botId = request.form['botId']
-
-                '''log_conversation($_BOT_ID, "E", '', '');'''
+                log_conversation(botInfo.bot_id, "E", '', '')
 
         else:
             return render_template('chat.html',
