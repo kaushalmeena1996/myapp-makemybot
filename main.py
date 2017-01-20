@@ -1198,9 +1198,9 @@ def showTeach():
                     response += "<textarea hidden id='qTemplate' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='empty...'>%s</textarea>" % browse_row.bot_log
                     response += "</td></tr>"
          
-                    response += show_pagination01('lAction', page, last, pLimit)
+                response += show_pagination01('lAction', page, last, pLimit)
 
-                    response += "</table>"
+                response += "</table>"
 
                 return response
             else:
@@ -1348,4 +1348,3 @@ def showLogout():
 if __name__ == '__main__':
     app.secret_key = get_secret()
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)
