@@ -8,36 +8,33 @@
 	
 	<table class="w3-custom-font w3-text-col-darkgreen">
 	<tr>
-	<td  rowspan="2" style="vertical-align:top">
+	<td rowspan="2" class="w3-vertical-align-top">
 	bot image :
-	<div style="padding:6px" class="w3-border">
-	
+	<div class="w3-border w3-image-box">
 	<table>
 	<tr>
 	<td class="w3-border" rowspan="3">
-	<label hidden id="botNew"></label>
 	<label hidden id="botOld" value="{{botInfo['bot_image']}}"></label>
-	<input hidden id="botContainer" name="bot_container" type="text"></input>
+	<input hidden id="botContainer" name="bot_container" type="text" value="{{botInfo['bot_image']}}"></input>
 	<input hidden onchange="previewImage(event)" type="file" accept="image/jpg,image/png,image/jpeg,image/gif"></input>
 	<img id="botImage" class="w3-border w3-center-content" onerror="defaulImage()" height="130px" width="130px" src="{{botInfo['bot_image']}}" alt="Bot-Image" required></img></td>
-	<td class="w3-border" style="text-align:center"><span id="openImage" onclick="settingAction(0)" class="w3-span-col-darkgreen">[ <i class="fa fa-folder-o" aria-hidden="true"></i> ]</span></td>
+	<td class="w3-border"><span id="openImage" onclick="settingAction(0)" class="w3-span-col-darkgreen">[ <i class="fa fa-folder-o" aria-hidden="true"></i> ]</span></td>
 	</tr>
 	
-	<tr><td class="w3-border" style="text-align:center"><span onclick="settingAction(1)" class="w3-span-col-darkgreen">[ <i class="fa fa-undo" aria-hidden="true"></i> ]</span></td></tr>
-	<tr><td class="w3-border" style="text-align:center"><span onclick="settingAction(2)" class="w3-span-col-darkgreen">[ <i class="fa fa-ban" aria-hidden="true"></i> ]</span></td></tr>
+	<tr><td class="w3-border"><span onclick="settingAction(1)" class="w3-span-col-darkgreen">[ <i class="fa fa-undo" aria-hidden="true"></i> ]</span></td></tr>
+	<tr><td class="w3-border"><span onclick="settingAction(2)" class="w3-span-col-darkgreen">[ <i class="fa fa-ban" aria-hidden="true"></i> ]</span></td></tr>
 	</table>
-	
 	</div>
 	</td>
 	
-	<td style="vertical-align:top" class="w3-padding-left">
+	<td class="w3-padding-left w3-vertical-align-top">
 	bot name :
 	<input name="bot_name" class="w3-input w3-border" type="text" value="{{bot_name}}" required>
 	</td>
 	</tr>
 	
 	<tr>
-	<td style="vertical-align:top" class="w3-padding-left">
+	<td class="w3-padding-left w3-vertical-align-top">
 	bot availability :
 	<select class="w3-select w3-border w3-padding-left w3-padding-right" name="bot_availability">
                             <option value="N" {% if botInfo['bot_availability'] == 'None'  %} selected {% endif %}>[ None ]</option>
@@ -58,7 +55,7 @@
 	<label class="w3-text-col-darkgreen w3-margin-top">profile name :</label>
 	<input name="profile_name" class="w3-input w3-border" type="text" value="{{profile_name}}" required>
 	
-	<div class="w3-margin-top"><a href="{{ url_for( 'showSetting01' ) }}"><span class="w3-span-col-darkgreen">[ Change Password ]</span></a> <a href="{{ url_for( 'showSetting02' ) }}"><span class="w3-span-col-darkgreen">[ Delete Account ]</span></div> 
+	<div class="w3-margin-top"><a href="{{ url_for( 'showSetting01' ) }}"><span class="w3-span-col-darkgreen">[ change password ]</span></a> <a href="{{ url_for( 'showSetting02' ) }}"><span class="w3-span-col-darkgreen">[ delete account ]</span></div> 
 	
 	<button class="w3-button w3-xxlarge w3-button-col-darkgreen w3-margin-top">Save</button>
 	

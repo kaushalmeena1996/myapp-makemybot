@@ -311,7 +311,8 @@ def showSetting00():
                                            botInfo=editBot)
 
                 editUser.name = profile_name
-                editBot.bot_name = bot_name
+                editBot.bot_name = bot_names
+                editBot.bot_image = bot_container
                 editBot.bot_availability = bot_availability
                 editBot.bot_add = bot_add
 
@@ -862,36 +863,11 @@ def showFAQs():
 
 
 @cookie_check
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route('/contact')
 def showContact():
     """Handler for Home page which displays welcome message."""
 
-    if request.method == 'POST':
-
-        gmail_user = 'kaushal.meena1996@gmail.com'
-        gmail_pwd = 'animes2watch&collect'
-        FROM = request.form['email']
-        TO = 'kaushal.meena1996@gmail.com'
-        SUBJECT = request.form['subject']
-        TEXT = request.form['message']
-
-        # Prepare actual message
-        message = """From: %s\nTo: %s\nSubject: %s\n\n%s""" % (
-            FROM, ", ".join(TO), SUBJECT, TEXT)
-        try:
-            server = smtplib.SMTP("smtp.gmail.com", 587)
-            server.ehlo()
-            server.starttls()
-            server.login(gmail_user, gmail_pwd)
-            server.sendmail(FROM, TO, message)
-            server.close()
-            flash("mail successfully sent.")
-        except:
-            flash("failed to send the mail.")
-
-        return redirect(url_for('showContact'))
-
-    elif 'user_id' in login_session:
+    if 'user_id' in login_session:
         return render_template('contact.html',
                                menuTitle='Contact',
                                menuId='#menuContact',
@@ -1360,7 +1336,7 @@ def showLogout():
     """DISCONNECTS the user based on provider."""
 
     if 'provider' in login_session:
-    	
+
         if 'user_id' in login_session:
             del login_session['name']
         if 'email' in login_session:
