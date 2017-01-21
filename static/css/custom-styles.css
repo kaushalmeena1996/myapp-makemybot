@@ -1,25 +1,45 @@
-/**
- * styles.css
- *
- * Global CSS.
- */
-
+@media screen and (max-width: 600px) {
+    .w3-min-width-content {
+        display: block;
+    }
+    .w3-max-width-content {
+        display: none;
+    }
+}
+@media screen and (min-width: 600px) {
+    .w3-max-width-content {
+        display: block;
+    }
+    .w3-min-width-content {
+        display: none;
+    }
+    .w3-custom-container {
+        margin-top: 15px;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+}
 @font-face {
     font-family: Agency FB;
     src: url('../fonts/agency-fb.ttf');
     font-weight: normal;
     font-style: normal;
 }
- 
 html {
     position: relative;
     min-height: 100%;
 }
-
-a { text-decoration: none; }
-
-h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; } 
-
+a {
+    text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Agency FB", Times, serif;
+}
 .animate-in {
     -webkit-animation: fadeIn .5s ease-in;
     animation: fadeIn .5s ease-in;
@@ -45,59 +65,59 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
         opacity: 1;
     }
 }
-.w3-custom-container {
-	margin-top: 15px;
-    margin-left: 10%;
-    margin-right: 10%;
-}
 .w3-custom-font {
-	font-family: "Agency FB", Times, serif;
-	font-size: 30px;
+    font-family: "Agency FB", Times, serif;
+    font-size: 30px;
 }
-.w3-custom-form input, .w3-custom-form select{
-	font-size: 26px;
+.w3-font-size-med {
+    font-size: 24px;
+}
+.w3-custom-form input,
+.w3-custom-form select {
+    font-size: 24px;
 }
 .w3-custom-input input {
-	-moz-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-	font-size: 26px;
+    font-size: 24px;
     font-family: "Agency FB", Times, serif;
 }
 .w3-center-content {
-	display: block; 
+    display: block;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;	
+    box-sizing: border-box;
     text-align: center;
-	margin: auto auto;
+    margin: auto auto;
 }
-
 .w3-width-fit-content {
-	max-width:100%;
-	white-space:nowrap;
+    max-width: 100%;
+    white-space: nowrap;
 }
-.w3-full-width
-{
+.w3-full-width {
     width: 100%;
 }
-.w3-image-box
-{
+.w3-image-box {
     padding: 6px;
 }
-.w3-image-box td
-{
+.w3-text-align-center,
+.w3-image-box td {
     text-align: center;
 }
-.w3-vertical-align-top
-{
+.w3-vertical-align-top {
     vertical-align: top;
 }
-
+#mainDiv {
+    margin-bottom: 80px;
+}
 #menuStrip {
     height: 5px;
     transition: background-color .3s;
     z-index: 5;
+}
+#menuDiv {
+    position: relative;
 }
 #menuLogo a {
     padding: 0;
@@ -108,23 +128,24 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 #menuLogo a:hover {
     background-color: transparent
 }
-#menuButton {
+#menuButton00,
+#menuButton01 {
     position: relative;
-	cursor: pointer;
-	padding: 10px;
-	text-shadow: 2px 2px 4px #b2b2b2;
-	transition: text-shadow 0.3s;
-	color: #A6ACAF; 
+    cursor: pointer;
+    padding: 10px;
+    text-shadow: 2px 2px 4px #b2b2b2;
+    transition: text-shadow 0.3s;
+    color: #A6ACAF;
 }
-#menuButton:active {
-   text-shadow: none;
+#menuButton00:active,
+#menuButton01:active {
+    text-shadow: none;
 }
-
 #menuChat {
     background-color: #C0392B;
 }
 #menuTeach {
-    background-color: #2980B9;  
+    background-color: #2980B9;
 }
 #menuEmbed {
     background-color: #E67E22;
@@ -144,7 +165,6 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 #menuContact {
     background-color: #F39C12;
 }
-
 #menuChat,
 #menuTeach,
 #menuEmbed,
@@ -165,7 +185,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 #menuGuide:hover,
 #menuFaq:hover,
 #menuContact:hover {
-    background-color: #CCCCCC; color: #000000;
+    background-color: #CCCCCC;
+    color: #000000;
 }
 #pageHeader {
     padding-top: 64px;
@@ -174,124 +195,115 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 #pageFooter {
     position: absolute;
     bottom: 0;
-	left: 0;
-	right: 0;
+    left: 0;
+    right: 0;
     transition: background-color .3s;
 }
-
 #chatBox {
-	overflow: auto;
+    overflow: auto;
     height: 370px;
     max-height: 370px;
 }
-
 .w3-botBox {
-	cursor: pointer;
-	transition: all 0.1s;
-	display: inline-block;
-	font-family: "Agency FB", Times, serif;
-	font-size: 22px;
-	color: #E74C3C;
-	width: 120px;
+    cursor: pointer;
+    transition: all 0.1s;
+    display: inline-block;
+    font-family: "Agency FB", Times, serif;
+    font-size: 22px;
+    color: #E74C3C;
+    width: 120px;
 }
-
 .w3-botBox:active {
-	transform: translateY(4px);
+    transform: translateY(4px);
 }
-
 .w3-botButton {
-	border: none;
-	padding: 0;
-	color: #E74C3C; 
+    border: none;
+    padding: 0;
+    color: #E74C3C;
     outline: 0;
-	background-color: #fff;
+    background-color: #fff;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
-	transition: all 0.1s;
+    transition: all 0.1s;
 }
-
 .w3-botButton:hover {
-	color: #EC7063;
+    color: #EC7063;
 }
 .w3-botButton:active {
-	color: #F1948A; transform: translateY(4px);
+    color: #F1948A;
+    transform: translateY(4px);
 }
 .w3-botButton:disabled {
-	color: #9F9F9F;
+    color: #9F9F9F;
 }
-
 .w3-qBox {
-	margin-bottom:2px;
-	color: #2980B9;
-	font-size: 26px;
-    font-family: "Agency FB", Times, serif;	
-    cursor: pointer;	
+    margin-bottom: 2px;
+    color: #2980B9;
+    font-size: 26px;
+    font-family: "Agency FB", Times, serif;
+    cursor: pointer;
 }
 .w3-qBox td {
-	padding-left: 10px;
-	padding-right: 10px;
-	cursor: pointer;
-	display: inline-block;
-	margin-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 4px;
 }
-
 .w3-addTable {
-	font-size: 26px;
-    font-family: "Agency FB", Times, serif;	
+    font-size: 26px;
+    font-family: "Agency FB", Times, serif;
 }
 .w3-addTable select {
-	padding-top : 11px;
-	padding-bottom : 11px;
+    padding-top: 11px;
+    padding-bottom: 11px;
 }
 .w3-addTable textarea {
-	width: 100%;
-	resize: none;
-	margin-top: 3px;
-	-moz-box-sizing: border-box;
+    width: 100%;
+    resize: none;
+    margin-top: 3px;
+    -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-
 .w3-qButton {
-	border: none;
-	padding: 0;
-	color: #2980B9; 
+    border: none;
+    padding: 0;
+    color: #2980B9;
     outline: 0;
-	background-color: #fff;
+    background-color: #fff;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
-	transition: all 0.1s;
+    transition: all 0.1s;
     cursor: pointer;
 }
-
 .w3-qButton:hover {
-	color: #5499C7;
+    color: #5499C7;
 }
 .w3-qButton:active {
-	color: #7FB3D5; transform: translateY(4px);
+    color: #7FB3D5;
+    transform: translateY(4px);
 }
 .w3-qButton:disabled {
-	color: #9F9F9F;
+    color: #9F9F9F;
 }
-
 .w3-bar-button {
-	padding-left: 5px;
-	padding-right: 5px;
-	margin-top: 7px
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 7px
 }
-
 .w3-qTemplate {
-	color: #2980B9; 
-	font-size: 24px;
-	width: 100%;
-	resize: none;
+    color: #2980B9;
+    font-size: 24px;
+    width: 100%;
+    resize: none;
     margin-bottom: 8px;
     margin-top: 2px;
 }
 .w3-qMessage {
-	width: 100%;
-	height: 200px;
-	resize: none;
+    width: 100%;
+    height: 200px;
+    resize: none;
 }
 .w3-chat-body {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -395,10 +407,10 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     outline: 0;
     border: none;
     min-width: 100px;
-	color: #000000;
+    color: #000000;
     border-radius: 2px;
     display: inline-block;
-	position: relative;
+    position: relative;
     vertical-align: middle;
     border-color: #5fa2dd;
     transition: .2s ease-out;
@@ -417,9 +429,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 .w3-button:active {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
-
 .w3-button-col-grey {
-	color: #000000;
+    color: #000000;
     background-color: #CCCCCC;
 }
 .w3-button-col-grey:hover {
@@ -429,7 +440,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #D7DBDD;
 }
 .w3-button-col-red {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #E74C3C;
 }
 .w3-button-col-red:hover {
@@ -439,7 +450,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #F1948A;
 }
 .w3-button-col-blue {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #3498DB;
 }
 .w3-button-col-blue:hover {
@@ -449,7 +460,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #85C1E9;
 }
 .w3-button-col-green {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #27AE60;
 }
 .w3-button-col-green:hover {
@@ -459,7 +470,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #7DCEA0;
 }
 .w3-button-col-orange {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #F39C12;
 }
 .w3-button-col-orange:hover {
@@ -469,7 +480,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #F8C471;
 }
 .w3-button-col-purple {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #8E44AD;
 }
 .w3-button-col-purple:hover {
@@ -479,7 +490,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #BB8FCE;
 }
 .w3-button-col-darkred {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #C0392B;
 }
 .w3-button-col-darkred:hover {
@@ -489,7 +500,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #D98880;
 }
 .w3-button-col-darkblue {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #2980B9;
 }
 .w3-button-col-darkblue:hover {
@@ -499,7 +510,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #7FB3D5;
 }
 .w3-button-col-darkgreen {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #16A085;
 }
 .w3-button-col-darkgreen:hover {
@@ -509,7 +520,7 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     background-color: #73C6B6;
 }
 .w3-button-col-darkorange {
-	color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #E67E22;
 }
 .w3-button-col-darkorange:hover {
@@ -518,10 +529,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 .w3-button-col-darkorange:active {
     background-color: #F0B27A;
 }
-
-
 .w3-col-grey {
-	color: #000000;
+    color: #000000;
     background-color: #CCCCCC;
 }
 .w3-col-red {
@@ -560,26 +569,25 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #FFFFFF;
     background-color: #E67E22;
 }
-
-
-
 .w3-span-col-white {
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 .w3-span-col-white:hover {
-    color: #F0F3F4; 
+    color: #F0F3F4;
 }
 .w3-span-col-white:active {
-    color: #F4F6F7; transform: translateY(4px);
+    color: #F4F6F7;
+    transform: translateY(4px);
 }
 .w3-span-col-grey {
-    color: #CCCCCC; 
+    color: #CCCCCC;
 }
 .w3-span-col-grey:hover {
     color: #CACFD2;
 }
 .w3-span-col-grey:active {
-    color: #D7DBDD; transform: translateY(4px);
+    color: #D7DBDD;
+    transform: translateY(4px);
 }
 .w3-span-col-red {
     color: #E74C3C;
@@ -588,7 +596,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #EC7063;
 }
 .w3-span-col-red:active {
-    color: #F1948A; transform: translateY(4px);
+    color: #F1948A;
+    transform: translateY(4px);
 }
 .w3-span-col-blue {
     color: #3498DB;
@@ -597,16 +606,18 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #5DADE2;
 }
 .w3-span-col-blue:active {
-    color: #85C1E9; transform: translateY(4px);
+    color: #85C1E9;
+    transform: translateY(4px);
 }
 .w3-span-col-green {
     color: #27AE60;
 }
 .w3-span-col-green:hover {
-    color: #52BE80; 
+    color: #52BE80;
 }
 .w3-span-col-green:active {
-    color: #7DCEA0; transform: translateY(4px);
+    color: #7DCEA0;
+    transform: translateY(4px);
 }
 .w3-span-col-orange {
     color: #F39C12;
@@ -615,7 +626,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #F5B041;
 }
 .w3-span-col-orange:active {
-    color: #F8C471; transform: translateY(4px);
+    color: #F8C471;
+    transform: translateY(4px);
 }
 .w3-span-col-purple {
     color: #8E44AD;
@@ -624,7 +636,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #A569BD;
 }
 .w3-span-col-purple:active {
-    color: #BB8FCE; transform: translateY(4px);
+    color: #BB8FCE;
+    transform: translateY(4px);
 }
 .w3-span-col-darkred {
     color: #C0392B;
@@ -633,7 +646,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #CD6155;
 }
 .w3-span-col-darkred:active {
-    color: #D98880; transform: translateY(4px);
+    color: #D98880;
+    transform: translateY(4px);
 }
 .w3-span-col-darkblue {
     color: #2980B9;
@@ -642,7 +656,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #5499C7;
 }
 .w3-span-col-darkblue:active {
-    color: #7FB3D5; transform: translateY(4px);
+    color: #7FB3D5;
+    transform: translateY(4px);
 }
 .w3-span-col-darkgreen {
     color: #16A085;
@@ -651,7 +666,8 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #45B39D;
 }
 .w3-span-col-darkgreen:active {
-    color: #73C6B6; transform: translateY(4px);
+    color: #73C6B6;
+    transform: translateY(4px);
 }
 .w3-span-col-darkorange {
     color: #E67E22;
@@ -660,9 +676,9 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
     color: #EB984E;
 }
 .w3-span-col-darkorange:active {
-    color: #F0B27A; transform: translateY(4px);
+    color: #F0B27A;
+    transform: translateY(4px);
 }
-
 .w3-span-col-white,
 .w3-span-col-grey,
 .w3-span-col-red,
@@ -673,15 +689,13 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 .w3-span-col-darkred,
 .w3-span-col-darkgreen,
 .w3-span-col-darkblue,
-.w3-span-col-darkorange
-{
-	background-color: transparent;
-	cursor: pointer;
-	font-family: "Agency FB", Times, serif;
-	font-size: 30px;
-	transition: all 0.1s;
+.w3-span-col-darkorange {
+    background-color: transparent;
+    cursor: pointer;
+    font-family: "Agency FB", Times, serif;
+    font-size: 30px;
+    transition: all 0.1s;
 }
-
 .w3-text-col-white {
     color: #FFFFFF;
 }
@@ -715,7 +729,6 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 .w3-text-col-darkorange {
     color: #E67E22;
 }
-
 .w3-text-col-white,
 .w3-text-col-grey,
 .w3-text-col-red,
@@ -726,40 +739,48 @@ h1,h2,h3,h4,h5,h6 { font-family: "Agency FB", Times, serif; }
 .w3-text-col-darkred,
 .w3-text-col-darkgreen,
 .w3-text-col-darkblue,
-.w3-text-col-darkorange
-{
-	background-color: transparent;
-	font-family: "Agency FB", Times, serif;
-	font-size: 30px;
+.w3-text-col-darkorange {
+    background-color: transparent;
+    font-family: "Agency FB", Times, serif;
+    font-size: 30px;
 }
-
 .w3-text-col-grey hr {
-    border: 1px solid #BDC3C7; margin-top: 0;
+    border: 1px solid #BDC3C7;
+    margin-top: 0;
 }
 .w3-text-col-red hr {
-    border: 1px solid #E74C3C; margin-top: 0;
+    border: 1px solid #E74C3C;
+    margin-top: 0;
 }
 .w3-text-col-blue hr {
-    border: 1px solid #3498DB; margin-top: 0;
+    border: 1px solid #3498DB;
+    margin-top: 0;
 }
 .w3-text-col-green hr {
-    border: 1px solid #27AE60; margin-top: 0;
+    border: 1px solid #27AE60;
+    margin-top: 0;
 }
 .w3-text-col-orange hr {
-    border: 1px solid #F39C12; margin-top: 0;
+    border: 1px solid #F39C12;
+    margin-top: 0;
 }
 .w3-text-col-purple hr {
-    border: 1px solid #8E44AD; margin-top: 0;
+    border: 1px solid #8E44AD;
+    margin-top: 0;
 }
 .w3-text-col-darkred hr {
-    border: 1px solid #C0392B; margin-top: 0;
+    border: 1px solid #C0392B;
+    margin-top: 0;
 }
 .w3-text-col-darkgreen hr {
-    border: 1px solid #16A085; margin-top: 0;
+    border: 1px solid #16A085;
+    margin-top: 0;
 }
 .w3-text-col-darkblue hr {
-    border: 1px solid #2980B9; margin-top: 0;
+    border: 1px solid #2980B9;
+    margin-top: 0;
 }
 .w3-text-col-darkorange hr {
-    border: 1px solid #E67E22; margin-top: 0;
+    border: 1px solid #E67E22;
+    margin-top: 0;
 }

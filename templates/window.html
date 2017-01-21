@@ -1,10 +1,29 @@
-{% extends "base.html" %}
-{% block content %}
-    <div class="w3-container w3-custom-container">
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- http://www.w3schools.com/ -->
+        <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/w3.css') }}">
+        <!-- http://fontawesome.io/ -->
+        <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/font-awesome.css') }}">
+        <!-- https://jquery.com/ -->
+        <script src="{{ url_for( 'static', filename='js/jquery-3.1.0.min.js' ) }}"></script>
+        <!-- CUSTOM FAVICON -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <!-- CUSTOM STYLESHEET -->
+        <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/custom-styles-min.css') }}">
+        <!-- CUSTOM SCRIPT -->
+        <script src="{{ url_for( 'static', filename='js/custom-scripts-min.js' ) }}"></script>
+        <title>MakeMyBot: {{menuTitle}}</title>
+    </head>
+    <body>
+        
+        
+        
+        
         
         <div class="w3-text-col-darkred w3-custom-font"><span>[ Chat ]</span><hr></div>
         <div class="w3-container w3-card-4 w3-round">
-            <div id="chatBox" class="w3-container w3-margin w3-card-2 w3-round">
+            <div id="chatBox" class="w3-container w3-card-2 w3-round">
                 
                 <script> cAction(0, event); </script>
                 
@@ -29,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w3-margin">
+            <div class="w3-margin-top">
                 <table>
                     <tr>
                         <td class="w3-custom-input w3-left" style="width:80%">
@@ -44,11 +63,8 @@
                 </table>
             </div>
         </div>
-        <!-- 
-        <div class="w3-text-col-darkred w3-custom-font w3-margin-top"><span>[ Comments ]</span><hr></div>
-        <div id="commentBox" class="w3-container w3-card-4 w3-round w3-margin-bottom">
-            <div id="disqus_thread"><script> showDisqus("http://localhost/my-site/public/chat.php", {{botInfo['bot_id']}}); </script></div>
-        </div>
-        -->
-    </div>
-{% endblock %}
+        
+        
+        
+    </body>
+</html>

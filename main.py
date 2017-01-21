@@ -56,6 +56,7 @@ session = DBSession()
 
 
 def log_conversation(bot_id, message_type, message, response):
+    """Logs coversation between bot and user in database."""
     botInfo = session.query(Bot).filter_by(id=bot_id).one_or_none()
 
     client_ip = gethostbyname(gethostname())
@@ -284,7 +285,7 @@ def showSetting00():
             bot_container = request.form["bot_container"]
             bot_name = request.form["bot_name"]
             bot_availability = request.form["bot_availability"]
-            bot_add = request.form["bot_add"]
+            auto_add = request.form["auto_add"]
             profile_name = request.form["profile_name"]
 
             edit_err = False
@@ -314,7 +315,7 @@ def showSetting00():
                 editBot.bot_name = bot_names
                 editBot.bot_image = bot_container
                 editBot.bot_availability = bot_availability
-                editBot.bot_add = bot_add
+                editBot.auto_add = auto_add
 
                 session.add(editUser)
                 session.add(editBot)
@@ -408,7 +409,7 @@ def showSetting01():
 @cookie_check
 @app.route('/user/setting/02', methods=['GET', 'POST'])
 def showSetting02():
-    """Renders SETTING-(CHANGEPASSWORD) page if user has logged in otherwise renders
+    """Renders SETTING-(DELETEACCOUNT) page if user has logged in otherwise renders
        LOGIN page."""
 
     if 'user_id' in login_session:
@@ -506,54 +507,8 @@ def getUserID(email):
     except:
         return None
 
-# DISCONNECT - Revoke a current user's token and reset their login_session
 
-
-@app.route('/gdisconnect')
-def gdisconnect():
-    """Handler for DISCONNECTING from google."""
-
-    # Only disconnect a connected user.
-    credentials = login_session.get('credentials')
-    if credentials is None:
-        response = make_response(
-            json.dumps('Current user not connected.'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    access_token = credentials
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[0]
-
-    if result['status'] == '200':
-        # Reset the user's sesson.
-        del login_session['credentials']
-        del login_session['gplus_id']
-        del login_session['name']
-        del login_session['email']
-        del login_session['image_url']
-
-        response = make_response(json.dumps('Successfully logged out.'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    else:
-        # For whatever reason, the given token was invalid.
-        response = make_response(
-            json.dumps('Failed to revoke token for given user.', 400))
-        response.headers['Content-Type'] = 'application/json'
-        return response
-
-# JSON APIs to view Category Information
-
-
-@app.route('/bot/<int:bot_id>/chat/JSON', methods=['GET', 'POST'])
-def chatJSON(bot_id):
-    """Generates JSON for game_items of passed category_id."""
-
-    category = session.query(Category).filter_by(id=category_id).one_or_none()
-    game_items = session.query(Game).filter_by(category_id=category_id).all()
-    return jsonify(GameItems=[i.serialize for i in game_items])
-
+# JSON APIs to view BOT Information
 
 @app.route('/bot/<int:bot_id>/JSON')
 def botItemJSON(bot_id):
@@ -568,7 +523,7 @@ def botJSON():
     """Generates JSON for all bots."""
 
     bots = session.query(Bot).all()
-    return jsonify(categories=[r.serialize for r in bots])
+    return jsonify(bots=[r.serialize for r in bots])
 
 
 # Show HOME page
@@ -703,7 +658,7 @@ def showChatbots00():
 @cookie_check
 @app.route('/chatbots/<int:bot_id>/chat', methods=['GET', 'POST'])
 def showChatbots01(bot_id):
-    """Handler for Chatbots page which displays created bots."""
+    """Handler for Chatbots page allows user to chat with specified bot."""
 
     botInfo = session.query(Bot).filter_by(bot_id=bot_id).one_or_none()
 
@@ -733,7 +688,7 @@ def showChatbots01(bot_id):
                 response = random.choice(responseList)
 
             else:
-                if botInfo.bot_add:
+                if botInfo.auto_add:
                     newKnowledge = Knowledge(bot_id=botInfo.bot_id,
                                              type='Q',
                                              pattern=messageString,
@@ -813,7 +768,7 @@ def showChatbots01(bot_id):
 @cookie_check
 @app.route('/guide')
 def showGuide():
-    """Handler for Home page which displays welcome message."""
+    """Handler for GUIDE page which tell how to use makemybot."""
 
     if 'user_id' in login_session:
         return render_template('guide.html',
@@ -839,7 +794,7 @@ def showGuide():
 @cookie_check
 @app.route('/faq')
 def showFAQs():
-    """Handler for Home page which displays welcome message."""
+    """Handler for FAQs page which displays FAQs."""
 
     if 'user_id' in login_session:
         return render_template('faq.html',
@@ -865,7 +820,7 @@ def showFAQs():
 @cookie_check
 @app.route('/contact')
 def showContact():
-    """Handler for Home page which displays welcome message."""
+    """Handler for CONTACT page which displays contact info."""
 
     if 'user_id' in login_session:
         return render_template('contact.html',
@@ -890,7 +845,7 @@ def showContact():
 @cookie_check
 @app.route('/embed')
 def showEmbed():
-    """Handler for Home page which displays welcome message."""
+    """Handler for EMBED page which displays script for embeding bot."""
 
     if 'user_id' in login_session:
         return render_template('embed.html',
@@ -916,7 +871,7 @@ def showEmbed():
 @cookie_check
 @app.route('/teach', methods=['GET', 'POST'])
 def showTeach():
-    """Handler for Chatbots page which displays created bots."""
+    """Handler for TEACH page which allows users to teach their bots."""
 
     if request.method == 'POST':
         actionType = request.form['actionType']
@@ -1234,7 +1189,7 @@ def showTeach():
 @cookie_check
 @app.route('/chat', methods=['GET', 'POST'])
 def showChat():
-    """Handler for Chatbots page which displays created bots."""
+    """Handler for CHAT page which allows users to chat with their own bots."""
 
     botInfo = session.query(Bot).\
         filter_by(bot_id=login_session['user_id']).\
@@ -1267,7 +1222,7 @@ def showChat():
                     response = random.choice(responseList)
 
                 else:
-                    if botInfo.bot_add:
+                    if botInfo.auto_add:
                         newKnowledge = Knowledge(bot_id=botInfo.bot_id,
                                                  type='Q',
                                                  pattern=messageString,
@@ -1323,7 +1278,36 @@ def showChat():
         flash("you must be logged in first.")
         return redirect(url_for('showLogin'))
 
+# Show WINDOW page
+@cookie_check
+@app.route('/chatbots/<int:bot_id>/window')
+def showWindow(bot_id):
+    """Handler for WINDOW page which for embedding botchat."""
 
+    botInfo = session.query(Bot).filter_by(bot_id=bot_id).one_or_none()
+
+    if botInfo:
+	    return render_template('window.html',
+	                            menuTitle='Chat',
+	                            menuId='#menuChat',
+	                            menuColor='w3-col-red',
+	                            buttonColor='w3-button-col-red',
+	                            textColor='w3-text-col-red',
+	                            colorHex='#E74C3C',
+	                            botInfo=botInfo)
+
+    else:
+	    return render_template('error.html',
+                               menuTitle='Chat',
+                               menuId='#menuChat',
+                               menuColor='w3-col-red',
+                               buttonColor='w3-button-col-red',
+                               textColor='w3-text-col-red',
+                               colorHex='#E74C3C',
+                               header='Sorry',
+                               content='This bot does not exist.')
+
+  
 @app.route('/logout')
 def showLogout():
     """DISCONNECTS the user based on provider."""
