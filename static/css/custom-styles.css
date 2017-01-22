@@ -105,6 +105,14 @@ h6 {
 .w3-image-box td {
     text-align: center;
 }
+.w3-text-align-left
+{
+    text-align: left;
+}
+.w3-text-align-right
+{
+    text-align: right;
+}
 .w3-vertical-align-top {
     vertical-align: top;
 }
@@ -319,10 +327,15 @@ h6 {
 .w3-bubble-footer {
     font-size: 10px;
 }
-.w3-avtaar {
-    width: 80px;
-    height: 80px;
-    padding: 2px;
+
+.w3-avtaar
+{
+    width: 70px;    
+}
+
+.w3-avtaar img {
+    width: 70px;
+    height: 70px;
     border: 1px solid #021a40;
 }
 .w3-light-red {

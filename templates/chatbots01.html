@@ -9,24 +9,40 @@
                 <script> bChat(0, {{botInfo['bot_id']}}, event); </script>
                 
                 <div hidden id="botMessage" class="w3-container w3-chat-body">
-                    <img class="w3-avtaar w3-bot w3-light-red w3-card-2 w3-margin" src="{{botInfo['bot_image']}}" alt="Bot-Image">
-                    <div class="w3-bubble-bot w3-bot w3-round w3-margin">
+                    <table>
+                    <tr>
+                    <td class="w3-avtaar">
+                    <img class="w3-light-red" src="{{botInfo['bot_image']}}" alt="Bot-Image">
+                    </td>
+                    <td class="w3-text-align-left">
+                    <div class="w3-bubble-bot w3-bot w3-round">
                         <div class="w3-bubble-header">{{botInfo['bot_name']}}</div>
                         <div id="messageBody" class="w3-bubble-body w3-center"></div>
                         <div id="messageTime" class="w3-bubble-footer">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                         </div>
                     </div>
+                    </td>
+                    </tr>
+                    </table>
                 </div>
                 <div hidden id="userMessage" class="w3-container w3-chat-body">
-                    <img class="w3-avtaar w3-user w3-light-yellow w3-card-2 w3-margin" src="{{ url_for( 'static', filename='img/user_default.png' ) }}" alt="User-Image">
-                    <div class="w3-bubble-user w3-user w3-round w3-margin">
+                    <table>
+                    <tr>
+                    <td class="w3-text-align-right">
+                    <div class="w3-bubble-user w3-user w3-round">
                         <div class="w3-bubble-header">User</div>
                         <div id="messageBody" class="w3-bubble-body w3-center"></div>
                         <div id="messageTime" class="w3-bubble-footer">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                         </div>
                     </div>
+                    </td>
+                    <td class="w3-avtaar">
+                    <img class="w3-light-yellow" src="{{ url_for( 'static', filename='img/user_default.png' ) }}" alt="User-Image">
+                    </td>
+                    </tr>
+                    </table>
                 </div>
             </div>
             <div class="w3-margin">

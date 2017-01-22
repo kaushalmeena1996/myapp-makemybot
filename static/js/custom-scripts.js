@@ -613,11 +613,3 @@ function defaulImage() {
     $("#botContainer").val(botImage);
     $('#botImage').attr("src", botImage);
 }
-
-function configureMenu() {
-    if (screen.width <= 930) {
-        $('#menuDiv').hide();
-    } else {
-        $('#menuDiv').show();
-    }
-}

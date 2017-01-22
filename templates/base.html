@@ -10,25 +10,23 @@
 		<!-- CUSTOM FAVICON -->
 		<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 		<!-- CUSTOM STYLESHEET -->
-		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/custom-styles-min.css') }}">
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/custom-styles.css') }}">
 		<!-- CUSTOM SCRIPT -->
-		<script src="{{ url_for( 'static', filename='js/custom-scripts-min.js' ) }}"></script>
+		<script src="{{ url_for( 'static', filename='js/custom-scripts.js' ) }}"></script>
 		<title>MakeMyBot: {{menuTitle}}</title>
 	</head>
 	<script>
-	$(document).ready(function() {
-	
 	window.addEventListener("beforeunload", function() {
 		document.body.classList.add("animate-out");
 	});
 	window.onbeforeunload = function() {
 		cAction(2, event); return null;
 	};
-	});
+
 	{% if session['user_id'] %}
-			var menuToggle = 0, plus_left = "+=590px" , minus_left = "-=590px";
+	var menuToggle = 0, plus_left = "+=590px" , minus_left = "-=590px";
 	{% else %}
-			var menuToggle = 0, plus_left = "+=290px" , minus_left = "-=290px";
+	var menuToggle = 0, plus_left = "+=290px" , minus_left = "-=290px";
 	{% endif %}
 	function toggleMenu() {
 		if(screen.width >= 930)
@@ -55,6 +53,13 @@
 		{
 			$('#menuDiv').fadeToggle();
 		}
+	}
+	function configureMenu() {
+	if (screen.width <= 930) {
+	$('#menuDiv').hide();
+	} else {
+	$('#menuDiv').show();
+	}
 	}
 	</script>
 	<body onload="configureMenu()" onresize="configureMenu()">
