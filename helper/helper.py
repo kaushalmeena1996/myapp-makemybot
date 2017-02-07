@@ -19,6 +19,8 @@ USERNAME_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 PASSWORD_RE = re.compile(r"^.{3,20}$")
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 # helper function definations
 def make_salt(length=5):
     """Creates random string of length same as passed parameter."""
@@ -87,6 +89,10 @@ def valid_email(email):
     """Validates email using regular expressions."""
 
     return EMAIL_RE.match(email)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def show_pagination00 (action, page, last, pLimit):
     response = "<table class='w3-center w3-text-col-red w3-margin-bottom'><tr><td>";

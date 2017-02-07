@@ -20,10 +20,12 @@ from secret.secret import get_secret
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
+from werkzeug.utils import secure_filename
+from flask import make_response
+
 import httplib2
 import json
 import smtplib
-from flask import make_response
 import requests
 import random
 import string
@@ -42,6 +44,10 @@ from helper.helper import (make_password_hash,
 app = Flask(__name__)
 
 APPLICATION_NAME = "MakeMyBot"
+
+UPLOAD_FOLDER =  '%s\static\\avtaar\\' % os.path.abspath(os.path.dirname(__file__))
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 port = int(os.environ.get('PORT', 5000))
 
@@ -95,6 +101,7 @@ def log_conversation(bot_id, message_type, message, response):
 
 def cookie_check(f):
     """Creates login_session after verifying cookie."""
+    
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'name' not in login_session:
@@ -102,7 +109,6 @@ def cookie_check(f):
             if user_id:
                 user = getUserInfo(user_id)
                 if user:
-                    login_session['provider'] = 'app'
                     login_session['user_id'] = user.id
                     login_session['name'] = user.name
                     login_session['email'] = user.email
@@ -275,18 +281,21 @@ def showSetting00():
     """Renders SETTING page if user has logged in otherwise renders
        LOGIN page."""
 
+    editUser = session.query(User).filter_by(
+        	id=login_session['user_id']).one_or_none()
+    editBot = session.query(Bot).filter_by(
+            bot_id=login_session['user_id']).one_or_none()
+
     if 'user_id' in login_session:
         if request.method == 'POST':
-            editUser = session.query(User).filter_by(
-                id=login_session['user_id']).one_or_none()
-            editBot = session.query(Bot).filter_by(
-                bot_id=login_session['user_id']).one_or_none()
-
             bot_container = request.form["bot_container"]
             bot_name = request.form["bot_name"]
             bot_availability = request.form["bot_availability"]
-            auto_add = request.form["auto_add"]
             profile_name = request.form["profile_name"]
+
+            auto_add = False
+            if request.form.getlist('auto_add'):
+            	auto_add = True
 
             edit_err = False
 
@@ -299,6 +308,15 @@ def showSetting00():
                     flash("bot name can't be empty.")
                     edit_err = True
 
+                if 'bot_image' in request.files:
+                    file = request.files['bot_image']
+                 
+                    if file.filename:
+                        extention = file.filename.split(".")[-1]
+                        filename = 'bot_%s.%s' % (login_session['user_id'], extention)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        bot_container = filename
+                  	
                 if edit_err:
                     return render_template("setting.html",
                                            menuTitle='Setting',
@@ -312,7 +330,7 @@ def showSetting00():
                                            botInfo=editBot)
 
                 editUser.name = profile_name
-                editBot.bot_name = bot_names
+                editBot.bot_name = bot_name
                 editBot.bot_image = bot_container
                 editBot.bot_availability = bot_availability
                 editBot.auto_add = auto_add
@@ -327,8 +345,6 @@ def showSetting00():
                 return redirect(url_for('showHome'))
 
         else:
-            botInfo = session.query(Bot).filter_by(
-                bot_id=login_session['user_id']).one_or_none()
             return render_template('setting00.html',
                                    menuTitle='Setting',
                                    menuId='#menuSetting',
@@ -336,9 +352,9 @@ def showSetting00():
                                    buttonColor='w3-button-col-darkgreen',
                                    textColor='w3-text-col-darkgreen',
                                    colorHex='#16A085',
-                                   profile_name=login_session['name'],
-                                   bot_name=botInfo.bot_name,
-                                   botInfo=botInfo)
+                                   profile_name=editUser.name,
+                                   bot_name=editBot.bot_name,
+                                   botInfo=editBot)
     else:
         flash("you must be logged in first.")
         return redirect(url_for('showLogin'))
@@ -623,7 +639,7 @@ def showChatbots00():
                 response += "<a href='/chatbots/%d/chat'>" % browse_row.bot_id
                 response += "<div class='w3-botBox w3-card-2 w3-margin'>"
                 response += "<label hidden value='%d' id='botId'></label>" % browse_row.bot_id
-                response += "<div class='w3-border w3-center w3-padding'><img class='w3-center-content w3-card-2 w3-avtaar w3-light-red' src='%s'></div>" % browse_row.bot_image
+                response += "<div class='w3-border w3-center w3-padding'><img class='w3-center-content w3-card-2 w3-avtaar w3-light-red' src='\static\\avtaar\%s'></div>" % browse_row.bot_image
                 response += "<div class='w3-border w3-custom-font w3-center'>[ %s ]</div>" % browse_row.bot_name
                 response += "</div></a>"
 
@@ -752,7 +768,7 @@ def showChatbots01(bot_id):
                                colorHex='#E74C3C',
                                botInfo=botInfo)
     else:
-        return render_template('error.html',
+        return render_template('chatbots01.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
                                menuColor='w3-col-red',
@@ -847,6 +863,10 @@ def showContact():
 def showEmbed():
     """Handler for EMBED page which displays script for embeding bot."""
 
+    botInfo = session.query(Bot).\
+        filter_by(bot_id=login_session['user_id']).\
+        one_or_none()
+
     if 'user_id' in login_session:
         return render_template('embed.html',
                                menuTitle='Embed',
@@ -855,15 +875,11 @@ def showEmbed():
                                buttonColor='w3-button-col-darkorange',
                                textColor='w3-text-col-darkorange',
                                colorHex='#E67E22',
-                               session=login_session)
+                               session=login_session,
+                               botInfo=botInfo)
     else:
-        return render_template('embed.html',
-                               menuTitle='Embed',
-                               menuId='#menuEmbed',
-                               menuColor='w3-col-darkorange',
-                               buttonColor='w3-button-col-darkorange',
-                               textColor='w3-text-col-darkorange',
-                               colorHex='#E67E22')
+       	flash("you must be logged in first.")
+        return redirect(url_for('showLogin'))
 
 # Show TEACH page
 
@@ -1287,17 +1303,17 @@ def showWindow(bot_id):
     botInfo = session.query(Bot).filter_by(bot_id=bot_id).one_or_none()
 
     if botInfo:
-	    return render_template('window.html',
-	                            menuTitle='Chat',
-	                            menuId='#menuChat',
-	                            menuColor='w3-col-red',
-	                            buttonColor='w3-button-col-red',
-	                            textColor='w3-text-col-red',
-	                            colorHex='#E74C3C',
-	                            botInfo=botInfo)
+        return render_template('window.html',
+                                menuTitle='Chat',
+                                menuId='#menuChat',
+                                menuColor='w3-col-red',
+                                buttonColor='w3-button-col-red',
+                                textColor='w3-text-col-red',
+                                colorHex='#E74C3C',
+                                botInfo=botInfo)
 
     else:
-	    return render_template('error.html',
+        return render_template('window.html',
                                menuTitle='Chat',
                                menuId='#menuChat',
                                menuColor='w3-col-red',

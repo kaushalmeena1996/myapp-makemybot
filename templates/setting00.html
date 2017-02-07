@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="w3-container w3-custom-container w3-custom-font">
-		<form class="w3-container w3-custom-form" action="{{ url_for( 'showSetting00' ) }}" method="post">
+		<form class="w3-container w3-custom-form" action="{{ url_for( 'showSetting00' ) }}" method="post" enctype=multipart/form-data>
 			
 			<div class="w3-text-col-darkgreen"><span>[ Bot Setting ]</span><hr></div>
 			
@@ -15,8 +15,8 @@
 									<td class="w3-border" rowspan="3">
 										<label hidden id="botOld" value="{{botInfo['bot_image']}}"></label>
 										<input hidden id="botContainer" name="bot_container" type="text" value="{{botInfo['bot_image']}}"></input>
-										<input hidden onchange="previewImage(event)" type="file" accept="image/jpg,image/png,image/jpeg,image/gif"></input>
-									<img id="botImage" class="w3-border w3-center-content" onerror="defaulImage()" height="130px" width="130px" src="{{botInfo['bot_image']}}" alt="Bot-Image" required></img></td>
+										<input hidden onchange="previewImage(event)" name="bot_image" type="file" accept="image/jpg,image/png,image/jpeg,image/gif"></input>
+									<img id="botImage" class="w3-border w3-center-content" onerror="defaulImage()" height="130px" width="130px" src="/static/avtaar/{{botInfo['bot_image']}}" alt="Bot-Image" required></img></td>
 									<td class="w3-border"><span id="openImage" onclick="settingAction(0)" class="w3-span-col-darkgreen">[ <i class="fa fa-folder-o" aria-hidden="true"></i> ]</span></td>
 								</tr>
 								

@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+    <style>
+    </style>
+    {% if botInfo: %}
     <div class="w3-container w3-custom-container">
         
         <div class="w3-text-col-red w3-custom-font"><span>[ Chat ]</span><hr></div>
@@ -10,38 +13,38 @@
                 
                 <div hidden id="botMessage" class="w3-container w3-chat-body">
                     <table>
-                    <tr>
-                    <td class="w3-avtaar">
-                    <img class="w3-light-red" src="{{botInfo['bot_image']}}" alt="Bot-Image">
-                    </td>
-                    <td class="w3-text-align-left">
-                    <div class="w3-bubble-bot w3-bot w3-round">
-                        <div class="w3-bubble-header">{{botInfo['bot_name']}}</div>
-                        <div id="messageBody" class="w3-bubble-body w3-center"></div>
-                        <div id="messageTime" class="w3-bubble-footer">
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    </td>
-                    </tr>
+                        <tr>
+                            <td class="w3-avtaar">
+                                <img class="w3-light-red" src="\static\avtaar\{{botInfo['bot_image']}}" alt="Bot-Image">
+                            </td>
+                            <td class="w3-text-align-left">
+                                <div class="w3-bubble-bot w3-bot w3-round">
+                                    <div class="w3-bubble-header">{{botInfo['bot_name']}}</div>
+                                    <div id="messageBody" class="w3-bubble-body w3-center"></div>
+                                    <div id="messageTime" class="w3-bubble-footer">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div hidden id="userMessage" class="w3-container w3-chat-body">
                     <table>
-                    <tr>
-                    <td class="w3-text-align-right">
-                    <div class="w3-bubble-user w3-user w3-round">
-                        <div class="w3-bubble-header">User</div>
-                        <div id="messageBody" class="w3-bubble-body w3-center"></div>
-                        <div id="messageTime" class="w3-bubble-footer">
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    </td>
-                    <td class="w3-avtaar">
-                    <img class="w3-light-yellow" src="{{ url_for( 'static', filename='img/user_default.png' ) }}" alt="User-Image">
-                    </td>
-                    </tr>
+                        <tr>
+                            <td class="w3-text-align-right">
+                                <div class="w3-bubble-user w3-user w3-round">
+                                    <div class="w3-bubble-header">User</div>
+                                    <div id="messageBody" class="w3-bubble-body w3-center"></div>
+                                    <div id="messageTime" class="w3-bubble-footer">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="w3-avtaar">
+                                <img class="w3-light-yellow" src="{{ url_for( 'static', filename='avtaar/user_default.png' ) }}" alt="User-Image">
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -60,11 +63,20 @@
                 </table>
             </div>
         </div>
-        <!-- 
+        <!--
         <div class="w3-text-col-red w3-custom-font w3-margin-top"><span>[ Comments ]</span><hr></div>
         <div id="commentBox" class="w3-container w3-card-4 w3-round w3-margin-bottom">
             <div id="disqus_thread"><script> showDisqus("http://localhost/my-site/public/chat.php", {{botInfo['bot_id']}}); </script></div>
         </div>
         -->
     </div>
+    {% else %}
+        <div class="w3-container">
+            <div class='w3-container w3-center w3-custom-font {{textColor}}'>
+            <span class='w3-custom-font w3-font-size-large'>{{header}}</span>
+            <p>{{content}}</p>
+            <button onclick='goBack()' class='w3-button w3-xxlarge w3-margin-top {{buttonColor}}'><b><<</b></button>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

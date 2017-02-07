@@ -72,6 +72,9 @@ h6 {
 .w3-font-size-med {
     font-size: 24px;
 }
+.w3-font-size-large {
+    font-size: 54px;
+}
 .w3-custom-form input,
 .w3-custom-form select {
     font-size: 24px;
@@ -316,6 +319,10 @@ h6 {
 .w3-chat-body {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+.w3-chat-body td {
+    min-height: 100px;
+    word-wrap: break-word;
+}
 .w3-bubble-header {
     font-size: 18px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -330,9 +337,10 @@ h6 {
 
 .w3-avtaar
 {
-    width: 70px;    
+    width: 70px;
+    vertical-align: top;
+    padding: 5px;    
 }
-
 .w3-avtaar img {
     width: 70px;
     height: 70px;
