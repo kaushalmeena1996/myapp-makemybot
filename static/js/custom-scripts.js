@@ -614,3 +614,9 @@ function defaulImage() {
     $("#botContainer").val(filePath);
     $('#botImage').attr("src", filePath);
 }
+
+function copyText() {
+    $("#eEmbed").select();
+    document.execCommand("copy");
+    alert('code copied to clipboard.');
+}

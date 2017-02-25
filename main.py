@@ -5,6 +5,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from flask import url_for, flash
 from socket import gethostname, gethostbyname
+from flask_compress import Compress
 
 from sqlalchemy import create_engine, asc, func, desc
 from sqlalchemy.orm import sessionmaker
@@ -42,12 +43,11 @@ from helper.helper import (make_password_hash,
                            show_pagination01)
 
 app = Flask(__name__)
+Compress(app)
 
 APPLICATION_NAME = "MakeMyBot"
 
-UPLOAD_FOLDER =  '%s\static\\avtaar\\' % os.path.abspath(os.path.dirname(__file__))
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = '%s\static\\avtaar\\' % os.path.abspath(os.path.dirname(__file__))
 
 port = int(os.environ.get('PORT', 5000))
 

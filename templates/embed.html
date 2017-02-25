@@ -4,7 +4,7 @@
 		<form class="w3-container w3-custom-form" >
 			<div class="w3-text-col-darkorange"><span>[ Embed Code ]</span><hr></div>
 			<p class="w3-text-col-darkorange w3-margin-top w3-margin-bottom">add the following code to embed your chatbot to your website.</p>
-			<textarea name="cMessage" id="cMessage" class="w3-input w3-border w3-qMessage w3-font-size-med" type="text" required>
+			<textarea name="eEmbed" id="eEmbed" class="w3-input w3-border w3-qMessage w3-font-size-med" type="text" readonly required>
 <script>
 var toogle = 0;
 function toogleFrame()
@@ -48,7 +48,7 @@ function toogleFrame()
 	</tr>
 </table>
 			</textarea>
-			<button type="button" class="w3-button w3-xxlarge w3-button-col-darkorange w3-margin-top">Copy</button>
+			<button type="button" onclick="copyText()" class="w3-button w3-xxlarge w3-button-col-darkorange w3-margin-top">Copy</button>
 		</form>
 	</div>
 {% endblock %}
