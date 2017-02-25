@@ -6,3 +6,4 @@ google_api_python_client==1.6.1
 Requests==2.12.5
 SQLAlchemy==1.1.5
 webapp2==3.0.0b1
+flask-compress==1.4.0
