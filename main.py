@@ -1345,6 +1345,12 @@ def showLogout():
         flash("you were not logged in.")
         return redirect(url_for('showHome'))
 
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 3600
+    response.cache_control.public = True
+    return response
+
 if __name__ == '__main__':
     app.secret_key = get_secret()
     app.debug = True
