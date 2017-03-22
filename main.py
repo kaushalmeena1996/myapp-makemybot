@@ -678,11 +678,6 @@ def showChatbots01(bot_id):
 
     botInfo = session.query(Bot).filter_by(bot_id=bot_id).one_or_none()
 
-    if botInfo:
-    	botInfo.bot_views += 1
-    	session.add(botInfo)
-        session.commit()
-
     if request.method == 'POST':
         messageType = request.form['messageType']
 
