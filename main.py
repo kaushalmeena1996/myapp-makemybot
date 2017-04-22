@@ -3,16 +3,18 @@
 
 # python imports
 from flask import Flask, render_template, request, redirect, jsonify
-from flask import url_for, flash
-from socket import gethostname, gethostbyname
+from flask import url_for, flash, make_response
+from flask import session as login_session
+
 from flask_compress import Compress
+
+from socket import gethostname, gethostbyname
 
 from sqlalchemy import create_engine, asc, func, desc
 from sqlalchemy.orm import sessionmaker
 from database.database_setup import Base, Chatlog, Knowledge, Bot, User
 from database.config import get_database_uri
 
-from flask import session as login_session
 from functools import wraps
 
 from math import ceil
@@ -22,7 +24,6 @@ from secret.secret import get_secret
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from werkzeug.utils import secure_filename
-from flask import make_response
 
 import httplib2
 import json
@@ -47,7 +48,10 @@ Compress(app)
 
 APPLICATION_NAME = "MakeMyBot"
 
-app.config['UPLOAD_FOLDER'] = '%s\static\\avtaar\\' % os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = '%s\static\\avtaar\\' % os.path.abspath(
+    os.path.dirname(__file__))
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 port = int(os.environ.get('PORT', 5000))
 
@@ -101,7 +105,7 @@ def log_conversation(bot_id, message_type, message, response):
 
 def cookie_check(f):
     """Creates login_session after verifying cookie."""
-    
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'name' not in login_session:
@@ -130,17 +134,17 @@ def showLogin():
         return redirect(url_for('showHome'))
     else:
         if request.method == 'POST':
-            email = request.form["e-mail"]
+            email = request.form["email"]
             password = request.form["password"]
 
             login_err = False
 
             if(len(email) < 3):
-                flash("e-mail must have altleast 3 characters.")
+                flash("email must have altleast 3 characters.")
                 login_err = True
 
             elif not valid_email(email):
-                flash("please enter valid e-mail.")
+                flash("please enter valid email.")
                 login_err = True
 
             if(len(password) < 3):
@@ -155,9 +159,9 @@ def showLogin():
                 return render_template("login.html",
                                        menuTitle='Login',
                                        menuId='#menuLogin',
-                                       menuColor='w3-col-purple',
-                                       buttonColor='w3-button-col-purple',
-                                       textColor='w3-text-col-purple',
+                                       menuColor='menu-col-purple',
+                                       buttonColor='button-col-purple',
+                                       textColor='text-col-purple',
                                        colorHex='#8E44AD',
                                        email=email,
                                        password=password)
@@ -174,9 +178,9 @@ def showLogin():
                 return render_template("login.html",
                                        menuTitle='Login',
                                        menuId='#menuLogin',
-                                       menuColor='w3-col-purple',
-                                       buttonColor='w3-button-col-purple',
-                                       textColor='w3-text-col-purple',
+                                       menuColor='menu-col-purple',
+                                       buttonColor='button-col-purple',
+                                       textColor='text-col-purple',
                                        colorHex='#8E44AD',
                                        email=email,
                                        password=password)
@@ -185,9 +189,9 @@ def showLogin():
             return render_template('login.html',
                                    menuTitle='Login',
                                    menuId='#menuLogin',
-                                   menuColor='w3-col-purple',
-                                   buttonColor='w3-button-col-purple',
-                                   textColor='w3-text-col-purple',
+                                   menuColor='menu-col-purple',
+                                   buttonColor='button-col-purple',
+                                   textColor='text-col-purple',
                                    colorHex='#8E44AD')
 
 # Register page
@@ -211,11 +215,11 @@ def showRegister():
             register_err = False
 
             if(len(email) < 3):
-                flash("e-mail must have altleast 3 characters.")
+                flash("email must have altleast 3 characters.")
                 register_err = True
 
             elif not valid_email(email):
-                flash("please enter valid e-mail.")
+                flash("please enter valid email.")
                 register_err = True
 
             if(len(password) < 3):
@@ -234,9 +238,9 @@ def showRegister():
                 return render_template("register.html",
                                        menuTitle='Register',
                                        menuId='#menuRegister',
-                                       menuColor='w3-col-purple',
-                                       buttonColor='w3-button-col-purple',
-                                       textColor='w3-text-col-purple',
+                                       menuColor='menu-col-purple',
+                                       buttonColor='button-col-purple',
+                                       textColor='text-col-purple',
                                        colorHex='#8E44AD',
                                        name=name,
                                        password=password,
@@ -254,9 +258,9 @@ def showRegister():
                 return render_template("register.html",
                                        menuTitle='Register',
                                        menuId='#menuRegister',
-                                       menuColor='w3-col-purple',
-                                       buttonColor='w3-button-col-purple',
-                                       textColor='w3-text-col-purple',
+                                       menuColor='menu-col-purple',
+                                       buttonColor='button-col-purple',
+                                       textColor='text-col-purple',
                                        colorHex='#8E44AD',
                                        name=name,
                                        password=password,
@@ -267,9 +271,9 @@ def showRegister():
             return render_template('register.html',
                                    menuTitle='Register',
                                    menuId='#menuRegister',
-                                   menuColor='w3-col-purple',
-                                   buttonColor='w3-button-col-purple',
-                                   textColor='w3-text-col-purple',
+                                   menuColor='menu-col-purple',
+                                   buttonColor='button-col-purple',
+                                   textColor='text-col-purple',
                                    colorHex='#8E44AD')
 
 # Setting pages
@@ -281,12 +285,12 @@ def showSetting00():
     """Renders SETTING page if user has logged in otherwise renders
        LOGIN page."""
 
-    editUser = session.query(User).filter_by(
-        	id=login_session['user_id']).one_or_none()
-    editBot = session.query(Bot).filter_by(
+    if 'user_id' in login_session:
+        editUser = session.query(User).filter_by(
+            id=login_session['user_id']).one_or_none()
+        editBot = session.query(Bot).filter_by(
             bot_id=login_session['user_id']).one_or_none()
 
-    if 'user_id' in login_session:
         if request.method == 'POST':
             bot_container = request.form["bot_container"]
             bot_name = request.form["bot_name"]
@@ -295,7 +299,7 @@ def showSetting00():
 
             auto_add = False
             if request.form.getlist('auto_add'):
-            	auto_add = True
+                auto_add = True
 
             edit_err = False
 
@@ -310,20 +314,22 @@ def showSetting00():
 
                 if 'bot_image' in request.files:
                     file = request.files['bot_image']
-                 
+
                     if file.filename:
                         extention = file.filename.split(".")[-1]
-                        filename = 'bot_%s.%s' % (login_session['user_id'], extention)
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        filename = 'bot_%s.%s' % (
+                            login_session['user_id'], extention)
+                        file.save(os.path.join(
+                            app.config['UPLOAD_FOLDER'], filename))
                         bot_container = filename
-                  	
+
                 if edit_err:
                     return render_template("setting.html",
                                            menuTitle='Setting',
                                            menuId='#menuSetting',
-                                           menuColor='w3-col-darkgreen',
-                                           buttonColor='w3-button-col-darkgreen',
-                                           textColor='w3-text-col-darkgreen',
+                                           menuColor='menu-col-darkgreen',
+                                           buttonColor='button-col-darkgreen',
+                                           textColor='text-col-darkgreen',
                                            colorHex='#16A085',
                                            profile_name=profile_name,
                                            bot_name=bot_name,
@@ -342,15 +348,25 @@ def showSetting00():
                 return redirect(url_for('showSetting00'))
             else:
                 flash("user not found in database.")
-                return redirect(url_for('showHome'))
+
+                if 'user_id' in login_session:
+                    del login_session['name']
+                if 'email' in login_session:
+                    del login_session['email']
+                if 'user_id' in login_session:
+                    del login_session['user_id']
+                response = make_response(redirect(url_for('showHome')))
+                response.set_cookie('user_id', expires=0)
+                
+                return response
 
         else:
             return render_template('setting00.html',
                                    menuTitle='Setting',
                                    menuId='#menuSetting',
-                                   menuColor='w3-col-darkgreen',
-                                   buttonColor='w3-button-col-darkgreen',
-                                   textColor='w3-text-col-darkgreen',
+                                   menuColor='menu-col-darkgreen',
+                                   buttonColor='button-col-darkgreen',
+                                   textColor='text-col-darkgreen',
                                    colorHex='#16A085',
                                    profile_name=editUser.name,
                                    bot_name=editBot.bot_name,
@@ -393,9 +409,9 @@ def showSetting01():
                     return render_template("setting01.html",
                                            menuTitle='Setting',
                                            menuId='#menuSetting',
-                                           menuColor='w3-col-darkgreen',
-                                           buttonColor='w3-button-col-darkgreen',
-                                           textColor='w3-text-col-darkgreen',
+                                           menuColor='menu-col-darkgreen',
+                                           buttonColor='button-col-darkgreen',
+                                           textColor='text-col-darkgreen',
                                            colorHex='#16A085')
 
                 editUser.password_hash = make_password_hash(
@@ -413,9 +429,9 @@ def showSetting01():
             return render_template("setting01.html",
                                    menuTitle='Setting',
                                    menuId='#menuSetting',
-                                   menuColor='w3-col-darkgreen',
-                                   buttonColor='w3-button-col-darkgreen',
-                                   textColor='w3-text-col-darkgreen',
+                                   menuColor='menu-col-darkgreen',
+                                   buttonColor='button-col-darkgreen',
+                                   textColor='text-col-darkgreen',
                                    colorHex='#16A085')
     else:
         flash("you must be logged in first.")
@@ -446,9 +462,9 @@ def showSetting02():
             return render_template("setting02.html",
                                    menuTitle='Setting',
                                    menuId='#menuSetting',
-                                   menuColor='w3-col-darkgreen',
-                                   buttonColor='w3-button-col-darkgreen',
-                                   textColor='w3-text-col-darkgreen',
+                                   menuColor='menu-col-darkgreen',
+                                   buttonColor='button-col-darkgreen',
+                                   textColor='text-col-darkgreen',
                                    colorHex='#16A085')
     else:
         flash("you must be logged in first.")
@@ -552,18 +568,18 @@ def showHome():
         return render_template('home.html',
                                menuTitle='Home',
                                menuId='#menuHome',
-                               menuColor='w3-col-grey',
-                               buttonColor='w3-button-col-grey',
-                               textColor='w3-text-col-black',
+                               menuColor='menu-col-grey',
+                               buttonColor='button-col-grey',
+                               textColor='text-col-black',
                                colorHex='#CCCCCC',
                                session=login_session)
     else:
         return render_template('home.html',
                                menuTitle='Home',
                                menuId='#menuHome',
-                               menuColor='w3-col-grey',
-                               buttonColor='w3-button-col-grey',
-                               textColor='w3-text-col-black',
+                               menuColor='menu-col-grey',
+                               buttonColor='button-col-grey',
+                               textColor='text-col-black',
                                colorHex='#CCCCCC')
 
 # Show CHATBOTS (MAIN) page
@@ -630,17 +646,17 @@ def showChatbots00():
                     filter_by(bot_availability='N').\
                     count()
 
-        last = int(ceil(count_data / rLimit))            
-        
+        last = int(ceil(count_data / rLimit))
+
         if count_data > 0:
             response = ''
 
             for browse_row in browse_data:
                 response += "<a href='/chatbots/%d/chat'>" % browse_row.bot_id
-                response += "<div class='w3-botBox w3-card-2 w3-margin'>"
+                response += "<div class='botBox card-2 margin'>"
                 response += "<label hidden value='%d' id='botId'></label>" % browse_row.bot_id
-                response += "<div class='w3-border w3-center w3-padding'><img class='w3-center-content w3-card-2 w3-avtaar w3-light-red' src='\static\\avtaar\%s'></div>" % browse_row.bot_image
-                response += "<div class='w3-border w3-custom-font w3-center'>[ %s ]</div>" % browse_row.bot_name
+                response += "<div class='border center padding'><img class='center-content card-2 avtaar light-red' src='\static\\avtaar\%s'></div>" % browse_row.bot_image
+                response += "<div class='border custom-font center'>[ %s ]</div>" % browse_row.bot_name
                 response += "</div></a>"
 
                 response += show_pagination00(0, page, last, pLimit)
@@ -648,24 +664,24 @@ def showChatbots00():
             return response
 
         else:
-            return "<h2 class='w3-center w3-text-col-red '>No bots to display...</h2>"
+            return "<h2 class='center text-col-red '>No bots to display...</h2>"
 
     elif 'user_id' in login_session:
         return render_template('chatbots00.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C',
                                session=login_session)
     else:
         return render_template('chatbots00.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C')
 
 # Show CHATBOTS (CHAT) page
@@ -752,9 +768,9 @@ def showChatbots01(bot_id):
         return render_template('chatbots01.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C',
                                session=login_session,
                                botInfo=botInfo)
@@ -762,18 +778,18 @@ def showChatbots01(bot_id):
         return render_template('chatbots01.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C',
                                botInfo=botInfo)
     else:
-        return render_template('chatbots01.html',
+        return render_template('error.html',
                                menuTitle='ChatBots',
                                menuId='#menuChatBots',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C',
                                header='Sorry',
                                content='This bot does not exist.',
@@ -790,18 +806,18 @@ def showGuide():
         return render_template('guide.html',
                                menuTitle='Guide',
                                menuId='#menuGuide',
-                               menuColor='w3-col-grey',
-                               buttonColor='w3-button-col-blue',
-                               textColor='w3-text-col-blue',
+                               menuColor='menu-col-blue',
+                               buttonColor='button-col-blue',
+                               textColor='text-col-blue',
                                colorHex='#3498DB',
                                session=login_session)
     else:
         return render_template('guide.html',
                                menuTitle='Guide',
                                menuId='#menuGuide',
-                               menuColor='w3-col-blue',
-                               buttonColor='w3-button-col-blue',
-                               textColor='w3-text-col-blue',
+                               menuColor='menu-col-blue',
+                               buttonColor='button-col-blue',
+                               textColor='text-col-blue',
                                colorHex='#3498DB')
 
 # Show FAQs page
@@ -816,18 +832,18 @@ def showFAQs():
         return render_template('faq.html',
                                menuTitle='FAQs',
                                menuId='#menuFaq',
-                               menuColor='w3-col-grey',
-                               buttonColor='w3-button-col-green',
-                               textColor='w3-text-col-green',
+                               menuColor='menu-col-green',
+                               buttonColor='button-col-green',
+                               textColor='text-col-green',
                                colorHex='#27AE60',
                                session=login_session)
     else:
         return render_template('faq.html',
                                menuTitle='FAQs',
                                menuId='#menuFaq',
-                               menuColor='w3-col-grey',
-                               buttonColor='w3-button-col-green',
-                               textColor='w3-text-col-green',
+                               menuColor='menu-col-green',
+                               buttonColor='button-col-green',
+                               textColor='text-col-green',
                                colorHex='#27AE60')
 
 # Show CONTACT page
@@ -842,18 +858,18 @@ def showContact():
         return render_template('contact.html',
                                menuTitle='Contact',
                                menuId='#menuContact',
-                               menuColor='w3-col-yellow',
-                               buttonColor='w3-button-col-orange',
-                               textColor='w3-text-col-orange',
+                               menuColor='menu-col-orange',
+                               buttonColor='button-col-orange',
+                               textColor='text-col-orange',
                                colorHex='#F39C12',
                                session=login_session)
     else:
         return render_template('contact.html',
                                menuTitle='Contact',
                                menuId='#menuContact',
-                               menuColor='w3-col-yellow',
-                               buttonColor='w3-button-col-orange',
-                               textColor='w3-text-col-orange',
+                               menuColor='menu-col-orange',
+                               buttonColor='button-col-orange',
+                               textColor='text-col-orange',
                                colorHex='#F39C12')
 
 
@@ -863,22 +879,22 @@ def showContact():
 def showEmbed():
     """Handler for EMBED page which displays script for embeding bot."""
 
-    botInfo = session.query(Bot).\
-        filter_by(bot_id=login_session['user_id']).\
-        one_or_none()
-
     if 'user_id' in login_session:
+        botInfo = session.query(Bot).\
+            filter_by(bot_id=login_session['user_id']).\
+            one_or_none()
+
         return render_template('embed.html',
                                menuTitle='Embed',
                                menuId='#menuEmbed',
-                               menuColor='w3-col-darkorange',
-                               buttonColor='w3-button-col-darkorange',
-                               textColor='w3-text-col-darkorange',
+                               menuColor='menu-col-darkorange',
+                               buttonColor='button-col-darkorange',
+                               textColor='text-col-darkorange',
                                colorHex='#E67E22',
                                session=login_session,
                                botInfo=botInfo)
     else:
-       	flash("you must be logged in first.")
+        flash("you must be logged in first.")
         return redirect(url_for('showLogin'))
 
 # Show TEACH page
@@ -897,7 +913,7 @@ def showTeach():
             rLimit = 2.0
             pLimit = 3
             start = (page - 1) * rLimit
-            
+
             browse_data = session.query(Knowledge).\
                 filter(Knowledge.pattern.ilike("%" + request.form['qPattern'] + "%")).\
                 filter_by(bot_id=login_session['user_id']).\
@@ -909,14 +925,14 @@ def showTeach():
                 filter(Knowledge.pattern.ilike("%" + request.form['qPattern'] + "%")).\
                 filter_by(bot_id=login_session['user_id']).\
                 count()
-            
-            last = int(ceil(count_data / rLimit))     
-            
+
+            last = int(ceil(count_data / rLimit))
+
             if count_data > 0:
-                response = "<table class='w3-qBox w3-padding-bottom w3-round'>"
+                response = "<table class='qBox padding-bottom round'>"
 
                 for browse_row in browse_data:
-                    response += "<tr><td class='w3-border w3-round w3-full-width'>"
+                    response += "<tr><td class='border round full-width'>"
 
                     if browse_row.template:
                         response += '[A]'
@@ -926,19 +942,19 @@ def showTeach():
                     response += "[<span id='qType'>%s</span>]\<span id='qChanged'></span><span id='qPattern'>%s</span>" % (
                         browse_row.type, browse_row.pattern)
                     response += "<label hidden value='%d' id='qId'></label>" % browse_row.id
-                    response += "<button onclick='qAction (0, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-trash'></i> ]</button>"
-                    response += "<button onclick='qAction (1, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-pencil'></i> ]</button>"
-                    response += "<button onclick='qAction (2, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-save'></i> ]</button>"
-                    response += "<textarea hidden id='qTemplate' oninput='qAction (3, this)' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='type response...'>%s</textarea>" % browse_row.template
+                    response += "<button onclick='qAction (0, this)' class='right xlarge qButton'>[ <i class='fa fa-trash'></i> ]</button>"
+                    response += "<button onclick='qAction (1, this)' class='right xlarge qButton'>[ <i class='fa fa-pencil'></i> ]</button>"
+                    response += "<button onclick='qAction (2, this)' class='right xlarge qButton'>[ <i class='fa fa-save'></i> ]</button>"
+                    response += "<textarea hidden id='qTemplate' oninput='qAction (3, this)' class='qTemplate padding border round' autocomplete='off' autofocus placeholder='type response...'>%s</textarea>" % browse_row.template
                     response += "</td></tr>"
 
                 response += show_pagination01('sAction', page, last, pLimit)
 
                 response += "</table>"
-                
+
                 return response
             else:
-                return "<h2 class='w3-center w3-text-col-darkblue'>No results to display...</h2>"
+                return "<h2 class='center text-col-darkblue'>No results to display...</h2>"
 
         elif actionType == 'iInfo':
             count_typeA = session.query(Knowledge).\
@@ -971,7 +987,7 @@ def showTeach():
             if count_total == 0:
                 count_total = 1
 
-            response = "<div class='w3-margin-bottom w3-center-content'>"
+            response = "<div class='margin-bottom center-content'>"
             response += "<span>< TypeA.Questions > <%.2f%%> <%d> </span><br>" % (
                 (count_typeA / count_total) * 100, count_typeA)
             response += "<span>< TypeU.Questions > <%.2f%%> <%d> </span><br>" % (
@@ -993,7 +1009,7 @@ def showTeach():
             session.add(newKnowledge)
             session.commit()
 
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
         elif actionType == 'qSave':
             editKnowledge = session.query(Knowledge).\
@@ -1006,7 +1022,7 @@ def showTeach():
             session.add(editKnowledge)
             session.commit()
 
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
         elif actionType == 'qDelete':
             deleteKnowledge = session.query(Knowledge).\
@@ -1015,8 +1031,8 @@ def showTeach():
 
             session.delete(deleteKnowledge)
             session.commit()
-            
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
         elif actionType == 'bBrowse':
 
@@ -1107,13 +1123,13 @@ def showTeach():
                     filter_by(type=type02).\
                     count()
 
-            last = int(ceil(count_data / rLimit))        
-            
+            last = int(ceil(count_data / rLimit))
+
             if count_data > 0:
-                response = "<table class='w3-qBox w3-padding-bottom w3-round'>"
+                response = "<table class='qBox padding-bottom round'>"
 
                 for browse_row in browse_data:
-                    response += "<tr><td class='w3-border w3-round w3-full-width'>"
+                    response += "<tr><td class='border round full-width'>"
 
                     if browse_row.template:
                         response += '[A]'
@@ -1123,10 +1139,10 @@ def showTeach():
                     response += "[<span id='qType'>%s</span>]\<span id='qChanged'></span><span id='qPattern'>%s</span>" % (
                         browse_row.type, browse_row.pattern)
                     response += "<label hidden value='%d' id='qId'></label>" % browse_row.id
-                    response += "<button onclick='qAction(0, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-trash'></i> ]</button>"
-                    response += "<button onclick='qAction(1, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-pencil'></i> ]</button>"
-                    response += "<button onclick='qAction(2, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-save'></i> ]</button>"
-                    response += "<textarea hidden id='qTemplate' oninput='qAction (3, this)' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='type response...'>%s</textarea>" % browse_row.template
+                    response += "<button onclick='qAction(0, this)' class='right xlarge qButton'>[ <i class='fa fa-trash'></i> ]</button>"
+                    response += "<button onclick='qAction(1, this)' class='right xlarge qButton'>[ <i class='fa fa-pencil'></i> ]</button>"
+                    response += "<button onclick='qAction(2, this)' class='right xlarge qButton'>[ <i class='fa fa-save'></i> ]</button>"
+                    response += "<textarea hidden id='qTemplate' oninput='qAction (3, this)' class='qTemplate padding border round' autocomplete='off' autofocus placeholder='type response...'>%s</textarea>" % browse_row.template
                     response += "</td></tr>"
 
                 response += show_pagination01('bAction', page, last, pLimit)
@@ -1135,7 +1151,7 @@ def showTeach():
 
                 return response
             else:
-                return "<h2 class='w3-center w3-text-col-darkblue '>No results to display...</h2>"
+                return "<h2 class='center text-col-darkblue '>No results to display...</h2>"
 
         elif actionType == 'lBrowse':
             page = int(request.form['qPage'])
@@ -1156,26 +1172,26 @@ def showTeach():
             last = int(ceil(count_data / rLimit))
 
             if count_data > 0:
-                response = "<table class='w3-qBox w3-padding-bottom w3-round'>"
+                response = "<table class='qBox padding-bottom round'>"
 
                 for browse_row in browse_data:
-                    response += "<tr><td class='w3-border w3-round w3-full-width'>"
+                    response += "<tr><td class='border round full-width'>"
                     response += "[<span id='qType'>%s</span>]\<span id='qChanged'></span><span id='qPattern'>%s</span>" % (
                         browse_row.created_date, browse_row.client_ip)
                     response += "<label hidden value='%d' id='qId'></label>" % browse_row.id
-                    response += "<button onclick='qAction (5, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-trash'></i> ]</button>"
-                    response += "<button onclick='qAction (1, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-level-down'></i> ]</button>"
-                    response += "<button onclick='qAction (4, this)' class='w3-right w3-xlarge w3-qButton'>[ <i class='fa fa-download'></i> ]</button>"
-                    response += "<textarea hidden id='qTemplate' class='w3-qTemplate w3-padding w3-border w3-round' autocomplete='off' autofocus placeholder='empty...'>%s</textarea>" % browse_row.bot_log
+                    response += "<button onclick='qAction (5, this)' class='right xlarge qButton'>[ <i class='fa fa-trash'></i> ]</button>"
+                    response += "<button onclick='qAction (1, this)' class='right xlarge qButton'>[ <i class='fa fa-level-down'></i> ]</button>"
+                    response += "<button onclick='qAction (4, this)' class='right xlarge qButton'>[ <i class='fa fa-download'></i> ]</button>"
+                    response += "<textarea hidden id='qTemplate' class='qTemplate padding border round' autocomplete='off' autofocus placeholder='empty...'>%s</textarea>" % browse_row.bot_log
                     response += "</td></tr>"
-         
+
                 response += show_pagination01('lAction', page, last, pLimit)
 
                 response += "</table>"
 
                 return response
             else:
-                return "<h2 class='w3-center w3-text-col-darkblue'>No results to display...</h2>"
+                return "<h2 class='center text-col-darkblue'>No results to display...</h2>"
 
         elif actionType == 'lDelete':
             deleteChatlog = session.query(Chatlog).\
@@ -1185,15 +1201,15 @@ def showTeach():
             session.delete(deleteChatlog)
             session.commit()
 
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
     elif 'user_id' in login_session:
         return render_template('teach.html',
                                menuTitle='Teach',
                                menuId='#menuTeach',
-                               menuColor='w3-col-darkblue',
-                               buttonColor='w3-button-col-darkblue',
-                               textColor='w3-text-col-darkblue',
+                               menuColor='menu-col-darkblue',
+                               buttonColor='button-col-darkblue',
+                               textColor='text-col-darkblue',
                                colorHex='#2980B9',
                                session=login_session)
     else:
@@ -1207,11 +1223,11 @@ def showTeach():
 def showChat():
     """Handler for CHAT page which allows users to chat with their own bots."""
 
-    botInfo = session.query(Bot).\
-        filter_by(bot_id=login_session['user_id']).\
-        one_or_none()
-
     if 'user_id' in login_session:
+        botInfo = session.query(Bot).\
+            filter_by(bot_id=login_session['user_id']).\
+            one_or_none()
+
         if request.method == 'POST':
             messageType = request.form['messageType']
 
@@ -1254,7 +1270,8 @@ def showChat():
                         responseList = ["Huh.", "What?", "...", "(0?0) What?"]
                         response = random.choice(responseList)
 
-                log_conversation(botInfo.bot_id, messageType, messageString, response)
+                log_conversation(botInfo.bot_id, messageType,
+                                 messageString, response)
                 return response
 
             elif messageType == 'G':
@@ -1274,7 +1291,7 @@ def showChat():
                     response = random.choice(responseList)
 
                 log_conversation(botInfo.bot_id, "G", '', response)
-       
+
                 return response
 
             elif messageType == 'E':
@@ -1284,9 +1301,9 @@ def showChat():
             return render_template('chat.html',
                                    menuTitle='Chat',
                                    menuId='#menuChat',
-                                   menuColor='w3-col-darkred',
-                                   buttonColor='w3-button-col-darkred',
-                                   textColor='w3-text-col-darkred',
+                                   menuColor='menu-col-darkred',
+                                   buttonColor='button-col-darkred',
+                                   textColor='text-col-darkred',
                                    colorHex='#C0392B',
                                    botInfo=botInfo,
                                    session=login_session)
@@ -1295,6 +1312,8 @@ def showChat():
         return redirect(url_for('showLogin'))
 
 # Show WINDOW page
+
+
 @cookie_check
 @app.route('/chatbots/<int:bot_id>/window')
 def showWindow(bot_id):
@@ -1304,32 +1323,31 @@ def showWindow(bot_id):
 
     if botInfo:
         return render_template('window.html',
-                                menuTitle='Chat',
-                                menuId='#menuChat',
-                                menuColor='w3-col-red',
-                                buttonColor='w3-button-col-red',
-                                textColor='w3-text-col-red',
-                                colorHex='#E74C3C',
-                                botInfo=botInfo)
-
-    else:
-        return render_template('window.html',
                                menuTitle='Chat',
                                menuId='#menuChat',
-                               menuColor='w3-col-red',
-                               buttonColor='w3-button-col-red',
-                               textColor='w3-text-col-red',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
+                               colorHex='#E74C3C',
+                               botInfo=botInfo)
+
+    else:
+        return render_template('error.html',
+                               menuTitle='Chat',
+                               menuId='#menuChat',
+                               menuColor='menu-col-red',
+                               buttonColor='button-col-red',
+                               textColor='text-col-red',
                                colorHex='#E74C3C',
                                header='Sorry',
                                content='This bot does not exist.')
 
-  
+
 @app.route('/logout')
 def showLogout():
     """DISCONNECTS the user based on provider."""
 
     if 'provider' in login_session:
-
         if 'user_id' in login_session:
             del login_session['name']
         if 'email' in login_session:

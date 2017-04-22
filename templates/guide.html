@@ -1,12 +1,14 @@
-{% extends "base.html" %}
-{% block content %}
-	<div class="w3-container w3-custom-container w3-custom-font">
-		<form class="w3-container w3-custom-form" >
-			<div class="w3-text-col-blue"><span>[ Video ]</span><hr></div>
-			<p class="w3-text-col-blue w3-margin-top w3-margin-bottom">video explaining how to use MakeMyBot.com</p>
-			<div class="w3-center w3-video">
-				<iframe style="border: 1px solid #3498DB" class="w3-center w3-padding w3-card-2" width="854" height="480" src="https://www.youtube.com/embed/njmAUhUwKys" frameborder="1" allowfullscreen></iframe>
-			</div>
-		</form>
-	</div>
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="text-col-blue">
+            <span>[ Video ]</span>
+            <hr class="hr-col-blue">
+            <span class="font-size-medium">Video explaining how to use MakeMyBot.com</span><br><br>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/njmAUhUwKys" frameborder="2" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

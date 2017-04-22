@@ -1,146 +1,133 @@
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- http://www.w3schools.com/ -->
-		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/w3.css') }}">
-		<!-- http://fontawesome.io/ -->
-		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/font-awesome.css') }}">
-		<!-- https://jquery.com/ -->
-		<script src="{{ url_for( 'static', filename='js/jquery-3.1.0.min.js' ) }}"></script>
-		<!-- CUSTOM FAVICON -->
-		<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
-		<!-- CUSTOM STYLESHEET -->
-		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/custom-styles-min.css') }}">
-		<!-- CUSTOM SCRIPT add upload avatar-->
-		<script src="{{ url_for( 'static', filename='js/custom-scripts-min.js' ) }}"></script>
-		<title>MakeMyBot: {{menuTitle}}</title>
-	</head>
-	<script>
-	window.addEventListener("beforeunload", function() {
-		document.body.classList.add("animate-out");
-	});
-	window.onbeforeunload = function() {
-		cAction(2, event); return null;
-	};
 
-	{% if session['user_id'] %}
-	var menuToggle = 0, plus_left = "+=590px" , minus_left = "-=590px";
-	{% else %}
-	var menuToggle = 0, plus_left = "+=290px" , minus_left = "-=290px";
-	{% endif %}
-	function toggleMenu() {
-		if(screen.width >= 930)
-		{
-			if (menuToggle === 0) {
-			$('#menuDiv').animate({
-			left: plus_left
-			}, "slow");
-			$('#menuButton01').animate({
-			left: plus_left
-			}, "slow");
-			menuToggle = 1;
-			} else {
-			$('#menuDiv').animate({
-			left: minus_left
-			}, "slow");
-			$('#menuButton01').animate({
-			left: minus_left
-			}, "slow");
-			menuToggle = 0;
-			}
-		}
-		else
-		{
-			$('#menuDiv').fadeToggle();
-		}
-	}
-	function configureMenu() {
-	if (screen.width <= 930) {
-	$('#menuDiv').hide();
-	} else {
-	$('#menuDiv').show();
-	}
-	}
-	</script>
-	<body onload="configureMenu()" onresize="configureMenu()">
-		<label hidden id="botId" value="{{session['user_id']}}" ></label>
-		<div class="w3-top">
-			<ul id="navBar" class="w3-navbar w3-light-grey">
-				<div id="menuLogo" class="w3-min-width-content">
-					<a href="{{ url_for( 'showHome' ) }}"><img src="{{ url_for( 'static', filename='img/loader.gif' ) }}" alt="Loader">
-					</a>
-					<div id="menuButton00" onclick="toggleMenu()" class="w3-right"><i class="fa fa fa-bars w3-xxlarge"></i></div>
-				</div>
-				<li id="menuLogo" class="w3-hover-opacity w3-max-width-content">
-					<a href="{{ url_for( 'showHome' ) }}"><img src="{{ url_for( 'static', filename='img/loader.gif' ) }}" alt="Loader">
-					</a>
-				</li>
-				<div id="menuDiv" class="position:relative">
-					{% if session['user_id']: %}
-						<li id='menuContact' class='w3-card-2 w3-right'><a href="{{ url_for( 'showContact' ) }}"><i class='fa fa-envelope-o w3-xxlarge'></i></a></li>
-						<li id='menuFaq' class='w3-card-2 w3-right'><a href="{{ url_for( 'showFAQs' ) }}"><i class='fa fa-list w3-xxlarge'></i></a></li>
-						<li id='menuGuide' class='w3-card-2 w3-right'><a href="{{ url_for( 'showGuide' ) }}"><i class='fa fa-question-circle-o w3-xxlarge'></i></a></li>
-						<li id='menuChatBots' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChatbots00' ) }}"><i class='fa fa-users w3-xxlarge'></i></a></li>
-						
-						<li id='menuEmbed' class='w3-card-2 w3-right'><a href="{{ url_for( 'showEmbed' ) }}"><i class='fa fa-code w3-xxlarge'></i></a></li>
-						<li id='menuSetting' class='w3-card-2 w3-right'><a href="{{ url_for( 'showSetting00' ) }}"><i class='fa fa-cogs w3-xxlarge'></i></a></li>
-						<li id='menuTeach' class='w3-card-2 w3-right'><a href="{{ url_for( 'showTeach' ) }}"><i class='fa fa-pencil-square-o w3-xxlarge'></i></a></li>
-						<li id='menuChat' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChat' ) }}"><i class='fa fa-comments-o w3-xxlarge'></i></a></li>
-					{% else %}
-						<li id='menuContact' class='w3-card-2 w3-right'><a href="{{ url_for( 'showContact' ) }}"><i class='fa fa-envelope-o w3-xxlarge'></i></a></li>
-						<li id='menuFaq' class='w3-card-2 w3-right'><a href="{{ url_for( 'showFAQs' ) }}"><i class='fa fa-list w3-xxlarge'></i></a></li>
-						<li id='menuGuide' class='w3-card-2 w3-right'><a href="{{ url_for( 'showGuide' ) }}"><i class='fa fa-question-circle-o w3-xxlarge'></i></a></li>
-						<li id='menuChatBots' class='w3-card-2 w3-right'><a href="{{ url_for( 'showChatbots00' ) }}"><i class='fa fa-users w3-xxlarge'></i></a></li>
-					{% endif %}
-				</div>
-				<li id="menuButton01" onclick="toggleMenu()" class="w3-right w3-max-width-content"><i class="fa fa fa-bars w3-xxlarge"></i>
-				</li>
-			</ul>
-			<div id="menuStrip" style="background-color: {{colorHex}}" class="w3-container {{menuColor}} w3-card-2"></div>
-		</div>
-		<div>
-			<header id="pageHeader" style="background-color: {{colorHex}}" class="w3-container w3-card-2">
-				{% if menuTitle == 'Home' %}
-					<span class="w3-xxlarge w3-custom-font w3-left">{{menuTitle}}</span>
-				{% else %}
-					<span style="color: #FFFFFF" class="w3-xxlarge w3-custom-font w3-left">{{menuTitle}}</span>
-				{% endif %}
-				{% if session['user_id']: %}
-					<a href="{{ url_for( 'showLogout' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-sign-out' aria-hidden='true'></i></a></button>
-					<a href='#'><button onclick='showName()' class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge w3-custom-font'><i class='fa fa-user' aria-hidden='true'></i> <span hidden id='userContent'>{{session['name']}}</span></button></a>
-				{% else %}
-					<a href="{{ url_for( 'showRegister' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-user-plus' aria-hidden='true'></i></button></a>
-					<a href="{{ url_for( 'showLogin' ) }}"><button class='w3-button {{buttonColor}} w3-padding-left w3-padding-right w3-round w3-right w3-padding w3-xlarge'><i class='fa fa-sign-in' aria-hidden='true'></i></button></a>
-				{% endif %}
-			</header>
-			<div id="mainDiv">
-				{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					<div class="w3-custom-container {{textColor}} w3-custom-font">
-						<ul>
-							{% for message in messages %}
-								<li><h3>{{ message }}</h3></li>
-							{% endfor %}
-						</ul>
-					</div>
-				{% endif %}
-			{% endwith %}
-			{% block content %}{% endblock %}
-		</div>
-	</div>
-	<footer id="pageFooter" style="background-color: {{colorHex}}" class="w3-container w3-card-2">
-		{% if menuTitle == 'Home' %}
-			<div class="w3-center w3-custom-font w3-font-size-med w3-padding">
-			{% else %}
-				<div style="color: #FFFFFF" class="w3-center w3-custom-font w3-font-size-med w3-padding">
-				{% endif %}
-				<a href="{{ url_for( 'showChatbots00' ) }}">Chatbots</a> |
-				<a href="{{ url_for( 'showGuide' ) }}">Guide</a> |
-				<a href="{{ url_for( 'showFAQs' ) }}">FAQs</a> |
-				<a href="{{ url_for( 'showContact' ) }}">Contact</a> |
-				<a href="https://github.com/kaushalmeena1996/myapp-makemybot">Github</a>
-			</div>
-		</footer>
-		<div>
-		</body>
-	</html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- https://jquery.com/ -->
+    <script src="{{url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
+    <!-- http://getbootstrap.com/ -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <!-- https://angularjs.org/ -->
+    <script src="{{url_for('static', filename='js/angular.min.js')}}"></script>
+    <!-- http://fontawesome.io/ -->
+    <link rel="stylesheet" type=text/css href="{{url_for('static', filename='css/font-awesome.css') }}">
+    <!-- CUSTOM-FAVICON -->
+    <link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico') }}">
+    <!-- CUSTOM-STYLESHEET -->
+    <link rel="stylesheet" type=text/css href="{{url_for('static', filename='css/custom-styles.css') }}">
+    <!-- CUSTOM-SCRIPT-->
+    <script src="{{url_for('static', filename='js/custom-scripts.js')}}"></script>
+    <title>MakeMyBot: {{menuTitle}}</title>
+</head>
+<script>
+$(document).ready(function() {
+    $('.menu-active').hover(function() {
+        $('#menuStrip').css('background-color', '#CCCCCC');
+    }, function() {
+        $('#menuStrip').css('background-color', '{{colorHex}}');
+    });
+
+    window.addEventListener("beforeunload", function() {
+        document.body.classList.add("animate-out");
+    });
+
+    window.onbeforeunload = function() {
+        cAction(2, event);
+        return null;
+    };
+});
+</script>
+
+<body class="main-body">
+    <label hidden id="botId" value="{{session['user_id']}}"></label>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-group" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{{url_for('showHome')}}"><img src="{{url_for('static', filename='img/loader.gif')}}" class="custom-nav-image" alt="loader-img">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-group">
+                <ul class="nav navbar-nav pull-right content-full-width">
+                    {% if session['user_id']: %}
+                    <li id='menuChat' {% if menuTitle=='Chat' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showChat')}}"><span class='fa fa-comments-o'></span></a>
+                    </li>
+                    <li id='menuTeach' {% if menuTitle=='Teach' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showTeach')}}"><span class='fa fa-pencil-square-o'></span></a>
+                    </li>
+                    <li id='menuSetting' {% if menuTitle=='Setting' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showSetting00')}}"><span class='fa fa-cogs'></span></a>
+                    </li>
+                    <li id='menuEmbed' {% if menuTitle=='Embed' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showEmbed')}}"><span class='fa fa-code'></span></a>
+                    </li>
+                    {% endif %}
+                    <li id='menuChatBots' {% if menuTitle=='ChatBots' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showChatbots00')}}"><span class='fa fa-users'></span></a>
+                    </li>
+                    <li id='menuGuide' {% if menuTitle=='Guide' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showGuide')}}"><span class='fa fa-question-circle-o'></span></a>
+                    </li>
+                    <li id='menuFaq' {% if menuTitle=='FAQs' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showFAQs')}}"><span class='fa fa-list'></span></a>
+                    </li>
+                    <li id='menuContact' {% if menuTitle=='Contact' : %} class="menu-active" {% endif %}>
+                        <a href="{{url_for('showContact')}}"><span class='fa fa-envelope-o'></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="menuStrip" class="{{menuColor}}"></div>
+    </nav>
+    <header id="pageHeader" class="{{menuColor}}">
+        <div class="container">
+            <span class="header-title">{{menuTitle}}</span> {% if session['user_id']: %}
+            <a href="{{url_for('showLogout')}}">
+                <button type="button" class="button {{buttonColor}} pull-right"><i class="fa fa-sign-out"></i>&zwj;</button>
+            </a>
+            <button onclick='showName()' type="button" class="button {{buttonColor}} pull-right">
+                <i class="fa fa-user"></i>&nbsp;
+                <span hidden id='userContent'>{{session['name']}}</span>
+            </button>
+            {% else %}
+            <a class="button {{buttonColor}} pull-right" href="{{url_for('showRegister')}}" role="button">
+                <span class="fa fa-user-plus"></span>
+            </a>
+            <a class="button {{buttonColor}} pull-right" href="{{url_for('showLogin')}}" role="button">
+                <span class="fa fa-sign-in"></span>
+            </a>
+            {% endif %}
+        </div>
+    </header>
+    <div id="mainDiv" class="container">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="well well-sm">
+            <ul>
+                {% for message in messages %}
+                <li>
+                    <span class="font-size-large">{{ message }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+    </div>
+    <footer id="pageFooter" class="{{menuColor}}">
+        <h3 class="text-center">
+            <a href="{{url_for('showChatbots00')}}">Chatbots</a> |
+            <a href="{{url_for('showGuide')}}">Guide</a> |
+            <a href="{{url_for('showFAQs')}}">FAQs</a> |
+            <a href="{{url_for('showContact')}}">Contact</a> |
+            <a href="https://github.com/kaushalmeena1996/myapp-makemybot">Github</a>
+        </h3>
+    </footer>
+</body>
+
+</html>

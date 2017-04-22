@@ -134,7 +134,7 @@ function botChat(botId, messageType, messageString) {
 
         $("#chatButton").prop("disabled", true);
         $("#chatInput").prop("disabled", true);
-        $("#chatBox").append("<div id='chatLoader' class='w3-container w3-text-col-grey w3-center w3-padding-32'><i class='fa fa-cog fa-spin fa-3x fa-fw' aria-hidden='true'></i></div>");
+        $("#chatBox").append("<div id='chatLoader' class='container text-col-grey center padding-32'><i class='fa fa-cog fa-spin fa-3x fa-fw' aria-hidden='true'></i></div>");
     }
 
     if (window.XMLHttpRequest) {
@@ -203,7 +203,7 @@ function chatAction(messageType, messageString) {
 
         $("#chatButton").prop("disabled", true);
         $("#chatInput").prop("disabled", true);
-        $("#chatBox").append("<div id='chatLoader' class='w3-container w3-text-col-grey w3-center w3-padding-32'><i class='fa fa-cog fa-spin fa-3x fa-fw' aria-hidden='true'></i></div>");
+        $("#chatBox").append("<div id='chatLoader' class='container text-col-grey center padding-32'><i class='fa fa-cog fa-spin fa-3x fa-fw' aria-hidden='true'></i></div>");
     }
 
     if (window.XMLHttpRequest) {
@@ -616,7 +616,7 @@ function defaulImage() {
 }
 
 function copyText() {
-    $("#eEmbed").select();
+    $('#cMessage').select();
     document.execCommand("copy");
-    alert('code copied to clipboard.');
+    alert('Code copied to clipboard.');
 }

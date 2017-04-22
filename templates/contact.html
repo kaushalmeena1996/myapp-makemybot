@@ -1,9 +1,12 @@
-{% extends "base.html" %}
-{% block content %}
-	<div class="w3-container w3-custom-container w3-custom-font">
-		<form id="contactForm" class="w3-container w3-custom-form" action="{{url_for('showContact')}}" method="post">
-			<div class="w3-text-col-darkorange w3-margin-bottom"><span>[ Contact Info ]</span><hr></div>
-			<input disabled class="w3-input w3-border w3-round w3-center" type="text" value="e-mail : kaushal.meena1996@gmail.com">
-		</form>
-	</div>
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="text-col-darkorange"><span>[ Contact Info ]</span>
+            <hr class="hr-col-darkorange">
+        </div>
+        <div class="well well-sm">
+            <h3 class="text-center">e-mail : kaushal.meena1996@gmail.com</h3>
+        </div>
+    </div>
+</div>
 {% endblock %}

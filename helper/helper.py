@@ -95,20 +95,20 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def show_pagination00 (action, page, last, pLimit):
-    response = "<table class='w3-center w3-text-col-red w3-margin-bottom'><tr><td>";
+    response = "<table class='center text-col-red margin-bottom'><tr><td>";
 
     response += "<button "
     if page == 1: 
         response += "disabled "
-    response += "onclick='botAction(%d, 1, this)' class='w3-xlarge w3-botButton'>[ <i class='fa fa-angle-double-left'></i> ]</button>" % action
+    response += "onclick='botAction(%d, 1, this)' class='xlarge botButton'>[ <i class='fa fa-angle-double-left'></i> ]</button>" % action
     
     response += "<button "
     if page == 1: 
         response += "disabled " 
-    response += "onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton'>[ <i class='fa fa-angle-left'></i> ]</button>" % (action, (page-1))
+    response += "onclick='botAction(%d, %d, this)' class='xlarge botButton'>[ <i class='fa fa-angle-left'></i> ]</button>" % (action, (page-1))
                 
     if (page-1) > pLimit:
-        response += "<button onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton w3-padding-left'>...</button>" % (action, (page-pLimit))
+        response += "<button onclick='botAction(%d, %d, this)' class='xlarge botButton padding-left'>...</button>" % (action, (page-pLimit))
       
     if (page-1) < pLimit:
         counter = 1
@@ -118,7 +118,7 @@ def show_pagination00 (action, page, last, pLimit):
     end = min((page+pLimit), last)
 
     for counter in range(1, end + 1):
-        response += "<button onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton w3-padding-left'>" % (action, counter) 
+        response += "<button onclick='botAction(%d, %d, this)' class='xlarge botButton padding-left'>" % (action, counter) 
         if counter == page:
             response += "<u>%d</u>" % counter
         else:
@@ -126,37 +126,37 @@ def show_pagination00 (action, page, last, pLimit):
         response += "</button>"
                 
     if (last-page) > pLimit:
-        response += "<button onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton w3-padding-left'>...</button>" % (action, (page+pLimit))
+        response += "<button onclick='botAction(%d, %d, this)' class='xlarge botButton padding-left'>...</button>" % (action, (page+pLimit))
                 
     response += "<button " 
     if page == last:
          response += "disabled "
-    response += "onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton w3-padding-left'>[ <i class='fa fa-angle-right'></i> ]</button>" % (action, (page+1))
+    response += "onclick='botAction(%d, %d, this)' class='xlarge botButton padding-left'>[ <i class='fa fa-angle-right'></i> ]</button>" % (action, (page+1))
     
     response += "<button " 
     if(page == last): 
         response += "disabled "
-    response += " onclick='botAction(%d, %d, this)' class='w3-xlarge w3-botButton'>[ <i class='fa fa-angle-double-right'></i> ]</button>" % (action, last)
+    response += " onclick='botAction(%d, %d, this)' class='xlarge botButton'>[ <i class='fa fa-angle-double-right'></i> ]</button>" % (action, last)
     
     response += "</td></tr></table>"
 
     return response
 
 def show_pagination01 (action, page, last, pLimit):
-    response = "<tr><td class='w3-center w3-full-width w3-text-col-darkblue'>";
+    response = "<tr><td class='center full-width text-col-darkblue'>";
 
     response += "<button "
     if page == 1: 
             response += "disabled "
-    response += "onclick='%s(1, this)' class='w3-xlarge w3-qButton'>[ <i class='fa fa-angle-double-left'></i> ]</button>" % action
+    response += "onclick='%s(1, this)' class='xlarge qButton'>[ <i class='fa fa-angle-double-left'></i> ]</button>" % action
 
     response += "<button "
     if page == 1: 
             response += "disabled " 
-    response += "onclick='%s(%d, this)' class='w3-xlarge w3-qButton'>[ <i class='fa fa-angle-left'></i> ]</button>" % (action, (page-1))
+    response += "onclick='%s(%d, this)' class='xlarge qButton'>[ <i class='fa fa-angle-left'></i> ]</button>" % (action, (page-1))
 
     if (page-1) > pLimit:
-            response += "<button onclick='%s(%d, this)' class='w3-xlarge w3-qButton w3-padding-left'>...</button>" % (action, (page-pLimit))
+            response += "<button onclick='%s(%d, this)' class='xlarge qButton padding-left'>...</button>" % (action, (page-pLimit))
 
     if (page-1) < pLimit:
             counter = 1
@@ -166,7 +166,7 @@ def show_pagination01 (action, page, last, pLimit):
     end = min((page+pLimit), last)
     
     for counter in range(1, end + 1):
-            response += "<button onclick='%s(%d, this)' class='w3-xlarge w3-qButton w3-padding-left'>" % (action, counter) 
+            response += "<button onclick='%s(%d, this)' class='xlarge qButton padding-left'>" % (action, counter) 
             if counter == page:
                     response += "<u>%d</u>" % counter
             else:
@@ -174,17 +174,17 @@ def show_pagination01 (action, page, last, pLimit):
             response += "</button>"
 
     if (last-page) > pLimit:
-            response += "<button onclick='%s(%d, this)' class='w3-xlarge w3-qButton w3-padding-left'>...</button>" % (action, (page+pLimit))
+            response += "<button onclick='%s(%d, this)' class='xlarge qButton padding-left'>...</button>" % (action, (page+pLimit))
 
     response += "<button " 
     if page == last:
             response += "disabled "
-    response += "onclick='%s(%d, this)' class='w3-xlarge w3-qButton w3-padding-left'>[ <i class='fa fa-angle-right'></i> ]</button>" % (action, (page+1))
+    response += "onclick='%s(%d, this)' class='xlarge qButton padding-left'>[ <i class='fa fa-angle-right'></i> ]</button>" % (action, (page+1))
 
     response += "<button " 
     if(page == last): 
             response += "disabled "
-    response += " onclick='%s(%d, this)' class='w3-xlarge w3-qButton'>[ <i class='fa fa-angle-double-right'></i> ]</button>" % (action, last)
+    response += " onclick='%s(%d, this)' class='xlarge qButton'>[ <i class='fa fa-angle-double-right'></i> ]</button>" % (action, last)
 
     response += "</td></tr>"
 

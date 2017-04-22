@@ -1,19 +1,24 @@
-{% extends "base.html" %}
-{% block content %}
-    <div class="w3-container w3-custom-container">
-        <form class="w3-container w3-custom-form w3-custom-font" method="post" action="{{ url_for( 'showLogin' ) }}">
-            <div class="w3-section">
-                <label class="w3-text-col-purple">e-mail :</label>
-                <input class="w3-input w3-border w3-margin-bottom" type="text" name="e-mail" value="{{email}}" required>
-                <label class="w3-text-col-purple">password :</label>
-                <input class="w3-input w3-border" type="password" name="password" value="{{password}}" required>
-                <input id="actionButton" class="w3-button w3-button-col-purple w3-section w3-padding" type="submit" value="Login"></input>
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <form method="post" action="{{url_for('showLogin')}}">
+            <div class="text-col-purple">
+                <div class="form-group">
+                    <label for="email">e-mail :</label>
+                    <input class="form-control input-lg" type="text" name="email" value="{{email}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">password :</label>
+                    <input class="form-control input-lg" type="password" name="password" value="{{password}}" required>
+                </div>
+                <input id="actionButton" class="button button-col-purple" type="submit" value="Login"></input>
                 <br>
-                <span class="w3-xlarge w3-left w3-text-col-purple">Not Registered? &nbsp;</span>
-                <span class="w3-xlarge w3-span-col-purple w3-left">
-                    <a href="{{ url_for( 'showRegister' ) }}">[ <i class="fa fa-user-plus"></i> Register ]</a> 
-                </span>
+                <span class="font-size-small">Not Registered? &nbsp;</span>
+                <a class="btn btn-default font-size-small" href="{{url_for('showRegister')}}" role="button">
+                    <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Register
+                </a>
             </div>
         </form>
     </div>
+</div>
 {% endblock %}

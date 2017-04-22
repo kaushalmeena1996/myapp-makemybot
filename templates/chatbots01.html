@@ -1,82 +1,70 @@
-{% extends "base.html" %}
-{% block content %}
-    <style>
-    </style>
-    {% if botInfo: %}
-    <div class="w3-container w3-custom-container">
-        
-        <div class="w3-text-col-red w3-custom-font"><span>[ Chat ]</span><hr></div>
-        <div class="w3-container w3-card-4 w3-round">
-            <div id="chatBox" class="w3-container w3-margin w3-card-2 w3-round">
-                
-                <script> bChat(0, {{botInfo['bot_id']}}, event); </script>
-                
-                <div hidden id="botMessage" class="w3-container w3-chat-body">
-                    <table>
-                        <tr>
-                            <td class="w3-avtaar">
-                                <img class="w3-light-red" src="\static\avtaar\{{botInfo['bot_image']}}" alt="Bot-Image">
-                            </td>
-                            <td class="w3-text-align-left">
-                                <div class="w3-bubble-bot w3-bot w3-round">
-                                    <div class="w3-bubble-header">{{botInfo['bot_name']}}</div>
-                                    <div id="messageBody" class="w3-bubble-body w3-center"></div>
-                                    <div id="messageTime" class="w3-bubble-footer">
-                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="text-col-red">
+            <span>[ Chat ]</span>
+            <hr class="hr-col-red">
+            <div class="thumbnail">
+                <div id="chatBox" class="well">
+                    <script>
+                    bChat(0, {{botInfo['bot_id']}}, event);
+                    </script>
+                    <div hidden id="botMessage" class="chat-body">
+                        <table class="table table-responsive">
+                            <tr>
+                                <td class="avtaar">
+                                    <img class="avtaar-img light-red" src="\static\avtaar\{{botInfo['bot_image']}}" alt="Bot-Image">
+                                </td>
+                                <td class="text-left">
+                                    <div class="bubble-bot bot round">
+                                        <div class="bubble-header">{{botInfo['bot_name']}}</div>
+                                        <div id="messageBody" class="bubble-body center"></div>
+                                        <div id="messageTime" class="bubble-footer">
+                                            <span class="fa fa-clock-o" aria-hidden="true"></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div hidden id="userMessage" class="container chat-body">
+                        <table class="table table-responsive">
+                            <tr>
+                                <td class="text-right">
+                                    <div class="bubble-user user round">
+                                        <div class="bubble-header">User</div>
+                                        <div id="messageBody" class="bubble-body center"></div>
+                                        <div id="messageTime" class="bubble-footer">
+                                            <span class="fa fa-clock-o" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="avtaar">
+                                    <img class="avtaar-img light-yellow" src="{{ url_for( 'static', filename='avtaar/user_default.png' ) }}" alt="User-Image">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div hidden id="userMessage" class="w3-container w3-chat-body">
-                    <table>
-                        <tr>
-                            <td class="w3-text-align-right">
-                                <div class="w3-bubble-user w3-user w3-round">
-                                    <div class="w3-bubble-header">User</div>
-                                    <div id="messageBody" class="w3-bubble-body w3-center"></div>
-                                    <div id="messageTime" class="w3-bubble-footer">
-                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="w3-avtaar">
-                                <img class="w3-light-yellow" src="{{ url_for( 'static', filename='avtaar/user_default.png' ) }}" alt="User-Image">
-                            </td>
-                        </tr>
-                    </table>
+                <div class="input-group input-group-lg">
+                    <input onkeyup="bChat(1, {{botInfo['bot_id']}}, event)" id="chatInput" autocomplete="off" autofocus class="form-control" name="chatInput" placeholder="type something..." type="text"></input>
+                    <span class="input-group-btn">
+                    <button id="chatButton" onclick="bChat(1, {{botInfo['bot_id']}}, event)" class="btn btn-lg btn-danger"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                </span>
                 </div>
             </div>
-            <div class="w3-margin">
-                <table>
-                    <tr>
-                        <td class="w3-custom-input w3-left" style="width:80%">
-                            <input onkeyup="bChat(1, {{botInfo['bot_id']}}, event)" id="chatInput" autocomplete="off" autofocus class="w3-input w3-left w3-border" name="chatInput" placeholder="type something..." type="text"></input>
-                        </td>
-                        <td class="w3-right" style="width:20%">
-                            <button id="chatButton" style="width:80%; min-width:50px" onclick="bChat(1, {{botInfo['bot_id']}}, event)" class="w3-button w3-button-col-red w3-right w3-padding w3-xlarge">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
+            <!--
+            <span>[ Comments ]</span>
+            <hr class="hr-col-red">
+            <div id="commentBox" class="container">
+                <div id="disqus_thread">
+                    <script>
+                    showDisqus("http://myapp-makemybot.herokuapp.com/chatbots/{{botInfo['bot_id']}}/chat", {{botInfo['bot_id']}});
+                    </script>
+                </div>
             </div>
+            -->
         </div>
-        <!--
-        <div class="w3-text-col-red w3-custom-font w3-margin-top"><span>[ Comments ]</span><hr></div>
-        <div id="commentBox" class="w3-container w3-card-4 w3-round w3-margin-bottom">
-            <div id="disqus_thread"><script> showDisqus("http://localhost/my-site/public/chat.php", {{botInfo['bot_id']}}); </script></div>
-        </div>
-        -->
     </div>
-    {% else %}
-        <div class="w3-container">
-            <div class='w3-container w3-center w3-custom-font {{textColor}}'>
-            <span class='w3-custom-font w3-font-size-large'>{{header}}</span>
-            <p>{{content}}</p>
-            <button onclick='goBack()' class='w3-button w3-xxlarge w3-margin-top {{buttonColor}}'><b><<</b></button>
-            </div>
-        </div>
-    {% endif %}
+</div>
 {% endblock %}

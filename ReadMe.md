@@ -1,9 +1,8 @@
-# [Project : ChatBot Creation App]
+# [Project : Item Catalog]
 
 ## [ Synopsis ]
 
 A web application that lets user to create and teach their own custom chatbots.
-App also allows users to embed their chatbots to other websites.
 
 ## [ Usage ]
 
