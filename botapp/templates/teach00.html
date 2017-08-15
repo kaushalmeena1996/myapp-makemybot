@@ -14,12 +14,12 @@
         </ul>
         <div class="text-darkblue">
             <h4>[ <span class="fa fa-pencil-square-o"></span> ]</h4>
-            <hr class="hr-darkblue"> 
+            <hr class="hr-darkblue">
             <div class="well">
-                <form id="brainForm" method="post" action="{% url 'teach00' %}">
+                <form method="post" action="{% url 'teach00' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <textarea id="brainEditor" name="brainText" class="form-control code-editor" rows="30">{{brainText}}</textarea>
+                        <textarea id="brainEditor" name="brainText" class="form-control fixed-textarea font-size-sm" rows="30">{{brainText}}</textarea>
                     </div>
                     <div class="form-group text-right">
                         <button type="submit" class="btn btn-lg btn-darkblue">Save</button>

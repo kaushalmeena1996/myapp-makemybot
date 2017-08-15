@@ -54,6 +54,10 @@ footer {
     background: url("/static/img/preloader02.gif") center no-repeat #F1F1F1;
 }
 
+.dropdown-menu>li>a {
+    cursor: pointer;
+}
+
 .font-size-lg {
     font-size: 26px;
 }
@@ -276,9 +280,8 @@ footer {
     height: 20px;
 }
 
-.code-editor {
+.fixed-textarea {
     resize: none;
-    font-size: 18px;
 }
 
 .min-width-sm {

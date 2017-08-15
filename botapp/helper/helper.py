@@ -23,7 +23,7 @@ PAGE_COLOR = {'home': 'grey',
               'contact': 'orange',
               'chat': 'darkred',
               'teach': 'darkblue',
-              'setting': 'darkgreen',
+              'settings': 'darkgreen',
               'embed': 'darkorange'}
 
 # extention folder
@@ -69,10 +69,10 @@ def generate_context(request, title):
 
     return context
 
+
 def generate_filename(instance, filename):
     extension = filename.split('.')[-1]
     folder = EXTENSION_FOLDER[extension]
     hashid = hashlib.sha256(str(instance.user.id)).hexdigest()
     filename = "%s_%s.%s" % (folder, hashid, extension)
     return os.path.join(folder, filename)
-

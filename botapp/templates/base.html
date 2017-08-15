@@ -44,7 +44,7 @@
                     <li class="menu-icon bg-darkblue {% if pageTitle == 'teach' %}menu-active{% endif %}">
                         <a href="{% url 'teach00' %}"><span class='fa fa-pencil-square-o'></span></a>
                     </li>
-                    <li class="menu-icon bg-darkgreen {% if pageTitle == 'setting' %}menu-active{% endif %}">
+                    <li class="menu-icon bg-darkgreen {% if pageTitle == 'settings' %}menu-active{% endif %}">
                         <a href="{% url 'setting00' %}"><span class='fa fa-cogs'></span></a>
                     </li>
                     <li class="menu-icon bg-darkorange {% if pageTitle == 'embed' %}menu-active{% endif %}">
@@ -99,6 +99,24 @@
             </ul>
         </div>
         {% endif %} {% block content %} {% endblock %}
+    </div>
+    <div id="alertModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title {{textColor}}">
+                        <span class="fa fa-exclamation-triangle"></span>&nbsp;alert
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p id="alertBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                </div>
+            </div>
+        </div>
     </div>
     <footer class="{{pageColor}}">
         <h4 class="text-center">

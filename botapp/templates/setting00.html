@@ -3,13 +3,10 @@
     <div class="jumbotron">
         <ul class="nav nav-tabs">
             <li class="pull-right">
-                <a href=""><span class='fa fa-file-text-o fa-2x'></span></a>
-            </li>
-            <li class="pull-right">
-                <a href="{% url 'teach01' %}"><span class="fa fa-upload fa-2x"></span></a>
+                <a href="{% url 'setting01' %}"><span class="fa fa-user fa-2x"></span></a>
             </li>
             <li class="active pull-right">
-                <a><span class='fa fa-pencil-square-o fa-2x'></span></a>
+                <a><span class='fa fa-cogs fa-2x'></span></a>
             </li>
         </ul>
         <div class="text-darkgreen">
@@ -17,23 +14,30 @@
             <hr class="hr-darkgreen">
             <div class="well">
                 <form method="post" action="{% url 'setting00' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-md-4">
-                            <input hidden class="form-control" id="botUpload" onchange="previewImage(event)" name="imagefile" type="file" accept=".jpg,.jpeg,.png">
+                            <span hidden id="avtaarUrl">{{botItem.avtaar.url}}</span>
                             <div class="well">
                                 <div class="row text-center">
+                                    <div hidden class="form-group">
+                                        <input class="form-control" id="botUpload" onchange="previewAction(event)" name="imagefile" type="file" accept=".jpg,.jpeg,.png">
+                                    </div>
+                                    <div hidden class="form-group">
+                                        <input id="defaultCheckbox" name="default" class="checkbox-lg" type="checkbox" value="True">
+                                    </div>
                                     <div class="col-md-12">
-                                        <img id="botImage" class="img-thumbnail" onerror="defaulImage()" src="{{botItem.avtaar.url}}" alt="bot-image">
+                                        <img id="botImage" class="img-thumbnail" onerror="defaultAction()" src="{{botItem.avtaar.url}}" alt="bot-avtaar">
                                     </div>
                                     <div class="col-md-12">
                                         <div class="btn-group">
-                                            <button onclick="settingAction(0)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <button onclick="settingAction(0)" type="button" class="btn btn-default btn-lg">
                                             <i class="fa fa-folder-o" aria-hidden="true"></i>
                                         </button>
-                                            <button onclick="settingAction(1)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <button onclick="settingAction(1)" type="button" class="btn btn-default btn-lg">
                                             <i class="fa fa-undo" aria-hidden="true"></i>
                                         </button>
-                                            <button onclick="settingAction(2)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <button onclick="settingAction(2)" type="button" class="btn btn-default btn-lg">
                                             <i class="fa fa-ban" aria-hidden="true"></i>
                                         </button>
                                         </div>
@@ -43,13 +47,51 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label for="bot_name">bot name :</label>
-                                <input class="form-control input-lg" type="text" name="bot_name" value="{{bo}}" required></input>
+                                <div class="input-group">
+                                    <div class="input-group-addon min-width-sm"><span class="fa fa-user fa-lg"></span></div>
+                                    <input class="form-control" type="text" name="name" value="{{botItem.name}}" maxlength="32" placeholder="name" required>
+                                </div>
                             </div>
-                            <input name="visible" class="checkbox-lg" type="checkbox" {% if botItem.visible %}checked{% endif %}>
+                            <div class="form-group">
+                                <textarea class="form-control fixed-textarea" name="description" rows="4" maxlength="128" placeholder="description">{{botItem.description}}</textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div hidden class="form-group">
+                                        <input id="visibleCheckbox" name="visible" class="checkbox-lg" type="checkbox" {% if botItem.visible %}checked{% endif %}
+                                            value="True">
+                                    </div>
+                                    <div class="form-group">
+                                        <button onclick="toogleAction(0)" type="button" class="btn btn-default btn-block">
+                                            &nbsp;<span id="formIcon00" class="fa {% if botItem.visible %}fa-eye{% else %}fa-eye-slash{% endif %} fa-eye fa-lg"></span>&nbsp;
+                                        </button>
+                                        <span class="help-block">Toggle whether bot should be visible in list or not.</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div hidden class="form-group">
+                                        <input id="greetCheckbox" name="greet" class="checkbox-lg" type="checkbox" {% if botItem.greet %}checked{% endif %} value="True">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button onclick="toogleAction(1)" type="button" class="btn btn-default min-width-sm">
+                                                    &nbsp;<span id="formIcon01" class="fa {% if botItem.greet %}fa-check-square-o{% else %}fa-square-o{% endif %} fa-lg"></span>&nbsp;
+                                                </button>
+                                            </div>
+                                            <input {% if not botItem.greet %}disabled{% endif %} id="greetMessage" class="form-control" type="text" name="message" value="{{botItem.message}}"
+                                                maxlength="32" placeholder="greeting-message" required>
+                                        </div>
+                                        <span class="help-block">Toggle whether greeting message should be send to bot at initialisation or not.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-darkgreen btn-lg min-width-lg">save</button>
+                                <button onclick="backAction()" type="button" class="btn btn-default btn-lg min-width-lg">clear</button>
+                            </div>
                         </div>
                     </div>
-                    <input class="button btn-darkgreen" type="submit" value="Save"></input>
                 </form>
             </div>
         </div>

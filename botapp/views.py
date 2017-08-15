@@ -191,11 +191,15 @@ def chatbots00(request):
         except EmptyPage:
             bot_list = paginator.page(paginator.num_pages)
 
-        bot_item = request.user.bot_set.first()
         context['botList'] = bot_list
-        context['botId'] = bot_item.id
-        return render(request, 'chatbots00.html', context)
 
+        bot_item = request.user.bot_set.first()
+        if bot_item is None:
+            messages.info(request, 'specified bot was not found in database.')
+        else:
+            context['botId'] = bot_item.pk
+
+        return render(request, 'chatbots00.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
         return redirect('login')
@@ -204,13 +208,13 @@ def chatbots00(request):
 def chatbots01(request, bot_id):
     if request.user.is_authenticated:
         bot_item = Bot.objects.get(pk=bot_id)
-        context = generate_context(request, 'chatbots')
 
+        context = generate_context(request, 'chatbots')
         if bot_item:
             context['botItem'] = bot_item
             context['chatPage'] = True
         else:
-            messages.info(request, 'Specified bot was not found.')
+            messages.info(request, 'specified bot was not found.')
 
         return render(request, 'chatbots01.html', context)
     else:
@@ -235,14 +239,14 @@ def contact(request):
 
 def chat(request):
     if request.user.is_authenticated:
-        bot_item = request.user.bot_set.first()
         context = generate_context(request, 'chat')
 
+        bot_item = request.user.bot_set.first()
         if bot_item:
             context['botItem'] = bot_item
             context['chatPage'] = True
         else:
-            messages.info(request, 'Specified bot was not found.')
+            messages.info(request, 'specified bot was not found in database.')
 
         return render(request, 'chat.html', context)
     else:
@@ -254,7 +258,13 @@ def teach00(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             brain_text = request.POST['brainText']
+
             bot_item = request.user.bot_set.first()
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+                return redirect('teach00')
+
             brain_file = bot_item.brain
             brain_file.open(mode='wb')
             brain_file.write(brain_text)
@@ -264,13 +274,18 @@ def teach00(request):
             return redirect('teach00')
         else:
             bot_item = request.user.bot_set.first()
-            brain_file = bot_item.brain
-            brain_file.open(mode='rb')
-            brain_text = brain_file.read()
-            brain_file.close()
 
             context = generate_context(request, 'teach')
-            context['brainText'] = brain_text
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+            else:
+                brain_file = bot_item.brain
+                brain_file.open(mode='rb')
+                brain_text = brain_file.read()
+                brain_file.close()
+                context['brainText'] = brain_text
+
             return render(request, 'teach00.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
@@ -280,8 +295,14 @@ def teach00(request):
 def teach01(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            if request.FILES['brainfile']:
+            if 'brainfile' in request.FILES:
                 bot_item = request.user.bot_set.first()
+                if bot_item is None:
+                    messages.info(
+                        request, 'specified bot was not found in database.')
+                    return redirect('teach01')
+                if not bot_item.brain.name == 'bot_default.rive':
+                    bot_item.brain.delete()
                 bot_item.brain = request.FILES['brainfile']
                 bot_item.save()
                 messages.info(request, 'brain file uploaded successfully.')
@@ -299,18 +320,42 @@ def teach01(request):
 def setting00(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            if request.FILES['brainfile']:
-                bot_item = request.user.bot_set.first()
-                bot_item.brain = request.FILES['brainfile']
-                bot_item.save()
-                messages.info(request, 'brain file uploaded successfully.')
-            else:
-                messages.info(request, 'brain file was no found.')
-            return redirect('teach01')
-        else:
             bot_item = request.user.bot_set.first()
-            context = generate_context(request, 'setting')
-            context['botItem'] = bot_item
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+                return redirect('setting00')
+
+            if 'imagefile' in request.FILES:
+                if not bot_item.avtaar.name == 'bot_default.png':
+                    bot_item.avtaar.delete()
+                bot_item.avtaar = request.FILES['imagefile']
+            if 'default' in request.POST:
+                if request.POST['default']:
+                    bot_item.avtaar = '/media/avtaar/bot_default.png'
+
+            bot_item.name = request.POST['name']
+            bot_item.description = request.POST['description']
+            bot_item.visible = request.POST.get('visible', False)
+            bot_item.greet = request.POST.get('greet', False)
+
+            if 'message' in request.POST:
+                bot_item.meassage = request.POST['message']
+
+            bot_item.save()
+
+            messages.info(request, 'bot settings successfully updated.')
+            return redirect('setting00')
+        else:
+            context = generate_context(request, 'settings')
+
+            bot_item = request.user.bot_set.first()
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+            else:
+                context['botItem'] = bot_item
+
             return render(request, 'setting00.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
@@ -320,16 +365,47 @@ def setting00(request):
 def setting01(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            if request.FILES['brainfile']:
-                bot_item = request.user.bot_set.first()
-                bot_item.brain = request.FILES['brainfile']
-                bot_item.save()
-                messages.info(request, 'brain file uploaded successfully.')
-            else:
-                messages.info(request, 'brain file was no found.')
-            return redirect('teach01')
+            user_item = request.user
+            if user_item is None:
+                messages.info(
+                    request, 'specified user was not found in database.')
+                return redirect('setting01')
+
+            if 'delete' in request.POST:
+                user_item.delete()
+                user_item.save()
+                logout(request)
+                messages.info(
+                    request, 'account has been successfully deleted.')
+                return redirect('home')
+
+            if 'oldpass' in request.POST:
+                if user_item.check_password(request.POST['oldpass']):
+                    user_item.set_password(request.POST['newpass'])
+                    messages.info(
+                        request, 'password has been successfully changed.')
+                else:
+                    messages.info(
+                        request, 'password didn\'t matched with current password.')
+
+            if 'firstname' in request.POST:
+                user_item.firstname = request.POST['firstname']
+            if 'lastname' in request.POST:
+                user_item.lastname = request.POST['lastname']
+            if 'email' in request.POST:
+                if User.objects.filter(email=request.POST['email']).exists():
+                    messages.info(
+                        request, 'specified e-mail has been already taken.')
+                else:
+                    user_item.email = request.POST['email']
+
+            user_item.save()
+
+            messages.info(request, 'user settings successfully updated.')
+            return redirect('setting01')
         else:
-            context = generate_context(request, 'setting')
+            context = generate_context(request, 'settings')
+            context['userItem'] = request.user
             return render(request, 'setting01.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
@@ -338,9 +414,14 @@ def setting01(request):
 
 def embed(request):
     if request.user.is_authenticated:
-        bot_item = request.user.bot_set.first()
         context = generate_context(request, 'embed')
-        context['botId'] = bot_item.pk
+
+        bot_item = request.user.bot_set.first()
+        if bot_item is None:
+            messages.info(request, 'specified bot was not found in database.')
+        else:
+            context['botId'] = bot_item.pk
+
         return render(request, 'embed.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
