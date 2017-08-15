@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <ul class="nav nav-tabs">
+            <li class="pull-right">
+                <a href="/chatbots/{{botId}}/chat"><span class='fa fa-comments-o fa-2x'></span></a>
+            </li>
+            <li class="active pull-right">
+                <a><span class='fa fa-th-list fa-2x'></span></a>
+            </li>
+        </ul>
+        <br>
+        <div class="text-red">
+            {% load static %}
+            <div class="input-group input-group-lg">
+                <span class="input-group-btn">
+                    <button onclick="searchAction()" class="btn btn-red">
+                    &nbsp;<span class="fa fa-search"></span>&nbsp;
+                    </button>
+                </span>
+                <input id="searchInput" onkeypress="executeQuery(event)" type="search" class="form-control" value="{{botQuery}}">
+                {% if botQuery %}
+                <span class="input-group-btn">
+                    <a class="btn btn-default" href="?page=1" role="button">&nbsp;<span class="fa fa-times"></span>&nbsp;</a>
+                </span>
+                {% endif %}
+            </div>
+            <br>
+            <h4>[ {% if botQuery %}<span class="fa fa-search"></span>{% else %}<span class="fa fa-th-list"></span>{% endif %} ]</h4>
+            <hr class="hr-red">
+            <div class="well well-sm">
+                {% if botList %}
+                <div class="row">
+                    {% for bot in botList %}
+                    <div class="col-sm-6 col-md-2">
+                        <a class="bot-link" href="/chatbots/{{bot.id}}/chat">
+                        <div class="thumbnail">
+                            <img src="{{bot.avtaar.url}}" alt="bot-image">
+                            <div class="caption">
+                                <strong class="font-size-sm">{{bot.name}}</strong>
+                                <hr class="hr-seperator">
+                                <span>{{bot.description}}</span><br>
+                                <h4 class="text-right"><span class="fa fa-eye"></span> : {{bot.views}} | <span class="fa fa-comments-o"></span>                                    : 5</h4>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center">
+                    <div class="btn-group">
+                        {% if not botList.number == 1 %}
+                        <a href="?{% if botQuery %}query={{botQuery}}&amp;{% endif %}page=1" class="btn btn-default" role="button">
+                            &nbsp;<span class="fa fa-chevron-left"></span><span class="fa fa-chevron-left"></span>&nbsp;
+                        </a>                    
+                        {% else %}
+                        <a href="#" class="btn btn-default disabled" role="button">
+                            &nbsp;<span class="fa fa-chevron-left"></span><span class="fa fa-chevron-left"></span>&nbsp;
+                        </a>                    
+                        {% endif %} 
+                        {% if botList.has_previous %}
+                        <a href="?{% if botQuery %}query={{botQuery}}&amp;{% endif %}page={{botList.previous_page_number}}" class="btn btn-default" role="button">
+                            &nbsp;<span class="fa fa-chevron-left"></span>&nbsp;
+                        </a>                    
+                        {% else %}
+                        <a href="#" class="btn btn-default disabled" role="button">
+                            &nbsp;<span class="fa fa-chevron-left"></span>&nbsp;
+                        </a>                    
+                        {% endif %} 
+                        {% for num in botList.paginator.page_range %} 
+                        {% ifequal num botList.number %}
+                        <a href="#" class="btn btn-red" role="button">{{num}}</a>
+                        {% else %}
+                        <a href="?{% if botQuery %}query={{botQuery}}&amp;{% endif %}page={{num}}" class="btn btn-default" role="button">
+                            {{num}}
+                        </a> 
+                        {% endifequal %} 
+                        {% endfor %}
+                        {% if botList.has_next %}
+                        <a href="?{% if botQuery %}query={{botQuery}}&amp;{% endif %}page={{botList.next_page_number}}" class="btn btn-default" role="button">
+                            &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
+                        </a>                    
+                        {% else %}
+                        <a href="#" class="btn btn-default disabled" role="button">
+                            &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
+                        </a>                    
+                        {% endif %}
+                        {% if not botList.number == botList.paginator.num_pages %}
+                        <a href="?{% if botQuery %}query={{botQuery}}&amp;{% endif %}page={{botList.paginator.num_pages }}" class="btn btn-default" role="button">
+                            &nbsp;<span class="fa fa-chevron-right"></span><span class="fa fa-chevron-right"></span>&nbsp;
+                        </a>                    
+                        {% else %}
+                        <a href="#" class="btn btn-default disabled" role="button">
+                            &nbsp;<span class="fa fa-chevron-right"></span><span class="fa fa-chevron-right"></span>&nbsp;
+                        </a>                    
+                        {% endif %} 
+                    </div>
+                </div>
+                {% else %}
+                    <div class="text-center"><strong>sorry, no bot(s) matched your search...</strong></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

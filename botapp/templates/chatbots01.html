@@ -1,0 +1,78 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <ul class="nav nav-tabs">
+            <li class="active pull-right">
+                <a><span class='fa fa-comments-o fa-2x'></span></a>
+            </li>
+            <li class="pull-right">
+                <a href="{% url 'chatbots00' %}"><span class='fa fa-th-list fa-2x'></span></a>
+            </li>
+        </ul>
+        <div class="text-red">
+            <h4>[ <span class="fa fa-comments-o"></span> ]</h4>
+            <hr class="hr-red">
+            <div class="thumbnail"> 
+                <div id="chatBox" class="well chat-box">
+                    <div hidden id="botMessage" class="chat-body">
+                        <table class="table table-responsive">
+                            <tr>
+                                <td class="avtaar">
+                                    <img class="avtaar-img light-red" src="{{botItem.avtaar.url}}" alt="bot-image">
+                                </td>
+                                <td class="text-left">
+                                    <div class="bubble-bot bot round">
+                                        <div class="bubble-header">{{botItem.name}}</div>
+                                        <div id="messageBody" class="bubble-body"></div>
+                                        <div class="font-size-xs">
+                                            <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div hidden id="userMessage" class="container chat-body">
+                        {% load static %}
+                        <table class="table table-responsive">
+                            <tr>
+                                <td class="text-right">
+                                    <div class="bubble-user user round">
+                                        <div class="bubble-header">User</div>
+                                        <div id="messageBody" class="bubble-body center"></div>
+                                        <div class="font-size-xs">
+                                            <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="avtaar">
+                                    <img class="avtaar-img light-yellow" src="{% static 'img/user_default.png' %}" alt="user-image">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="input-group input-group-lg">
+                    <input id="chatInput" onkeypress="executeChat(event)" class="form-control" placeholder="type something..." type="text" autocomplete="off" autofocus>
+                    <span class="input-group-btn">
+                        <button id="chatButton" onclick="sendMessage()" class="btn btn-red"><span class="fa fa-chevron-right"></span></button>
+                    </span>
+                </div>
+            </div>
+            {% if botItem %}
+            <!--
+            <span>[ comments ]</span>
+            <hr class="hr-red">
+            <div id="commentBox" class="container">
+                <div id="disqus_thread">
+                    <script>
+                    showDisqus("http://myapp-makemybot.herokuapp.com/chatbots/{{botItem.id}}/chat", {{botItem.id}});
+                    </script>
+                </div>
+            </div>
+            -->
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

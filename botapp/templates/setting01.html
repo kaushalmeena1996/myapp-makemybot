@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <form action="{% url 'setting00' %}" method="post" enctype="multipart/form-data">
+            <div class="text-darkgreen">
+                <span>[ Profile Setting ]</span>
+                <hr class="hr-darkgreen">
+                <div class="form-group">
+                    <label for="profile_name">profile name :</label>
+                    <input class="form-control input-lg" type="text" name="profile_name" value="{{profile_name}}"></input>
+                </div>
+                <a class="btn btn-default font-size-sm" href="{{url_for('showSetting01')}}" role="button">
+                    <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;&nbsp;Change Password
+                </a>
+                <a class="btn btn-default font-size-sm" href="{{url_for('showSetting02')}}" role="button">
+                    <i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Delete Account
+                </a>
+                <br>
+                <br>
+                <input class="button btn-darkgreen" type="submit" value="Save"></input>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

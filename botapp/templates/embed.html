@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="text-darkorange">
+            <h4>[ <span class='fa fa-code'></span> ]</h4>
+            <hr class="hr-darkorange">
+            <span class="font-size-sm">Add the following code to embed your chatbots to your website.</span><br><br>
+            <div class="form-group">
+                <textarea id="embedCode" class="form-control code-editor" rows="50" readonly>
+&lt;script&gt;
+var toogle = 0;
+
+function toogleFrame() {
+    if (toogle == 0) {
+        document.getElementById('windowFrame').style.height = '65px';
+        toogle = 1;
+    } else {
+        document.getElementById('windowFrame').style.height = '505px';
+        toogle = 0;
+    }
+}
+&lt;/script&gt;
+&lt;style&gt;
+#windowTable {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#windowButton {
+    vertical-align: top;
+    color: #C0392B;
+    font-size: 18px;
+    font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;
+    cursor: pointer;
+}
+
+#windowFrame {
+    height: 505px;
+    width: 400px;
+    border: 2px solid #C0392B;
+    border-radius: 5px 0px 0px 0px;
+}
+&lt;/style&gt;
+&lt;table id=&quot;windowTable&quot;&gt;
+    &lt;tr&gt;
+        &lt;td onclick=&quot;toogleFrame()&quot; id=&quot;windowButton&quot;&gt;&lt;span&gt;[X]&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;
+            &lt;iframe id=&quot;windowFrame&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; src=&quot;http://myapp-makemybot.herokuapp.com/chatbots/{{botId}}/window&quot;&gt;&lt;/iframe&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+                </textarea>
+            </div>
+            <br>
+            <div class="form-group text-right">
+                <button onclick="copyAction('#embedCode')" type="button" class="btn btn-darkorange btn-lg min-width-lg">copy</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <ul class="nav nav-tabs">
+            <li class="pull-right">
+                <a href=""><span class='fa fa-file-text-o fa-2x'></span></a>
+            </li>
+            <li class="pull-right">
+                <a href="{% url 'teach01' %}"><span class="fa fa-upload fa-2x"></span></a>
+            </li>
+            <li class="active pull-right">
+                <a><span class='fa fa-pencil-square-o fa-2x'></span></a>
+            </li>
+        </ul>
+        <div class="text-darkgreen">
+            <h4>[ <span class="fa fa-cogs"></span> ]</h4>
+            <hr class="hr-darkgreen">
+            <div class="well">
+                <form method="post" action="{% url 'setting00' %}" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input hidden class="form-control" id="botUpload" onchange="previewImage(event)" name="imagefile" type="file" accept=".jpg,.jpeg,.png">
+                            <div class="well">
+                                <div class="row text-center">
+                                    <div class="col-md-12">
+                                        <img id="botImage" class="img-thumbnail" onerror="defaulImage()" src="{{botItem.avtaar.url}}" alt="bot-image">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="btn-group">
+                                            <button onclick="settingAction(0)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <i class="fa fa-folder-o" aria-hidden="true"></i>
+                                        </button>
+                                            <button onclick="settingAction(1)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                            <button onclick="settingAction(2)" id="buttonCamera" type="button" class="btn btn-default btn-lg">
+                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="bot_name">bot name :</label>
+                                <input class="form-control input-lg" type="text" name="bot_name" value="{{bo}}" required></input>
+                            </div>
+                            <input name="visible" class="checkbox-lg" type="checkbox" {% if botItem.visible %}checked{% endif %}>
+                        </div>
+                    </div>
+                    <input class="button btn-darkgreen" type="submit" value="Save"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

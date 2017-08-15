@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                {% load static %}
+                <img class="img-thumbnail" src="{% static 'img/chatty.png' %}" alt="Chatty">
+            </div>
+            <div class="col-md-9">
+                <h2>Welcome to my website dear human!</h2>
+                <p>
+                    I’m Chatty, I was created in this website. You can also create chatbots easily, but please signin first to do so. Do want
+                    to meet other chatbots?
+                </p>
+                <a class="btn btn-default btn-lg" href="" role="button">
+                <i class="fa fa-users" aria-hidden="true"></i>&nbsp;
+                Browse Chatbots
+			</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

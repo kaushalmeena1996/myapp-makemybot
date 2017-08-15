@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block content %}
+<div class="thumbnail">
+    <div class="jumbotron">
+        <div class="text-purple">
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon min-width-sm"><span class="fa fa-user fa-lg"></span></div>
+                                <input class="form-control" type="text" name="firstname" value="{{formFirstname}}" maxlength="32" placeholder="firstname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon min-width-sm"><span class="fa fa-user fa-lg"></span></div>
+                                <input class="form-control" type="text" name="lastname" value="{{formLastname}}" maxlength="32" placeholder="lastname">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon min-width-sm"><span class="fa fa-envelope fa-lg"></span></div>
+                        <input class="form-control" type="email" name="email" value="{{formEmail}}" maxlength="128" placeholder="e-mail" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon min-width-sm"><span class="fa fa-users fa-lg"></span></div>
+                        <input class="form-control" type="text" name="username" value="{{formUsername}}" minlength="4" maxlength="32" placeholder="username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon min-width-sm"><span class="fa fa-lock fa-lg"></span></div>
+                        <input class="form-control" type="password" name="password" value="{{formPassword}}" minlength="4" maxlength="32" placeholder="password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon min-width-sm"><span class="fa fa-lock fa-lg"></span></div>
+                        <input class="form-control" type="password" name="confirm" value="{{formConfirm}}"  minlength="4" maxlength="32" placeholder="confirm" required>
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-purple btn-lg min-width-lg">register</button>
+                    <button onclick="backAction()" type="button" class="btn btn-default btn-lg min-width-lg">cancel</button>
+                </div>
+                <br>
+                <span>already registered? &nbsp;</span>
+                <a class="btn btn-default btn-xs" href="{% url 'login' %}" role="button"><span class="fa fa-sign-in"></span>&nbsp;login</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
