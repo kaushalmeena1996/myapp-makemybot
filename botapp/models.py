@@ -11,14 +11,15 @@ class Bot(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='bot_set')
     avtaar = models.FileField(
-        upload_to=generate_filename, blank=True, null=True)
+        upload_to=generate_filename, default='avtaar/avtaar_default.png')
     brain = models.FileField(
-        upload_to=generate_filename, blank=True, null=True)
-    name = models.CharField(max_length=64, blank=True)
-    description = models.TextField(max_length=128, blank=True)
+        upload_to=generate_filename, default='brain/brain_default.rive')
+    name = models.CharField(max_length=32, blank=True,
+                            null=True, default='Chatty')
+    description = models.TextField(max_length=128, blank=True, default='')
     visible = models.BooleanField(default=False)
     greet = models.BooleanField(default=False)
-    message = models.CharField(max_length=32, blank=True, default="")
+    message = models.CharField(max_length=32, blank=True, default='hello')
     views = models.IntegerField(default=0)
     chatlog = models.FileField(
         upload_to=generate_filename, blank=True, null=True)

@@ -44,24 +44,19 @@ function toogleAction(action) {
     switch (action) {
         case 0:
             if ($("#visibleCheckbox").is(':checked')) {
-                $("#visibleCheckbox").prop('checked', false);
-                $("#formIcon00").removeClass('fa-eye').addClass('fa-eye-slash');
-
-            } else {
-                $("#visibleCheckbox").prop('checked', true);
                 $("#formIcon00").removeClass('fa-eye-slash').addClass('fa-eye');
-
+            } else {
+                $("#formIcon00").removeClass('fa-eye').addClass('fa-eye-slash');
             }
             break;
         case 1:
             if ($("#greetCheckbox").is(':checked')) {
-                $("#greetCheckbox").prop('checked', false);
-                $("#formIcon01").removeClass('fa-check-square-o').addClass('fa-square-o');
-                $("#greetMessage").prop('disabled', true);
-            } else {
-                $("#greetCheckbox").prop('checked', true);
                 $("#formIcon01").removeClass('fa-square-o').addClass('fa-check-square-o');
                 $("#greetMessage").prop('disabled', false);
+               
+            } else {
+                $("#formIcon01").removeClass('fa-check-square-o').addClass('fa-square-o');
+                $("#greetMessage").prop('disabled', true);
             }
             break;
     }

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.files.base import ContentFile, File
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from botapp.helper.helper import (
-    valid_username, valid_email, valid_password, generate_context)
+    valid_username, valid_email, valid_password, generate_context, basename, generate_filepath, basename)
 from .models import Bot
 
+#pylint: disable=E1101
 
 def signin(request):
     """CONNECTS the user."""
@@ -99,21 +101,27 @@ def signup(request):
                     request, "lastname must be not be more than 32 characters.")
                 signup_err = True
 
-            if len(email) > 0:
-                if len(email) > 64:
-                    messages.info(
-                        request, "lastname must be not be more than 64 characters.")
-                    signup_err = True
-                elif not valid_email(email):
-                    messages.info(
-                        request, "email must be valid.")
-                    signup_err = True
+            if len(email) > 128:
+                messages.info(
+                    request, "lastname must be not be more than 128 characters.")
+                signup_err = True
+            elif User.objects.filter(email=email).exists():
+                messages.info(
+                    request, 'specified e-mail has been already taken.')
+                signup_err = True
+            elif not valid_email(email):
+                messages.info(
+                    request, "email must be valid.")
+                signup_err = True
 
             if len(username) < 4 or len(username) > 32:
                 messages.info(
                     request, "username must be between 4 to 32 characters.")
                 signup_err = True
-
+            elif User.objects.filter(username=username).exists():
+                messages.info(
+                    request, 'specified username has been already taken.')
+                signup_err = True
             elif not valid_username(username):
                 messages.info(
                     request, "username must only contain alphanumeric characters and special characters.")
@@ -123,12 +131,10 @@ def signup(request):
                 messages.info(
                     request, "password must be between 4 to 32 characters.")
                 signup_err = True
-
             elif not valid_password(password):
                 messages.info(
                     request, "password must only contain alphanumeric characters and special characters.")
                 signup_err = True
-
             elif not password == confirm:
                 messages.info(
                     request, "password and confirm don't match.")
@@ -144,12 +150,14 @@ def signup(request):
                 context['formConfirm'] = confirm
                 return render(request, 'signup.html', context)
             else:
-                user = User.objects.create_user(
+                user_item = User.objects.create_user(
                     username, email, password, first_name=firstname, last_name=lastname)
-                user.save()
-                if user is not None:
-                    login(request, user)
-                    messages.info(request, "You have successfully signuped.")
+                user_item.save()
+                bot_item = Bot(user=user_item)
+                bot_item.save()
+                if user_item is not None:
+                    login(request, user_item)
+                    messages.info(request, "You have successfully registered.")
                     messages.info(request, "You have successfully logged in.")
                     return redirect('home')
                 else:
@@ -180,10 +188,10 @@ def chatbots00(request):
         context = generate_context(request, 'chatbots')
 
         if query:
-            paginator = Paginator(Bot.objects.filter(name__icontains=query), 1)
+            paginator = Paginator(Bot.objects.filter(name__icontains=query, visible=True).order_by('views'), 1)
             context['botQuery'] = query
         else:
-            paginator = Paginator(Bot.objects.all(), 25)
+            paginator = Paginator(Bot.objects.filter(visible=True).order_by('views'), 25)
         try:
             bot_list = paginator.page(page)
         except PageNotAnInteger:
@@ -266,10 +274,9 @@ def teach00(request):
                 return redirect('teach00')
 
             brain_file = bot_item.brain
-            brain_file.open(mode='wb')
-            brain_file.write(brain_text)
-            brain_file.close()
-
+            if not basename(brain_file.name) == 'bot_default.rive':
+                brain_file.delete()
+            brain_file.save('bot_brain.rive', ContentFile(brain_text))
             messages.info(request, 'brain file edited successfully.')
             return redirect('teach00')
         else:
@@ -295,15 +302,16 @@ def teach00(request):
 def teach01(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            if 'brainfile' in request.FILES:
+            if 'brainFile' in request.FILES:
                 bot_item = request.user.bot_set.first()
                 if bot_item is None:
                     messages.info(
                         request, 'specified bot was not found in database.')
                     return redirect('teach01')
-                if not bot_item.brain.name == 'bot_default.rive':
+
+                if not basename(bot_item.brain.name) == 'bot_default.rive':
                     bot_item.brain.delete()
-                bot_item.brain = request.FILES['brainfile']
+                bot_item.brain = request.FILES['brainFile']
                 bot_item.save()
                 messages.info(request, 'brain file uploaded successfully.')
             else:
@@ -312,6 +320,44 @@ def teach01(request):
         else:
             context = generate_context(request, 'teach')
             return render(request, 'teach01.html', context)
+    else:
+        messages.info(request, 'You must be logged in first.')
+        return redirect('login')
+
+
+def teach02(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            brain_text = request.POST['brainText']
+
+            bot_item = request.user.bot_set.first()
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+                return redirect('teach00')
+
+            brain_file = bot_item.brain
+            brain_file.open(mode='wb')
+            brain_file.write(brain_text)
+            brain_file.close()
+
+            messages.info(request, 'brain file edited successfully.')
+            return redirect('teach00')
+        else:
+            bot_item = request.user.bot_set.first()
+
+            context = generate_context(request, 'teach')
+            if bot_item is None:
+                messages.info(
+                    request, 'specified bot was not found in database.')
+            else:
+                log_file = bot_item.chatlog
+                log_file.open(mode='rb')
+                log_text = brain_file.read()
+                log_file.close()
+                context['logText'] = log_text
+
+            return render(request, 'teach02.html', context)
     else:
         messages.info(request, 'You must be logged in first.')
         return redirect('login')
@@ -326,24 +372,34 @@ def setting00(request):
                     request, 'specified bot was not found in database.')
                 return redirect('setting00')
 
-            if 'imagefile' in request.FILES:
-                if not bot_item.avtaar.name == 'bot_default.png':
+            if 'avtaarFile' in request.FILES:
+                if not basename(bot_item.avtaar.name) == 'avtaar_default.png':
                     bot_item.avtaar.delete()
-                bot_item.avtaar = request.FILES['imagefile']
-            if 'default' in request.POST:
-                if request.POST['default']:
-                    bot_item.avtaar = '/media/avtaar/bot_default.png'
+                bot_item.avtaar = request.FILES['avtaarFile']
+            if 'defaultFile' in request.POST:
+                if request.POST['defaultFile']:
+                    bot_item.avtaar.delete()
+                    filepath = generate_filepath('avtaar\\avtaar_default.png')
+                    f = open(filepath, 'rb')
+                    bot_item.avtaar.save('bot_avtaar.png', File(f))
 
-            bot_item.name = request.POST['name']
-            bot_item.description = request.POST['description']
+            if len(request.POST['name']) < 4 or len(request.POST['name']) > 32:
+                messages.info(
+                    request, "name must be between 4 to 32 characters.")
+            else:
+                bot_item.name = request.POST['name']
+
+            if len(request.POST['description']) > 128:
+                messages.info(
+                    request, "description must be less than 128 characters.")
+            else:
+                bot_item.description = request.POST['description']
+
             bot_item.visible = request.POST.get('visible', False)
             bot_item.greet = request.POST.get('greet', False)
-
             if 'message' in request.POST:
-                bot_item.meassage = request.POST['message']
-
+                bot_item.message = request.POST['message']
             bot_item.save()
-
             messages.info(request, 'bot settings successfully updated.')
             return redirect('setting00')
         else:
@@ -373,7 +429,6 @@ def setting01(request):
 
             if 'delete' in request.POST:
                 user_item.delete()
-                user_item.save()
                 logout(request)
                 messages.info(
                     request, 'account has been successfully deleted.')
@@ -387,20 +442,23 @@ def setting01(request):
                 else:
                     messages.info(
                         request, 'password didn\'t matched with current password.')
+                return redirect('setting01')
 
             if 'firstname' in request.POST:
-                user_item.firstname = request.POST['firstname']
+                if not user_item.first_name == request.POST['firstname']:
+                    user_item.first_name = request.POST['firstname']
             if 'lastname' in request.POST:
-                user_item.lastname = request.POST['lastname']
+                if not user_item.last_name == request.POST['lastname']:
+                    user_item.last_name = request.POST['lastname']
             if 'email' in request.POST:
-                if User.objects.filter(email=request.POST['email']).exists():
-                    messages.info(
-                        request, 'specified e-mail has been already taken.')
-                else:
-                    user_item.email = request.POST['email']
+                if not user_item.email == request.POST['email']:
+                    if User.objects.filter(email=request.POST['email']).exists():
+                        messages.info(
+                            request, 'specified e-mail has been already taken.')
+                    else:
+                        user_item.email = request.POST['email']
 
             user_item.save()
-
             messages.info(request, 'user settings successfully updated.')
             return redirect('setting01')
         else:

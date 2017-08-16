@@ -38,8 +38,10 @@
                             <img src="{{bot.avtaar.url}}" alt="bot-image">
                             <div class="caption">
                                 <strong class="font-size-sm">{{bot.name}}</strong>
+                                {% if bot.description %}
                                 <hr class="hr-seperator">
                                 <span>{{bot.description}}</span><br>
+                                {% endif %}
                                 <h4 class="text-right"><span class="fa fa-eye"></span> : {{bot.views}} | <span class="fa fa-comments-o"></span>                                    : 5</h4>
                             </div>
                         </div>

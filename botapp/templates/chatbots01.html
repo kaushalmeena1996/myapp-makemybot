@@ -12,7 +12,7 @@
         <div class="text-red">
             <h4>[ <span class="fa fa-comments-o"></span> ]</h4>
             <hr class="hr-red">
-            <div class="thumbnail"> 
+            <div class="thumbnail">
                 <div id="chatBox" class="well chat-box">
                     <div hidden id="botMessage" class="chat-body">
                         <table class="table table-responsive">
@@ -46,14 +46,15 @@
                                     </div>
                                 </td>
                                 <td class="avtaar">
-                                    <img class="avtaar-img light-yellow" src="{% static 'img/user_default.png' %}" alt="user-image">
+                                    <img class="avtaar-img light-yellow" src="{% static 'img/user_avtaar.png' %}" alt="user-image">
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="input-group input-group-lg">
-                    <input id="chatInput" onkeypress="executeChat(event)" class="form-control" placeholder="type something..." type="text" autocomplete="off" autofocus>
+                    <input id="chatInput" onkeypress="executeChat(event)" class="form-control" placeholder="type something..." type="text" autocomplete="off"
+                        autofocus>
                     <span class="input-group-btn">
                         <button id="chatButton" onclick="sendMessage()" class="btn btn-red"><span class="fa fa-chevron-right"></span></button>
                     </span>

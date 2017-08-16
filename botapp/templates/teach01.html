@@ -14,14 +14,14 @@
         </ul>
         <div class="text-darkblue">
             <h4>[ <span class="fa fa-upload"></span> ]</h4>
-            <hr class="hr-darkblue"> 
+            <hr class="hr-darkblue">
             <div class="well">
                 <form class="form" method="post" action="{% url 'teach01' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon min-width-sm"><span class="fa fa-file-code-o fa-lg"></span></div>
-                            <input id="brainFile" name="brainfile" class="form-control" type="file" accept=".rive">
+                            <input id="brainFile" name="brainFile" class="form-control" type="file" accept=".rive">
                         </div>
                     </div>
                     <div class="form-group text-right">

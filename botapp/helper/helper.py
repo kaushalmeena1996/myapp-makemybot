@@ -4,7 +4,8 @@
 # python modules
 import re
 import os
-import hashlib
+
+from makemybot.settings import MEDIA_ROOT
 
 # regular expression patterns
 USERNAME_RE = re.compile(
@@ -73,6 +74,11 @@ def generate_context(request, title):
 def generate_filename(instance, filename):
     extension = filename.split('.')[-1]
     folder = EXTENSION_FOLDER[extension]
-    hashid = hashlib.sha256(str(instance.user.id)).hexdigest()
-    filename = "%s_%s.%s" % (folder, hashid, extension)
+    filename = "%s_%s.%s" % (folder, str(instance.user.id), extension)
     return os.path.join(folder, filename)
+
+def basename(filepath):
+    return os.path.basename(filepath)
+
+def generate_filepath(filepath):
+    return os.path.join(MEDIA_ROOT, filepath)

@@ -21,10 +21,10 @@
                             <div class="well">
                                 <div class="row text-center">
                                     <div hidden class="form-group">
-                                        <input class="form-control" id="botUpload" onchange="previewAction(event)" name="imagefile" type="file" accept=".jpg,.jpeg,.png">
+                                        <input class="form-control" id="botUpload" onchange="previewAction(event)" name="avtaarFile" type="file" accept=".jpg,.jpeg,.png">
                                     </div>
                                     <div hidden class="form-group">
-                                        <input id="defaultCheckbox" name="default" class="checkbox-lg" type="checkbox" value="True">
+                                        <input id="defaultCheckbox" name="defaultFile" class="checkbox-size-lg" type="checkbox" value="True">
                                     </div>
                                     <div class="col-md-12">
                                         <img id="botImage" class="img-thumbnail" onerror="defaultAction()" src="{{botItem.avtaar.url}}" alt="bot-avtaar">
@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon min-width-sm"><span class="fa fa-user fa-lg"></span></div>
-                                    <input class="form-control" type="text" name="name" value="{{botItem.name}}" maxlength="32" placeholder="name" required>
+                                    <input class="form-control" type="text" name="name" value="{{botItem.name}}" minlength="4" maxlength="32" placeholder="name" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -57,30 +57,28 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div hidden class="form-group">
-                                        <input id="visibleCheckbox" name="visible" class="checkbox-lg" type="checkbox" {% if botItem.visible %}checked{% endif %}
-                                            value="True">
-                                    </div>
                                     <div class="form-group">
-                                        <button onclick="toogleAction(0)" type="button" class="btn btn-default btn-block">
-                                            &nbsp;<span id="formIcon00" class="fa {% if botItem.visible %}fa-eye{% else %}fa-eye-slash{% endif %} fa-eye fa-lg"></span>&nbsp;
-                                        </button>
+                                        <div class="input-group">
+                                            <span class="input-group-addon min-width-sm">
+                                                <input onchange="toogleAction(0)" id="visibleCheckbox" name="visible" class="checkbox-size-lg" type="checkbox" {% if botItem.visible %}checked{% endif %} value="True">
+                                            </span>
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-block">
+                                                &nbsp;<span id="formIcon00" class="fa {% if botItem.visible %}fa-eye{% else %}fa-eye-slash{% endif %} fa-eye fa-lg"></span>&nbsp;
+                                            </button>
+                                            </span>
+                                        </div>
                                         <span class="help-block">Toggle whether bot should be visible in list or not.</span>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div hidden class="form-group">
-                                        <input id="greetCheckbox" name="greet" class="checkbox-lg" type="checkbox" {% if botItem.greet %}checked{% endif %} value="True">
-                                    </div>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-btn">
-                                                <button onclick="toogleAction(1)" type="button" class="btn btn-default min-width-sm">
-                                                    &nbsp;<span id="formIcon01" class="fa {% if botItem.greet %}fa-check-square-o{% else %}fa-square-o{% endif %} fa-lg"></span>&nbsp;
-                                                </button>
-                                            </div>
-                                            <input {% if not botItem.greet %}disabled{% endif %} id="greetMessage" class="form-control" type="text" name="message" value="{{botItem.message}}"
-                                                maxlength="32" placeholder="greeting-message" required>
+                                            <span class="input-group-addon min-width-sm">
+                                                <input onchange="toogleAction(1)" id="greetCheckbox" name="greet" class="checkbox-size-lg" type="checkbox" {% if botItem.greet %}checked{% endif %} value="True">
+                                            </span>
+                                            <input id="greetMessage" class="form-control" type="text" name="message" value="{{botItem.message}}"
+                                                maxlength="32" placeholder="message" required {% if not botItem.greet %}disabled{% endif %}>
                                         </div>
                                         <span class="help-block">Toggle whether greeting message should be send to bot at initialisation or not.</span>
                                     </div>

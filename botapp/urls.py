@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^chat/$', views.chat, name='chat'),
     url(r'^teach/edit$', views.teach00, name='teach00'),
     url(r'^teach/upload$', views.teach01, name='teach01'),
+    url(r'^teach/log$', views.teach02, name='teach02'),
     url(r'^setting/bot$', views.setting00, name='setting00'),
     url(r'^setting/user$', views.setting01, name='setting01'),
     url(r'^embed$', views.embed, name='embed')
