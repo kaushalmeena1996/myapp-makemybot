@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>DATA FORM</title>
+
+</head>
+
+<body>
+	<script>
+		var toogle = 0;
+
+		function toogleFrame() {
+			if (toogle == 0) {
+				document.getElementById('windowFrame').style.height = '42px';
+				toogle = 1;
+			} else {
+				document.getElementById('windowFrame').style.height = '480px';
+				toogle = 0;
+			}
+		}
+	</script>
+	<style>
+		#windowTable {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+		}
+
+		#windowButton {
+			vertical-align: top;
+			color: #C0392B;
+			font-size: 16px;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			cursor: pointer;
+		}
+
+		#windowFrame {
+			height: 480px;
+			width: 300px;
+			border: 1px solid #C0392B;
+			border-radius: 5px 0px 0px 0px;
+		}
+	</style>
+	<table id="windowTable">
+		<tr>
+			<td onclick="toogleFrame()" id="windowButton"><span>[X]</span></td>
+			<td>
+				<iframe id="windowFrame" scrolling="no" frameborder="0" src="http://127.0.0.1:8000/window/6/chat"></iframe>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>

@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^teach/log$', views.teach02, name='teach02'),
     url(r'^setting/bot$', views.setting00, name='setting00'),
     url(r'^setting/user$', views.setting01, name='setting01'),
-    url(r'^embed$', views.embed, name='embed')
+    url(r'^embed$', views.embed, name='embed'),
+    url(r'^window//?(?P<bot_id>\d+)?/chat$$', views.window, name='window')
 ]

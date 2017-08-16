@@ -1,0 +1,141 @@
+.font-size-sm {
+    font-size: 18px;
+}
+
+.font-size-xs {
+    font-size: 12px;
+}
+
+.navbar-logo {
+    transition: all .3s;
+}
+
+.navbar-logo img {
+    height: 20px;
+}
+
+.navbar-logo a {
+    text-decoration: none;
+}
+
+.navbar-logo:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.chat-box {
+    overflow: auto;
+    height: 380px;
+    max-height: 380px;
+}
+
+.bubble-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+.bubble-body {
+    padding: 2px;
+}
+
+.avtaar {
+    width: 70px;
+    vertical-align: top;
+    padding: 5px;
+}
+
+.avtaar-img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #021a40;
+}
+
+.light-red {
+    background-color: #FADBD8;
+}
+
+.light-yellow {
+    background-color: #FDEBD0;
+}
+
+.bubble-bot {
+    max-width: 65%;
+    color: #21618C;
+    background-color: #D6EAF8;
+    border-radius: 2px;
+    border: 1px solid #317787;
+    box-shadow: 0 0 6px #b2b2b2;
+    display: inline-block;
+    padding: 4px 8px;
+    position: relative;
+    vertical-align: top;
+}
+
+.bubble-bot::before {
+    background-color: #D6EAF8;
+    border-left: 1px solid #21618C;
+    border-bottom: 1px solid #21618C;
+    content: "";
+    display: block;
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    top: 11px;
+    transform: rotate( 45deg);
+    -moz-transform: rotate( 45deg);
+    -ms-transform: rotate( 45deg);
+    -o-transform: rotate( 45deg);
+    -webkit-transform: rotate( 45deg);
+}
+
+.bubble-user {
+    max-width: 65%;
+    color: #196F3D;
+    background-color: #D4EFDF;
+    border-radius: 2px;
+    border: 1px solid #196F3D;
+    box-shadow: 0 0 6px #b2b2b2;
+    display: inline-block;
+    padding: 4px 8px;
+    position: relative;
+    vertical-align: top;
+}
+
+.bubble-user::before {
+    background-color: #D4EFDF;
+    border-right: 1px solid #196F3D;
+    border-top: 1px solid #196F3D;
+    content: "";
+    display: block;
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    top: 11px;
+    transform: rotate( 45deg);
+    -moz-transform: rotate( 45deg);
+    -ms-transform: rotate( 45deg);
+    -o-transform: rotate( 45deg);
+    -webkit-transform: rotate( 45deg);
+}
+
+.bot {
+    float: left;
+}
+
+.bot::before {
+    box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4);
+    left: -6px;
+}
+
+.user {
+    float: right;
+}
+
+.user::before {
+    box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4);
+    right: -6px;
+}
+
+.text-darkred {
+    color: #C0392B;
+}

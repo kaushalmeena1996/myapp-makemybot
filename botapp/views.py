@@ -4,16 +4,19 @@ from django.core.files.base import ContentFile, File
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 from botapp.helper.helper import (
     valid_username, valid_email, valid_password, generate_context, basename, generate_filepath, basename)
 from .models import Bot
 
-#pylint: disable=E1101
+# pylint: disable=E1101
+
 
 def signin(request):
     """CONNECTS the user."""
     if request.user.is_authenticated:
-        messages.info(request, 'You have already logged in.')
+        messages.info(request, 'you have already logged in.')
         return redirect('home')
     else:
         if request.method == 'POST':
@@ -69,17 +72,17 @@ def signout(request):
     """DISCONNECTS the user."""
     if request.user.is_authenticated:
         logout(request)
-        messages.info(request, 'You have successfully logged out.')
+        messages.info(request, 'you have successfully logged out.')
         return redirect('home')
     else:
-        messages.info(request, 'You have already logged out.')
+        messages.info(request, 'you have already logged out.')
         return redirect('home')
 
 
 def signup(request):
     """CONNECTS the user."""
     if request.user.is_authenticated:
-        messages.info(request, 'You have already logged in.')
+        messages.info(request, 'you have already logged in.')
         return redirect('home')
     else:
         if request.method == 'POST':
@@ -182,52 +185,46 @@ def home(request):
 
 
 def chatbots00(request):
-    if request.user.is_authenticated:
-        query = request.GET.get('query')
-        page = request.GET.get('page')
-        context = generate_context(request, 'chatbots')
+    query = request.GET.get('query')
+    page = request.GET.get('page')
+    context = generate_context(request, 'chatbots')
 
-        if query:
-            paginator = Paginator(Bot.objects.filter(name__icontains=query, visible=True).order_by('views'), 1)
-            context['botQuery'] = query
-        else:
-            paginator = Paginator(Bot.objects.filter(visible=True).order_by('views'), 25)
-        try:
-            bot_list = paginator.page(page)
-        except PageNotAnInteger:
-            bot_list = paginator.page(1)
-        except EmptyPage:
-            bot_list = paginator.page(paginator.num_pages)
-
-        context['botList'] = bot_list
-
-        bot_item = request.user.bot_set.first()
-        if bot_item is None:
-            messages.info(request, 'specified bot was not found in database.')
-        else:
-            context['botId'] = bot_item.pk
-
-        return render(request, 'chatbots00.html', context)
+    if query:
+        paginator = Paginator(Bot.objects.filter(
+            name__icontains=query, visible=True).order_by('views'), 1)
+        context['botQuery'] = query
     else:
-        messages.info(request, 'You must be logged in first.')
-        return redirect('login')
+        paginator = Paginator(Bot.objects.filter(
+            visible=True).order_by('views'), 25)
+    try:
+        bot_list = paginator.page(page)
+    except PageNotAnInteger:
+        bot_list = paginator.page(1)
+    except EmptyPage:
+        bot_list = paginator.page(paginator.num_pages)
+
+    context['botList'] = bot_list
+
+    bot_item = request.user.bot_set.first()
+    if bot_item is None:
+        messages.info(request, 'specified bot was not found in database.')
+    else:
+        context['botId'] = bot_item.pk
+
+    return render(request, 'chatbots00.html', context)
 
 
 def chatbots01(request, bot_id):
-    if request.user.is_authenticated:
-        bot_item = Bot.objects.get(pk=bot_id)
+    bot_item = Bot.objects.get(pk=bot_id)
 
-        context = generate_context(request, 'chatbots')
-        if bot_item:
-            context['botItem'] = bot_item
-            context['chatPage'] = True
-        else:
-            messages.info(request, 'specified bot was not found.')
-
-        return render(request, 'chatbots01.html', context)
+    context = generate_context(request, 'chatbots')
+    if bot_item:
+        context['botItem'] = bot_item
+        context['chatPage'] = True
     else:
-        messages.info(request, 'You must be logged in first.')
-        return redirect('login')
+        messages.info(request, 'specified bot was not found.')
+
+    return render(request, 'chatbots01.html', context)
 
 
 def guide(request):
@@ -258,7 +255,7 @@ def chat(request):
 
         return render(request, 'chat.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -295,7 +292,7 @@ def teach00(request):
 
             return render(request, 'teach00.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -321,7 +318,7 @@ def teach01(request):
             context = generate_context(request, 'teach')
             return render(request, 'teach01.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -359,7 +356,7 @@ def teach02(request):
 
             return render(request, 'teach02.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -414,7 +411,7 @@ def setting00(request):
 
             return render(request, 'setting00.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -466,7 +463,7 @@ def setting01(request):
             context['userItem'] = request.user
             return render(request, 'setting01.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
 
 
@@ -482,5 +479,14 @@ def embed(request):
 
         return render(request, 'embed.html', context)
     else:
-        messages.info(request, 'You must be logged in first.')
+        messages.info(request, 'you must be logged in first.')
         return redirect('login')
+
+
+@xframe_options_exempt
+def window(request, bot_id):
+    bot_item = Bot.objects.get(pk=bot_id)
+    if bot_item.visible:
+        return render(request, 'window.html', {'botItem': bot_item})
+    else:
+        return render(request, 'window.html', {'alertText': 'specified bot is not available for viewing.'})

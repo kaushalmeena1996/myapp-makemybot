@@ -1,88 +1,136 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- https://jquery.com/ -->
-    <script src="{{url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
-    <!-- http://getbootstrap.com/ -->
-    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css') }}">
-    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-    <!-- https://angularjs.org/ -->
-    <script src="{{url_for('static', filename='js/angular.min.js')}}"></script>
-    <!-- http://fontawesome.io/ -->
-    <link rel="stylesheet" type=text/css href="{{url_for('static', filename='css/font-awesome.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% load static %}
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- FONTAWESOME CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
     <!-- CUSTOM-FAVICON -->
-    <link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico') }}">
+    <link rel="shortcut icon" href="{% static 'icon/favicon.ico' %}">
     <!-- CUSTOM-STYLESHEET -->
-    <link rel="stylesheet" type=text/css href="{{url_for('static', filename='css/custom-styles.css') }}">
-    <!-- CUSTOM-SCRIPT-->
-    <script src="{{url_for('static', filename='js/custom-scripts.js')}}"></script>
-    <title>MakeMyBot: {{pageTitle}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/window-styles.css' %}">
+    <title>makemybot: {{pageTitle}}</title>
 </head>
 
-<body class="custom-font">
+<body>
+    <div class="preloader"></div>
     <div class="panel panel-default">
         <div id="windowHeader" class="panel-heading">
-            <span class="font-size-large text-darkred">&nbsp;&nbsp;<i class="fa fa-comments-o"></i> Chat</span>
-            <a class="pull-right" target="_parent" href="{{url_for('showHome')}}">
-                <img class="navbar-logo" height="40px" src="{{url_for('static',filename='img/loader.gif')}}" alt="loader-img">
-            </a>
-        </div>
-        <div class="panel-body">
-            <script>
-                bChat(0, {
-                    {
-                        botInfo['bot_id']
-                    }
-                }, event);
-            </script>
-            <div hidden id="botMessage" class="chat-body">
-                <table class="table table-responsive">
-                    <tr>
-                        <td class="avtaar">
-                            <img class="avtaar-img light-red" src="\static\avtaar\{{botInfo['bot_image']}}" alt="Bot-Image">
-                        </td>
-                        <td class="text-left">
-                            <div class="bubble-bot bot round">
-                                <div class="bubble-header">{{botInfo['bot_name']}}</div>
-                                <div id="messageBody" class="bubble-body center"></div>
-                                <div id="messageTime" class="bubble-footer">
-                                    <span class="fa fa-clock-o" aria-hidden="true"></span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+            <div class="row">
+                <div class="col-xs-4">
+                    <span class="font-size-sm text-darkred"><span class="fa fa-comments-o fa-lg"></span></span>
+                </div>
+                <div class="col-xs-8">
+                    <div class="navbar-logo">
+                        <a target="_parent" href="{% url 'home' %}">
+                            <table>
+                                <tr>
+                                    <td><img src="{% static 'img/preloader01.gif' %}" alt="loader-img"></td>
+                                    <td><strong class="font-size-sm">&nbsp;makemybot</strong><strong class="text-darkred">.com</strong></td>
+                                </tr>
+                            </table>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div hidden id="userMessage" class="container chat-body">
-                <table class="table table-responsive">
-                    <tr>
-                        <td class="text-right">
-                            <div class="bubble-user user round">
-                                <div class="bubble-header">User</div>
-                                <div id="messageBody" class="bubble-body center"></div>
-                                <div id="messageTime" class="bubble-footer">
-                                    <span class="fa fa-clock-o" aria-hidden="true"></span>
+        </div>
+        <div class="panel-body chat-box">
+            <div id="chatBox" class="chat-box">
+                <div hidden id="botMessage">
+                    <table class="table table-responsive">
+                        <tr>
+                            <td class="avtaar">
+                                <img class="avtaar-img light-red" src="{{botItem.avtaar.url}}" alt="bot-image">
+                            </td>
+                            <td class="text-left">
+                                <div class="bubble-bot bot">
+                                    <div class="bubble-header">{{botItem.name}}</div>
+                                    <div id="messageBody" class="bubble-body"></div>
+                                    <div class="font-size-xs">
+                                        <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="avtaar">
-                            <img class="avtaar-img light-yellow" src="{{ url_for( 'static', filename='avtaar/user_default.png' ) }}" alt="User-Image">
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div hidden id="userMessage">
+                    {% load static %}
+                    <table class="table table-responsive">
+                        <tr>
+                            <td class="text-right">
+                                <div class="bubble-user user">
+                                    <div class="bubble-header">User</div>
+                                    <div id="messageBody" class="bubble-body center"></div>
+                                    <div class="font-size-xs">
+                                        <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="avtaar">
+                                <img class="avtaar-img light-yellow" src="{% static 'img/user_avtaar.png' %}" alt="user-image">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="panel-footer">
-            <div class="input-group input-group-lg ">
-                <input onkeyup="bChat(1, {{botInfo['bot_id']}}, event)" id="chatInput" autocomplete="off" autofocus class="form-control"
-                    name="chatInput" placeholder="type something..." type="text"></input>
-                <span class="input-group-btn-">
-                <button id="chatButton" onclick="bChat(1, {{botInfo['bot_id']}}, event)" class="btn btn-lg btn-danger"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
-            </span>
+            <div class="input-group">
+                <input id="chatInput" onkeypress="executeChat(event)" class="form-control" type="text" autocomplete="off" autofocus>
+                <span class="input-group-btn">
+                <button id="chatButton" onclick="sendMessage()" class="btn btn-danger">
+                    &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
+                </button>
+                </span>
             </div>
         </div>
     </div>
+    </div>
+    <div id="alertModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-darkred">
+                        <span class="fa fa-exclamation-triangle"></span>&nbsp;alert
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p id="alertBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JQUERY JS -->
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <!-- BOOTSTRAP JS -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- RIVESCRIPT JS -->
+    <script src="{% static 'js/rivescript.min.js' %}"></script>
+    <!-- CUSTOM-SCRIPT-->
+    <script src="{% static 'js/custom-script01.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            chatAction('{{botItem.brain.url}}');
+        });
+    </script>
+    <script>
+        $(window).on('load', function () {
+            $(".preloader").fadeOut("fast");;
+        });
+    </script>
+    {% if alertModal %}
+    <script>
+        $(document).ready(function () {
+            alertAction('{{alertModal}}');
+        });
+    </script>
+    {% endif %}
 </body>
 
 </html>

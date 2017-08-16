@@ -53,7 +53,7 @@ function toogleAction(action) {
             if ($("#greetCheckbox").is(':checked')) {
                 $("#formIcon01").removeClass('fa-square-o').addClass('fa-check-square-o');
                 $("#greetMessage").prop('disabled', false);
-               
+
             } else {
                 $("#formIcon01").removeClass('fa-check-square-o').addClass('fa-square-o');
                 $("#greetMessage").prop('disabled', true);
@@ -97,4 +97,19 @@ function backAction() {
 
 function defaultAction() {
     alertAction('error occured while loading avtaar.');
+}
+
+function escapeAction(content) {
+    return content.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+}
+
+function previewAction() {
+    content = $("#embedCode").val();
+    content = escapeAction(content)
+    alert(content);
+    $('#previewContent').html(content);
 }
