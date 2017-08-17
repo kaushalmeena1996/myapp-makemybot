@@ -16,13 +16,16 @@
             <h4>[ <span class="fa fa-pencil-square-o"></span> ]</h4>
             <hr class="hr-darkblue">
             <div class="well">
-                <form method="post" action="{% url 'teach00' %}">
+                <form method="post" action="{% url 'teach02' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <textarea id="logEditor" name="logText" class="form-control fixed-textarea font-size-sm" rows="30">{{logText}}</textarea>
+                        <textarea id="logEditor" class="form-control fixed-textarea font-size-sm" rows="30">{{logText}}</textarea>
+                    </div>
+                    <div hidden class="form-group">
+                        <input name="clearText" type="checkbox" checked>
                     </div>
                     <div class="form-group text-right">
-                        <button onclick="resetAction('#brainEditor')" type="button" class="btn btn-lg btn-default">Clear</button>
+                        <button type="submit" class="btn btn-lg btn-default">clear</button>
                     </div>
                 </form>
             </div>

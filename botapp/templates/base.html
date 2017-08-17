@@ -140,7 +140,10 @@
     <script src="{% static 'js/custom-script01.js' %}"></script>
     <script>
         $(document).ready(function () {
-            chatAction('{{botItem.brain.url}}');
+            chatAction('{{botItem.brain.url}}', '{{botItem.message}}', '{{botItem.greet}}');
+        });
+        $(window).on('unload', function () {
+            logConversation();
         });
     </script>
     {% endif %}
@@ -149,6 +152,13 @@
             $(".preloader").fadeOut("fast");;
         });
     </script>
+    {% if alertText %}
+    <script>
+        $(document).ready(function () {
+            alertAction('{{alertText}}');
+        });
+    </script>
+    {% endif %}
 </body>
 
 </html>

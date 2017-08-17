@@ -6,48 +6,8 @@
             <hr class="hr-darkorange">
             <span class="font-size-sm">Add the following code to embed your chatbots to your website.</span><br><br>
             <div class="form-group">
-                <textarea id="embedCode" class="form-control fixed-textarea font-size-sm" rows="50" readonly>
-&lt;script&gt;
-    var toogle = 0;
-    function toogleFrame() {
-        if (toogle == 0) {
-            document.getElementById('windowFrame').style.height = '42px';
-            toogle = 1;
-        } else {
-            document.getElementById('windowFrame').style.height = '480px';
-            toogle = 0;
-        }
-    }
-&lt;/script&gt;
-&lt;style&gt;
-    #windowTable {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
-    #windowButton {
-        vertical-align: top;
-        color: #C0392B;
-        font-size: 16px;
-        font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
-        cursor: pointer;
-    }
-    #windowFrame {
-        height: 480px;
-        width: 300px;
-        border: 1px solid #C0392B;
-        border-radius: 5px 0px 0px 0px;
-    }
-&lt;/style&gt;
-&lt;table id=&quot;windowTable&quot;&gt;
-    &lt;tr&gt;
-        &lt;td onclick=&quot;toogleFrame()&quot; id=&quot;windowButton&quot;&gt;&lt;span&gt;[X]&lt;/span&gt;
-        &lt;/td&gt;
-        &lt;td&gt;
-            &lt;iframe id=&quot;windowFrame&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; src=&quot;https://myapp-makemybot.herokuapp.com/window/{{botId}}/chat&quot;&gt;&lt;/iframe&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
+                <textarea id="embedCode" class="form-control fixed-textarea font-size-sm" rows="3" readonly>
+&lt;script id=&quot;window-script&quot; data-bind=&quot;{{botId}}&quot; src=&quot;http://127.0.0.1:8000/static/js/window-script-min.js&quot;&gt;&lt;/script&gt;
                 </textarea>
             </div>
             <div class="form-group text-right">

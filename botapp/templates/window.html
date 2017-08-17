@@ -48,7 +48,7 @@
                                     <div class="bubble-header">{{botItem.name}}</div>
                                     <div id="messageBody" class="bubble-body"></div>
                                     <div class="font-size-xs">
-                                        <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                        <span class="fa fa-clock-o"></span>&nbsp;<span id="messageTime"></span>
                                     </div>
                                 </div>
                             </td>
@@ -64,7 +64,7 @@
                                     <div class="bubble-header">User</div>
                                     <div id="messageBody" class="bubble-body center"></div>
                                     <div class="font-size-xs">
-                                        <span class="fa fa-clock-o" aria-hidden="true"></span><span id="messageTime"></span>
+                                        <span class="fa fa-clock-o"></span>&nbsp;<span id="messageTime"></span>
                                     </div>
                                 </div>
                             </td>
@@ -116,7 +116,10 @@
     <script src="{% static 'js/custom-script01.js' %}"></script>
     <script>
         $(document).ready(function () {
-            chatAction('{{botItem.brain.url}}');
+            chatAction('{{botItem.brain.url}}', '{{botItem.message}}', '{{botItem.greet}}');
+        });
+        $(window).on('unload', function () {
+            logConversation();
         });
     </script>
     <script>
@@ -124,10 +127,10 @@
             $(".preloader").fadeOut("fast");;
         });
     </script>
-    {% if alertModal %}
+    {% if alertText %}
     <script>
         $(document).ready(function () {
-            alertAction('{{alertModal}}');
+            alertAction('{{alertText}}');
         });
     </script>
     {% endif %}

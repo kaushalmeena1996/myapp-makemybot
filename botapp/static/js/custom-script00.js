@@ -98,18 +98,3 @@ function backAction() {
 function defaultAction() {
     alertAction('error occured while loading avtaar.');
 }
-
-function escapeAction(content) {
-    return content.replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#039;/g, "'");
-}
-
-function previewAction() {
-    content = $("#embedCode").val();
-    content = escapeAction(content)
-    alert(content);
-    $('#previewContent').html(content);
-}

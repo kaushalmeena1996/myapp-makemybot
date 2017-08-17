@@ -121,10 +121,6 @@ def signup(request):
                 messages.info(
                     request, "username must be between 4 to 32 characters.")
                 signup_err = True
-            elif User.objects.filter(username=username).exists():
-                messages.info(
-                    request, 'specified username has been already taken.')
-                signup_err = True
             elif not valid_username(username):
                 messages.info(
                     request, "username must only contain alphanumeric characters and special characters.")
@@ -219,8 +215,11 @@ def chatbots01(request, bot_id):
 
     context = generate_context(request, 'chatbots')
     if bot_item:
-        context['botItem'] = bot_item
-        context['chatPage'] = True
+        if bot_item.visible:
+            context['botItem'] = bot_item
+            context['chatPage'] = True
+        else:
+            context['alertText'] = 'specified bot is not available for viewing.'
     else:
         messages.info(request, 'specified bot was not found.')
 
@@ -325,21 +324,29 @@ def teach01(request):
 def teach02(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            brain_text = request.POST['brainText']
-
             bot_item = request.user.bot_set.first()
             if bot_item is None:
                 messages.info(
-                    request, 'specified bot was not found in database.')
-                return redirect('teach00')
+                    request, 'couldn\'t log conversation as bot was not found.')
+                return redirect('home')
+            log_file = bot_item.chatlog
 
-            brain_file = bot_item.brain
-            brain_file.open(mode='wb')
-            brain_file.write(brain_text)
-            brain_file.close()
+            if 'logText' in request.POST:
+                log_file.open(mode='rb')
+                log_text = log_file.read()
+                log_file.close()
+                if not basename(bot_item.brain.name) == 'bot_default.rive':
+                    log_file.delete()
+                file_text = log_text + request.POST['logText']
+                log_file.save('bot_log.txt', ContentFile(file_text))
+                return {'success': True}
 
-            messages.info(request, 'brain file edited successfully.')
-            return redirect('teach00')
+            if 'clearText' in request.POST:
+                log_file.delete()
+                log_file.save('bot_log.txt', ContentFile(''))
+
+                messages.info(request, 'log successfully cleared.')
+                return redirect('teach02')
         else:
             bot_item = request.user.bot_set.first()
 
@@ -349,10 +356,14 @@ def teach02(request):
                     request, 'specified bot was not found in database.')
             else:
                 log_file = bot_item.chatlog
-                log_file.open(mode='rb')
-                log_text = brain_file.read()
-                log_file.close()
-                context['logText'] = log_text
+                if log_file.name:
+                    log_file.open(mode='rb')
+                    log_text = log_file.read()
+                    log_file.close()
+                    context['logText'] = log_text
+                else:
+                    log_file.save('bot_log.txt', ContentFile(''))
+                    context['logText'] = ''
 
             return render(request, 'teach02.html', context)
     else:
