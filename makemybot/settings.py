@@ -25,7 +25,9 @@ SECRET_KEY = 'hxlesz(29vxk3m85zaosu3gd7=6xl$dd(9+p0v_s(asbxegr^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    u'myapp-makemybot.herokuapp.com'
+]
 
 
 # Application definition
