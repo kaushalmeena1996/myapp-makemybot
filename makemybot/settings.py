@@ -25,9 +25,7 @@ SECRET_KEY = 'hxlesz(29vxk3m85zaosu3gd7=6xl$dd(9+p0v_s(asbxegr^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    u'myapp-makemybot.herokuapp.com'
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -120,7 +118,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = 'assets'
 STATIC_URL = '/static/'
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
@@ -132,3 +130,6 @@ STATICFILES_DIRS = (
 # Media files (Avtaars, Brains, Logs)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
