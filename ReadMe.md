@@ -1,4 +1,4 @@
-# [Project : Item Catalog]
+# [Project : Chatbot Creator]
 
 ## [ Synopsis ]
 

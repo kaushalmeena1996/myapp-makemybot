@@ -7,11 +7,10 @@ from django.contrib.auth.models import User
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 from botapp.helper.helper import (
-    valid_username, valid_email, valid_password, generate_context, basename, generate_filepath, basename)
+    valid_username, valid_email, valid_password, generate_context, generate_filepath, basename)
 from .models import Bot
 
 # pylint: disable=E1101
-
 
 def signin(request):
     """CONNECTS the user."""
