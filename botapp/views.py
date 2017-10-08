@@ -200,11 +200,14 @@ def chatbots00(request):
 
     context['botList'] = bot_list
 
-    bot_item = request.user.bot_set.first()
-    if bot_item is None:
-        messages.info(request, 'specified bot was not found in database.')
+    if request.user.is_authenticated:
+        bot_item = request.user.bot_set.first()
+        if bot_item is None:
+            messages.info(request, 'specified bot was not found in database.')
+        else:
+            context['botId'] = bot_item.pk
     else:
-        context['botId'] = bot_item.pk
+        context['botId'] = None
 
     return render(request, 'chatbots00.html', context)
 
@@ -244,12 +247,15 @@ def chat(request):
     if request.user.is_authenticated:
         context = generate_context(request, 'chat')
 
-        bot_item = request.user.bot_set.first()
-        if bot_item:
-            context['botItem'] = bot_item
-            context['chatPage'] = True
+        if request.user.is_authenticated:
+            bot_item = request.user.bot_set.first()
+            if bot_item:
+                context['botItem'] = bot_item
+                context['chatPage'] = True
+            else:
+                messages.info(request, 'specified bot was not found in database.')
         else:
-            messages.info(request, 'specified bot was not found in database.')
+            context['botItem'] = None
 
         return render(request, 'chat.html', context)
     else:

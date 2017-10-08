@@ -3,7 +3,7 @@
     <div class="jumbotron">
         <ul class="nav nav-tabs">
             <li class="pull-right">
-                <a href="/chatbots/{{botId}}/chat"><span class='fa fa-comments-o fa-2x'></span></a>
+                <a {% if botId %}href="/chatbots/{{botId}}/chat"{% endif %}><span class='fa fa-comments-o fa-2x'></span></a>
             </li>
             <li class="active pull-right">
                 <a><span class='fa fa-th-list fa-2x'></span></a>
@@ -25,9 +25,7 @@
                 {% endif %}
             </div>
             <br>
-            <h4>[ {% if botQuery %}<span class="fa fa-search"></span>{% else %}<span class="fa fa-th-list"></span>{% endif %}
-                ]
-            </h4>
+            <h4>[ {% if botQuery %}<span class="fa fa-search"></span>{% else %}<span class="fa fa-th-list"></span>{% endif %} ]</h4>
             <hr class="hr-red">
             <div class="well well-sm">
                 {% if botList %}
