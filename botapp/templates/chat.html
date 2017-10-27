@@ -53,17 +53,15 @@
                 </div>
             </div>
             {% if botItem %}
-            <!--
-            <span>[ comments ]</span>
+            <h4>[ <span class="fa fa-comments-o"></span> ]</h4>
             <hr class="hr-darkred">
             <div id="commentBox" class="container">
                 <div id="disqus_thread">
                     <script>
-                    showDisqus("http://myapp-makemybot.herokuapp.com/chatbots/{{botItem.id}}/chat", {{botItem.id}});
+                        disqusAction("http://myapp-makemybot.herokuapp.com/chatbots/{{botItem.id}}/chat", {{botItem.id}});
                     </script>
                 </div>
             </div>
-            -->
             {% endif %}
         </div>
     </div>
