@@ -60,17 +60,6 @@
                     </span>
                 </div>
             </div>
-            {% if botItem %}
-            <span>[ comments ]</span>
-            <hr class="hr-red">
-            <div id="commentBox" class="container">
-                <div id="disqus_thread">
-                    <script>
-                    disqusAction("http://myapp-makemybot.herokuapp.com/chatbots/{{botItem.id}}/chat", {{botItem.id}});
-                    </script>
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>
