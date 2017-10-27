@@ -120,11 +120,11 @@
     </div>
     <footer class="{{pageColor}}">
         <h4 class="text-center">
-            <a href="">chatbots</a> |
-            <a href="">guide</a> |
-            <a href="">faqs</a> |
-            <a href="">contact</a> |
-            <a href="https://github.com/kaushalmeena1996/myapp-makemybot">github</a>
+            <a href="{% url 'chatbots00' %}">chatbots</a> |
+            <a href="{% url 'guide' %}">guide</a> |
+            <a href="{% url 'faqs' %}">faqs</a> |
+            <a href="{% url 'contact' %}">contact</a> |
+            <a href="https://github.com/kaushalmeena1996/myapp-makemybot(python)">github</a>
         </h4>
     </footer>
     <!-- JQUERY JS -->
@@ -148,6 +148,7 @@
     </script>
     {% endif %}
     <script>
+        $('[data-toggle="tooltip"]').tooltip();
         $(window).on('load', function () {
             $(".preloader").fadeOut("fast");;
         });
