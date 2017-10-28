@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.files.base import ContentFile, File
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -13,7 +14,6 @@ from .models import Bot
 # pylint: disable=E1101
 
 def signin(request):
-    """CONNECTS the user."""
     if request.user.is_authenticated:
         messages.info(request, 'you have already logged in.')
         return redirect('home')
@@ -68,7 +68,6 @@ def signin(request):
 
 
 def signout(request):
-    """DISCONNECTS the user."""
     if request.user.is_authenticated:
         logout(request)
         messages.info(request, 'you have successfully logged out.')
@@ -79,7 +78,6 @@ def signout(request):
 
 
 def signup(request):
-    """CONNECTS the user."""
     if request.user.is_authenticated:
         messages.info(request, 'you have already logged in.')
         return redirect('home')
@@ -105,7 +103,7 @@ def signup(request):
 
             if len(email) > 128:
                 messages.info(
-                    request, "lastname must be not be more than 128 characters.")
+                    request, "email must be not be more than 128 characters.")
                 signup_err = True
             elif User.objects.filter(email=email).exists():
                 messages.info(
@@ -240,7 +238,42 @@ def faqs(request):
 
 def contact(request):
     context = generate_context(request, 'contact')
-    return render(request, 'contact.html', context)
+
+    if request.method == 'POST':
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        signup_err = False
+        if len(email) == 0:
+            messages.info(
+                request, "email must not be empty.")
+            signup_err = True
+        elif not valid_email(email):
+            messages.info(
+                request, "email must be valid.")
+            signup_err = True
+
+        if len(subject) == 0:
+            messages.info(
+                request, "subject must not be empty.")
+            signup_err = True
+
+        if len(message) > 128:
+            messages.info(
+                request, "message must not be empty.")
+            signup_err = True
+        
+        if not signup_err:
+            send_mail(subject, message, email, ['kaushal.meena1996@gmail.com'], fail_silently=False)
+            messages.info(request, 'mail has been sent successfuly.')
+        
+        return render(request, 'contact.html', context)
+    else:
+        if request.user.is_authenticated:
+            context['userItem'] = request.user
+
+        return render(request, 'contact.html', context)
 
 
 def chat(request):

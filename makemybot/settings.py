@@ -70,6 +70,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'makemybot.wsgi.application'
 
+# Email
+# It writes e-mails to standard out instead of sending them.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
