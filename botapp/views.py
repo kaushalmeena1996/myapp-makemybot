@@ -52,11 +52,11 @@ def signin(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    messages.info(request, "You have successfully logged in.")
+                    messages.info(request, "you have successfully logged in.")
                     return redirect('home')
                 else:
                     messages.info(
-                        request, "Either username or password is incorrect.")
+                        request, "either username or password is incorrect.")
                     context = generate_context(request, 'login')
                     context['formUsername'] = username
                     context['formPassword'] = password
@@ -153,12 +153,12 @@ def signup(request):
                 bot_item.save()
                 if user_item is not None:
                     login(request, user_item)
-                    messages.info(request, "You have successfully registered.")
-                    messages.info(request, "You have successfully logged in.")
+                    messages.info(request, "you have successfully registered.")
+                    messages.info(request, "you have successfully logged in.")
                     return redirect('home')
                 else:
                     messages.info(
-                        request, "Some problem occured while signuping.")
+                        request, "some problem occured while signuping.")
                     context = generate_context(request, 'register')
                     context['formFirstname'] = firstname
                     context['formLastname'] = lastname
