@@ -212,7 +212,9 @@ def chatbots00(request):
 
 def chatbots01(request, bot_id):
     bot_item = Bot.objects.get(pk=bot_id)
-
+    bot_item.views = bot_item.views + 1
+    bot_item.save()
+    
     context = generate_context(request, 'chatbots')
     if bot_item:
         if bot_item.visible:
